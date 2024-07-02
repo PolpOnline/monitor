@@ -1,4 +1,5 @@
 <script lang="ts">
+	import PhHeartbeat from '~icons/ph/heartbeat';
 </script>
 
 <nav class="flex h-20 flex-row items-center justify-between">
