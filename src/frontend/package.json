@@ -12,6 +12,7 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
+      "@iconify-json/heroicons": "^1.1.21",
 		"@iconify-json/ph": "^1.1.13",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-cloudflare": "^4.6.0",
@@ -40,7 +41,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+      "bits-ui": "^0.21.13",
 		"clsx": "^2.1.1",
+      "humanize-duration": "^3.32.1",
+      "mode-watcher": "^0.4.1",
 		"tailwind-merge": "^2.3.0",
 		"tailwind-variants": "^0.2.1"
 	}
