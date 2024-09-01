@@ -8,8 +8,10 @@
 </script>
 
 <nav class="flex h-20 flex-row items-center justify-between">
-	<PhHeartbeat class="ml-3 justify-self-start text-3xl" />
-	<span class="absolute left-1/2 mx-2 -translate-x-1/2 text-3xl"> Monitor </span>
+	<a class="ml-3 justify-self-start text-3xl" href="/">
+		<PhHeartbeat />
+	</a>
+	<a class="absolute left-1/2 mx-2 -translate-x-1/2 text-3xl" href="/"> Monitor </a>
 	<span class="mr-3 flex items-center gap-1 justify-self-end">
 		<Button on:click={toggleMode} size="icon" variant="outline">
 			<HeroiconsSun
@@ -20,6 +22,7 @@
 			/>
 			<span class="sr-only">Toggle theme</span>
 		</Button>
-		<Button>Login</Button>
+
+		<Button href="/login">Login</Button>
 	</span>
 </nav>
