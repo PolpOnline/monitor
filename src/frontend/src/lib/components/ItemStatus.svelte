@@ -30,7 +30,7 @@
 	const lastInstant = data.instants[data.instants.length - 1];
 </script>
 
-<div class="mx-4 rounded-lg border border-gray-700 p-3">
+<div class="mx-4 rounded-lg border p-3">
 	<h1 class="text-2xl font-bold">
 		{data.name}
 	</h1>
@@ -54,7 +54,7 @@
 		)})
 	</p>
 
-	<div class="mx-auto my-3 flex h-[50px] max-w-[600px] justify-between">
+	<div class="mx-auto my-3 flex h-[50px] max-w-[700px] justify-between">
 		{#each data.instants as instant (instant.timestamp)}
 			<Tooltip.Root>
 				<Tooltip.Trigger
