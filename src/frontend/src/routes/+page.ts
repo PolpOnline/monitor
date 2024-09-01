@@ -1,6 +1,9 @@
 import type { AllSystemsData, Instant, Status, SystemData } from '$lib/types/items';
 import type { PageLoad } from './$types';
 
+// disable ssr for now, as it interferes with the random status generation
+export const ssr = false;
+
 function generateRandomStatus(): Status {
 	const statuses: Status[] = ['ok', 'warning', 'error'];
 	return statuses[Math.floor(Math.random() * statuses.length)];
