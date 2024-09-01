@@ -9,8 +9,8 @@
 
 <nav class="flex h-20 flex-row items-center justify-between">
 	<PhHeartbeat class="ml-3 justify-self-start text-3xl" />
-	<span class="mx-2 justify-self-center text-3xl"> Monitor </span>
-	<span class="mr-3 flex items-center gap-1">
+	<span class="absolute left-1/2 mx-2 -translate-x-1/2 text-3xl"> Monitor </span>
+	<span class="mr-3 flex items-center gap-1 justify-self-end">
 		<Button on:click={toggleMode} size="icon" variant="outline">
 			<HeroiconsSun
 				class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"

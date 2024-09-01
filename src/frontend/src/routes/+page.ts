@@ -31,7 +31,7 @@ const exampleSystemData1 = generateSystemData('Test System 1', 30); // 30 minute
 const exampleSystemData2 = generateSystemData('Test System 2', 60); // 1 hour
 const exampleSystemData3 = generateSystemData('Test System 3', 180); // 3 hours
 
-export const load: PageLoad = ({ params }) => {
+export const load: PageLoad = () => {
 	const allSystemsExampleData: AllSystemsData = {
 		systems: [exampleSystemData1, exampleSystemData2, exampleSystemData3]
 	};
