@@ -1,4 +1,6 @@
 <script lang="ts">
+	// noinspection ES6UnusedImports
+	import { Button as ButtonPrimitive } from 'bits-ui';
 	import { buttonVariants, type Events, type Props } from './index.js';
 	import { cn } from '$lib/utils.js';
 
@@ -13,12 +15,12 @@
 </script>
 
 <ButtonPrimitive.Root
-	{...$$restProps}
 	{builders}
 	class={cn(buttonVariants({ variant, size, className }))}
+	{...$$restProps}
+	type="button"
 	on:click
 	on:keydown
-	type="button"
 >
 	<slot />
 </ButtonPrimitive.Root>

@@ -54,6 +54,9 @@ importers:
       '@types/eslint':
         specifier: ^8.56.7
         version: 8.56.12
+      '@types/humanize-duration':
+        specifier: ^3.27.4
+        version: 3.27.4
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.20(postcss@8.4.43)
@@ -696,6 +699,9 @@ packages:
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+
+  '@types/humanize-duration@3.27.4':
+    resolution: {integrity: sha512-yaf7kan2Sq0goxpbcwTQ+8E9RP6HutFBPv74T/IA/ojcHKhuKVlk2YFYyHhWZeLvZPzzLE3aatuQB4h0iqyyUA==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -2572,6 +2578,8 @@ snapshots:
       '@types/json-schema': 7.0.15
 
   '@types/estree@1.0.5': {}
+
+  '@types/humanize-duration@3.27.4': {}
 
   '@types/json-schema@7.0.15': {}
 

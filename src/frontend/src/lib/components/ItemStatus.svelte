@@ -4,6 +4,8 @@
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
 	import type { SystemData } from '$lib/types/items';
 	import humanizeDuration from 'humanize-duration';
+	// noinspection ES6UnusedImports
+	import * as Tooltip from '$lib/components/ui/tooltip';
 
 	export let data: SystemData;
 
