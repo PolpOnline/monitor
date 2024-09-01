@@ -1,4 +1,6 @@
 <script lang="ts">
+	// noinspection ES6UnusedImports
+	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { formSchema, type FormSchema } from './schema';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';

@@ -1,4 +1,6 @@
 <script lang="ts">
+	// noinspection ES6UnusedImports
+	import * as FormPrimitive from 'formsnap';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { cn } from '$lib/utils.js';
 
@@ -8,8 +10,8 @@
 </script>
 
 <FormPrimitive.Description
-	{...$$restProps}
 	class={cn('text-sm text-muted-foreground', className)}
+	{...$$restProps}
 	let:descriptionAttrs
 >
 	<slot {descriptionAttrs} />
