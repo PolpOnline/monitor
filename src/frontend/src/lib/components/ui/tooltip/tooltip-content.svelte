@@ -11,6 +11,7 @@
 		y: 8,
 		duration: 150
 	};
+	// noinspection ReservedWordAsName
 	export { className as class };
 </script>
 
