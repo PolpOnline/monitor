@@ -61,14 +61,17 @@
 
 	<h2 class="text-lg {colorMapText[lastInstant.status]} flex items-center">
 		{#if lastInstant.status === 'ok'}
-			<HeroiconsCheck20Solid class="mr-2 inline-block h-6" />
+			<HeroiconsCheck20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
 			Operational
 		{:else if lastInstant.status === 'warning'}
-			<HeroiconsExclamationTriangle20Solid class="mr-2 inline-block h-6" />
-			Not functioning properly (since {calculateDownTime(data.instants, 'warning')} ago)
+			<HeroiconsExclamationTriangle20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
+			Not functioning properly <br class="sm:hidden" />({calculateDownTime(
+				data.instants,
+				'warning'
+			)} ago)
 		{:else if lastInstant.status === 'error'}
-			<HeroiconsXMark20Solid class="mr-2 inline-block h-6" />
-			Down (since {calculateDownTime(data.instants, 'error')} ago)
+			<HeroiconsXMark20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
+			Down <br class="sm:hidden" />({calculateDownTime(data.instants, 'error')} ago)
 		{/if}
 	</h2>
 
@@ -112,11 +115,11 @@
 				{humanizeDuration(
 					// Difference between now and the least recent instant
 					Date.now() - data.instants[data.instants.length - 1].timestamp.getTime(),
-					{ round: true, units: ['y', 'd', 'h', 'm'] }
+					{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
 				)} ago
 			</span>
 
-			<span class="absolute left-1/2 -translate-x-1/2">
+			<span class="sm:absolute sm:left-1/2 sm:-translate-x-1/2">
 				{uptime.toFixed(2)}% uptime
 			</span>
 
@@ -124,7 +127,7 @@
 				{humanizeDuration(
 					// Difference between now and the most recent instant
 					Date.now() - data.instants[0].timestamp.getTime(),
-					{ round: true, units: ['y', 'd', 'h', 'm'] }
+					{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
 				)} ago
 			</span>
 		</div>

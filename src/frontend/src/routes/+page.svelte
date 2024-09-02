@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ItemStatus from '$components/ItemStatus.svelte';
 	import type { PageData } from './$types';
+	import AddSystem from '$components/AddSystem.svelte';
 
 	export let data: PageData;
 </script>
@@ -14,3 +15,5 @@
 		<ItemStatus data={system} />
 	</div>
 {/each}
+
+<AddSystem />

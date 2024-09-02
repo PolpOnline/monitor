@@ -17,6 +17,9 @@ dependencies:
   humanize-duration:
     specifier: ^3.32.1
     version: 3.32.1
+  lucide-svelte:
+    specifier: ^0.438.0
+    version: 0.438.0(svelte@4.2.19)
   mode-watcher:
     specifier: ^0.4.1
     version: 0.4.1(svelte@4.2.19)
@@ -37,6 +40,9 @@ devDependencies:
   '@iconify-json/heroicons':
     specifier: ^1.1.21
     version: 1.2.0
+  '@iconify-json/material-symbols':
+    specifier: ^1.1.80
+    version: 1.1.80
   '@iconify-json/ph':
     specifier: ^1.1.13
     version: 1.2.0
@@ -973,6 +979,12 @@ packages:
 
   /@iconify-json/heroicons@1.2.0:
     resolution: {integrity: sha512-EmvGN0L9EUJCmQ82rkLGZ4tkz0YGQfZV7ugKT6UvHni/bxNitQrD0gLj6NJj2W9zsSoXyNHyCX236+EJmO4pmA==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
+  /@iconify-json/material-symbols@1.1.80:
+    resolution: {integrity: sha512-JrDMmWeHxFFMp3BBSsjvDvSiYzJ0qdYmHAQYWY/L5fxVZcIoeoQvtQR0wM1iJN4UDIsnHwbpJQ/sqZ/cvph6sw==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true
@@ -2583,6 +2595,14 @@ packages:
 
   /lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
+
+  /lucide-svelte@0.438.0(svelte@4.2.19):
+    resolution: {integrity: sha512-+p79uacz5Qgj8wbKpCaRoNZppUGBwuEivK9X4P9Rz22U6jpi0cDDE5welKtTX9hDpA9eE4oreCVAIZO2Fckh8g==}
+    peerDependencies:
+      svelte: ^3 || ^4 || ^5.0.0-next.42
+    dependencies:
+      svelte: 4.2.19
+    dev: false
 
   /magic-string@0.25.9:
     resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}

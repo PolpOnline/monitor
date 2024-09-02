@@ -13,6 +13,7 @@
 	},
 	"devDependencies": {
 		"@iconify-json/heroicons": "^1.1.21",
+		"@iconify-json/material-symbols": "^1.1.80",
 		"@iconify-json/ph": "^1.1.13",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-cloudflare": "^4.6.0",
@@ -46,6 +47,7 @@
 		"clsx": "^2.1.1",
 		"formsnap": "^1.0.1",
 		"humanize-duration": "^3.32.1",
+		"lucide-svelte": "^0.438.0",
 		"mode-watcher": "^0.4.1",
 		"sveltekit-superforms": "^2.17.0",
 		"tailwind-merge": "^2.3.0",
