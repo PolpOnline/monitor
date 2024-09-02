@@ -9,9 +9,9 @@ function generateRandomStatus(): Status {
 	return statuses[Math.floor(Math.random() * statuses.length)];
 }
 
-const generateSystemData = (name: string, frequency: number): SystemData => {
+function generateSystemData(name: string, frequency: number): SystemData {
 	const instants: Instant[] = [];
-	const startTime = new Date('2024-08-23T00:00:00.000Z');
+	const startTime = new Date(Date.now());
 
 	for (let i = 0; i < 30; i++) {
 		instants.push({
@@ -25,7 +25,7 @@ const generateSystemData = (name: string, frequency: number): SystemData => {
 		instants,
 		frequency
 	};
-};
+}
 
 const exampleSystemData1 = generateSystemData('Test System 1', 30); // 30 minutes
 const exampleSystemData2 = generateSystemData('Test System 2', 60); // 1 hour
