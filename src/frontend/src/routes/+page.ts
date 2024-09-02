@@ -16,9 +16,11 @@ function generateSystemData(name: string, frequency: number): SystemData {
 	for (let i = 0; i < 30; i++) {
 		instants.push({
 			status: generateRandomStatus(),
-			timestamp: new Date(startTime.getTime() + i * frequency * 60 * 1000)
+			timestamp: new Date(startTime.getTime() - i * frequency * 60 * 1000)
 		});
 	}
+
+	instants.reverse();
 
 	return {
 		name,
@@ -28,6 +30,7 @@ function generateSystemData(name: string, frequency: number): SystemData {
 }
 
 const exampleSystemData1 = generateSystemData('Test System 1', 30); // 30 minutes
+console.log(exampleSystemData1);
 const exampleSystemData2 = generateSystemData('Test System 2', 60); // 1 hour
 const exampleSystemData3 = generateSystemData('Test System 3', 180); // 3 hours
 

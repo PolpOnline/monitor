@@ -47,7 +47,7 @@
 			}
 			return humanizeDuration(
 				// Difference between now and the most recent instant
-				Date.now() - instants[index + 1].timestamp.getTime(),
+				Date.now() - instants[instants.length - index - 1].timestamp.getTime(),
 				{ round: true }
 			);
 		}
@@ -55,27 +55,30 @@
 </script>
 
 <div class="mx-4 rounded-lg border p-3">
-	<h1 class="text-2xl font-bold">
+	<h1 class="mb-1 text-2xl font-bold">
 		{data.name}
 	</h1>
 
-	<h2 class="text-lg {colorMapText[lastInstant.status]} flex items-center">
+	<h2 class="text-lg {colorMapText[lastInstant.status]} my-1 flex items-center">
 		{#if lastInstant.status === 'ok'}
 			<HeroiconsCheck20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
 			Operational
 		{:else if lastInstant.status === 'warning'}
 			<HeroiconsExclamationTriangle20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
-			Not functioning properly <br class="sm:hidden" />({calculateDownTime(
-				data.instants,
-				'warning'
-			)} ago)
+			Not functioning properly
+			<br class="sm:hidden" />
+			(for
+			{calculateDownTime(data.instants, 'warning')})
 		{:else if lastInstant.status === 'error'}
 			<HeroiconsXMark20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
-			Down <br class="sm:hidden" />({calculateDownTime(data.instants, 'error')} ago)
+			Down
+			<br class="sm:hidden" />
+			(for
+			{calculateDownTime(data.instants, 'error')})
 		{/if}
 	</h2>
 
-	<p class="text-sm text-gray-500">
+	<p class="mt-1 text-sm text-gray-500">
 		Last check: {lastInstant.timestamp.toLocaleString()} (checking every {humanizeDuration(
 			data.frequency * 1000 * 60
 		)})
@@ -124,7 +127,7 @@
 			<span>
 				{humanizeDuration(
 					// Difference between now and the least recent instant
-					Date.now() - data.instants[data.instants.length - 1].timestamp.getTime(),
+					Date.now() - data.instants[0].timestamp.getTime(),
 					{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
 				)} ago
 			</span>
@@ -136,7 +139,7 @@
 			<span>
 				{humanizeDuration(
 					// Difference between now and the most recent instant
-					Date.now() - data.instants[0].timestamp.getTime(),
+					Date.now() - data.instants[data.instants.length - 1].timestamp.getTime(),
 					{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
 				)} ago
 			</span>
