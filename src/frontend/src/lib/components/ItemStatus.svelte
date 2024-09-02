@@ -28,6 +28,12 @@
 	};
 
 	const lastInstant = data.instants[data.instants.length - 1];
+
+	let tooltipOpens = new Array(data.instants.length).fill(false);
+
+	function clearTooltipsExcept(index: number) {
+		tooltipOpens = tooltipOpens.map((_, i) => i === index);
+	}
 </script>
 
 <div class="mx-4 rounded-lg border p-3">
@@ -55,8 +61,12 @@
 	</p>
 
 	<div class="mx-auto my-3 flex h-[50px] max-w-[700px] justify-between">
-		{#each data.instants as instant (instant.timestamp)}
-			<Tooltip.Root>
+		{#each data.instants as instant, i (instant.timestamp)}
+			<Tooltip.Root
+				openDelay={0}
+				bind:open={tooltipOpens[i]}
+				onOpenChange={() => clearTooltipsExcept(i)}
+			>
 				<Tooltip.Trigger
 					class="mx-0.25 h-full rounded {colorMap[instant.status]} max-w-3"
 					style="width: calc((100% / {data.instants.length}) - 2px)"
