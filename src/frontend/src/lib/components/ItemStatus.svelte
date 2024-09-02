@@ -92,7 +92,17 @@
 					<Tooltip.Trigger
 						class="mx-0.25 h-full rounded {colorMap[instant.status]} max-w-3"
 						style="width: calc((100% / {data.instants.length}) - 2px)"
-					/>
+					>
+						<button
+							class="h-full w-full"
+							on:mouseenter={() => {
+								clearTooltipsExcept(i);
+							}}
+							on:mouseleave={() => {
+								tooltipOpens[i] = false;
+							}}
+						/>
+					</Tooltip.Trigger>
 					<Tooltip.Content class="{colorMap[instant.status]} {colorMapBorder[instant.status]}">
 						<Tooltip.Arrow class="{colorMapText[instant.status]} rounded-[2px]" />
 						<div class="flex items-center">
@@ -110,7 +120,7 @@
 			{/each}
 		</div>
 
-		<div class="flex justify-between text-gray-500">
+		<div class="mt-1 flex justify-between text-gray-500">
 			<span>
 				{humanizeDuration(
 					// Difference between now and the least recent instant
