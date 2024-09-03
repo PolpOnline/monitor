@@ -6,7 +6,7 @@
 </script>
 
 <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-	<div class="max-w-96">
+	<div class="w-11/12 min-w-96">
 		<LoginForm data={data.form} />
 	</div>
 </div>
