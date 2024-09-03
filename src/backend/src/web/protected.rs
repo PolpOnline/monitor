@@ -1,30 +1,36 @@
-use askama::Template;
 use axum::{http::StatusCode, response::IntoResponse, routing::get, Router};
-use axum_messages::{Message, Messages};
+use serde::Serialize;
 
 use crate::users::AuthSession;
 
-#[derive(Template)]
-#[template(path = "protected.html")]
-struct ProtectedTemplate<'a> {
-    messages: Vec<Message>,
-    username: &'a str,
-}
+// #[derive(Template)]
+// #[template(path = "protected.html")]
+// struct ProtectedTemplate<'a> {
+//     messages: Vec<Message>,
+//     username: &'a str,
+// }
 
 pub fn router() -> Router<()> {
-    Router::new().route("/", get(self::get::protected))
+    Router::new().route("/", get(get::protected))
+}
+
+#[derive(Debug, Serialize, Clone)]
+pub struct Protected {
+    pub status: String,
 }
 
 mod get {
     use super::*;
+    use axum::Json;
 
-    pub async fn protected(auth_session: AuthSession, messages: Messages) -> impl IntoResponse {
+    pub async fn protected(auth_session: AuthSession) -> impl IntoResponse {
         match auth_session.user {
-            Some(user) => ProtectedTemplate {
-                messages: messages.into_iter().collect(),
-                username: &user.username,
+            Some(user) => {
+                let res = Protected {
+                    status: format!("Hello, {}!", user.username),
+                };
+                Json(res).into_response()
             }
-            .into_response(),
 
             None => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         }
