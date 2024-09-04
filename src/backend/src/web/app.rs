@@ -3,11 +3,12 @@ use axum_login::{
     tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
 };
-use sqlx::SqlitePool;
+use sqlx::postgres::PgPoolOptions;
+use sqlx::PgPool;
 use time::Duration;
 use tokio::{signal, task::AbortHandle};
 use tower_sessions::cookie::Key;
-use tower_sessions_sqlx_store::SqliteStore;
+use tower_sessions_sqlx_store::PostgresStore;
 
 use crate::{
     users::Backend,
@@ -15,23 +16,22 @@ use crate::{
 };
 
 pub struct App {
-    db: SqlitePool,
+    db: PgPool,
 }
 
 impl App {
-    pub async fn new() -> Result<Self, Box<dyn std::error::Error>> {
-        let db = SqlitePool::connect(":memory:").await?;
-        sqlx::migrate!().run(&db).await?;
+    pub async fn new() -> color_eyre::Result<Self> {
+        let db = Self::setup_db().await?;
 
         Ok(Self { db })
     }
 
-    pub async fn serve(self) -> Result<(), Box<dyn std::error::Error>> {
+    pub async fn serve(self) -> color_eyre::Result<()> {
         // Session layer.
         //
         // This uses `tower-sessions` to establish a layer that will provide the session
         // as a request extension.
-        let session_store = SqliteStore::new(self.db.clone());
+        let session_store = PostgresStore::new(self.db.clone());
         session_store.migrate().await?;
 
         let deletion_task = tokio::task::spawn(
@@ -60,7 +60,7 @@ impl App {
             .merge(auth::router())
             .layer(auth_layer);
 
-        let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+        let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
 
         // Ensure we use a shutdown signal to abort the deletion task.
         axum::serve(listener, app.into_make_service())
@@ -70,6 +70,17 @@ impl App {
         deletion_task.await??;
 
         Ok(())
+    }
+
+    async fn setup_db() -> color_eyre::Result<PgPool> {
+        let pool = PgPoolOptions::new()
+            .max_connections(5)
+            .connect(&std::env::var("DATABASE_URL")?)
+            .await?;
+
+        sqlx::migrate!().run(&pool).await?;
+
+        Ok(pool)
     }
 }
 

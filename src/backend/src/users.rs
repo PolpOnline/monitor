@@ -2,12 +2,12 @@ use async_trait::async_trait;
 use axum_login::{AuthUser, AuthnBackend, UserId};
 use password_auth::verify_password;
 use serde::{Deserialize, Serialize};
-use sqlx::{FromRow, SqlitePool};
+use sqlx::{FromRow, PgPool};
 use tokio::task;
 
 #[derive(Clone, Serialize, Deserialize, FromRow)]
 pub struct User {
-    id: i64,
+    id: i32,
     pub username: String,
     password: String,
 }
@@ -25,7 +25,7 @@ impl std::fmt::Debug for User {
 }
 
 impl AuthUser for User {
-    type Id = i64;
+    type Id = i32;
 
     fn id(&self) -> Self::Id {
         self.id
@@ -50,11 +50,11 @@ pub struct Credentials {
 
 #[derive(Debug, Clone)]
 pub struct Backend {
-    db: SqlitePool,
+    db: PgPool,
 }
 
 impl Backend {
-    pub fn new(db: SqlitePool) -> Self {
+    pub fn new(db: PgPool) -> Self {
         Self { db }
     }
 }
@@ -78,10 +78,18 @@ impl AuthnBackend for Backend {
         &self,
         creds: Self::Credentials,
     ) -> Result<Option<Self::User>, Self::Error> {
-        let user: Option<Self::User> = sqlx::query_as("select * from users where username = ? ")
-            .bind(creds.username)
-            .fetch_optional(&self.db)
-            .await?;
+        // let user: Option<Self::User> = sqlx::query_as("select * from users where username = ? ")
+        //     .bind(creds.username)
+        //     .fetch_optional(&self.db)
+        //     .await?;
+
+        let user: Option<Self::User> = sqlx::query_as!(
+            User,
+            "SELECT * FROM users where username = $1",
+            creds.username
+        )
+        .fetch_optional(&self.db)
+        .await?;
 
         // Verifying the password is blocking and potentially slow, so we'll do so via
         // `spawn_blocking`.
@@ -94,8 +102,11 @@ impl AuthnBackend for Backend {
     }
 
     async fn get_user(&self, user_id: &UserId<Self>) -> Result<Option<Self::User>, Self::Error> {
-        let user = sqlx::query_as("select * from users where id = ?")
-            .bind(user_id)
+        // let user = sqlx::query_as("select * from users where id = ?")
+        //     .bind(user_id)
+        //     .fetch_optional(&self.db)
+        //     .await?;
+        let user = sqlx::query_as!(User, "SELECT * FROM users where id = $1", user_id)
             .fetch_optional(&self.db)
             .await?;
 
