@@ -1,0 +1,19 @@
+meta {
+  name: Add system
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/add_system
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "test 1",
+    "frequency": 30,
+    "starts_at": "2024-09-04T19:12:12.637Z"
+  }
+}

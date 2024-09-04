@@ -1,9 +1,9 @@
 -- Create the user table
 CREATE TABLE IF NOT EXISTS "user"
 (
-    id       integer PRIMARY KEY NOT NULL,
-    email    text                NOT NULL UNIQUE,
-    password text                NOT NULL
+    id       SERIAL PRIMARY KEY NOT NULL,
+    email    text               NOT NULL UNIQUE,
+    password text               NOT NULL
 );
 
 -- Create the table for storing the systems
@@ -19,9 +19,9 @@ CREATE TABLE IF NOT EXISTS system
 -- Create the table for storing the pings
 CREATE TABLE IF NOT EXISTS ping
 (
-    id        uuid PRIMARY KEY            NOT NULL,
+    id        SERIAL PRIMARY KEY          NOT NULL,
     system_id uuid REFERENCES system (id) NOT NULL,
-    timestamp timestamp                   NOT NULL
+    timestamp timestamp                 NOT NULL DEFAULT NOW()
 );
 
 -- SEEDED DATA FOR TESTING PURPOSES

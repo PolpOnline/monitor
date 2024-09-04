@@ -7,9 +7,9 @@ use tokio::task;
 
 #[derive(Clone, Serialize, Deserialize, FromRow)]
 pub struct User {
-    id: i32,
+    pub id: i32,
     pub email: String,
-    password: String,
+    pub password: String,
 }
 
 // Here we've implemented `Debug` manually to avoid accidentally logging the
@@ -45,12 +45,11 @@ impl AuthUser for User {
 pub struct Credentials {
     pub email: String,
     pub password: String,
-    pub next: Option<String>,
 }
 
 #[derive(Debug, Clone)]
 pub struct Backend {
-    db: PgPool,
+    pub db: PgPool,
 }
 
 impl Backend {
