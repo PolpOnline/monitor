@@ -7,8 +7,7 @@
 use color_eyre::Result;
 use dotenvy::dotenv;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
-
-use crate::web::App;
+use web::App;
 
 mod users;
 mod web;

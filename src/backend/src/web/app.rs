@@ -10,10 +10,8 @@ use tokio::{signal, task::AbortHandle};
 use tower_sessions::cookie::Key;
 use tower_sessions_sqlx_store::PostgresStore;
 
-use crate::{
-    users::Backend,
-    web::{auth, protected},
-};
+use crate::users::Backend;
+use crate::web::{auth, protected};
 
 pub struct App {
     db: PgPool,
