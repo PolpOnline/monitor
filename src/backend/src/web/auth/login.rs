@@ -1,9 +1,9 @@
 use crate::users::{AuthSession, Credentials};
 use axum::response::IntoResponse;
 use axum::Json;
-use axum_login::tracing::debug;
 use http::StatusCode;
 use serde::Serialize;
+use tracing::debug;
 
 #[derive(Debug, Serialize)]
 pub struct LoginResponse {

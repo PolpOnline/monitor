@@ -24,6 +24,7 @@ tower-sessions-sqlx-store = { version = "0.13.0", features = ["postgres"] }
 thiserror = "1.0.56"
 dotenvy = "0.15.7"
 color-eyre = "0.6.3"
+tracing = "0.1.40"
 
 [profile.dev.package.backtrace]
 opt-level = 3

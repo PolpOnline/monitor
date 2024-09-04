@@ -1,3 +1,5 @@
+use crate::users::Backend;
+use crate::web::{auth, protected};
 use axum_login::{
     login_required,
     tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer},
@@ -9,9 +11,7 @@ use time::Duration;
 use tokio::{signal, task::AbortHandle};
 use tower_sessions::cookie::Key;
 use tower_sessions_sqlx_store::PostgresStore;
-
-use crate::users::Backend;
-use crate::web::{auth, protected};
+use tracing::info;
 
 pub struct App {
     db: PgPool,
@@ -59,6 +59,8 @@ impl App {
             .layer(auth_layer);
 
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
+
+        info!("Listening on {}", listener.local_addr()?);
 
         // Ensure we use a shutdown signal to abort the deletion task.
         axum::serve(listener, app.into_make_service())
