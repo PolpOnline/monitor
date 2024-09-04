@@ -1,9 +1,9 @@
-use crate::users::{AuthSession, Credentials};
-use axum::response::IntoResponse;
-use axum::Json;
+use axum::{response::IntoResponse, Json};
 use http::StatusCode;
 use serde::Serialize;
-use tracing::debug;
+use tracing::{debug, info};
+
+use crate::users::{AuthSession, Credentials};
 
 #[derive(Debug, Serialize)]
 pub struct LoginResponse {
@@ -33,7 +33,7 @@ pub async fn login(
         return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     }
 
-    debug!("Successfully logged in as {}", user.username);
+    info!("Successfully logged in as {}", user.username);
 
     Json(LoginResponse {
         status: "success".to_string(),

@@ -1,17 +1,19 @@
-use crate::users::Backend;
-use crate::web::{auth, protected};
 use axum_login::{
     login_required,
     tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
 };
-use sqlx::postgres::PgPoolOptions;
-use sqlx::PgPool;
+use sqlx::{postgres::PgPoolOptions, PgPool};
 use time::Duration;
 use tokio::{signal, task::AbortHandle};
 use tower_sessions::cookie::Key;
 use tower_sessions_sqlx_store::PostgresStore;
 use tracing::info;
+
+use crate::{
+    users::Backend,
+    web::{auth, protected, public},
+};
 
 pub struct App {
     db: PgPool,
@@ -56,7 +58,8 @@ impl App {
         let app = protected::router()
             .route_layer(login_required!(Backend, login_url = "/login"))
             .merge(auth::router())
-            .layer(auth_layer);
+            .layer(auth_layer)
+            .merge(public::router());
 
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
 

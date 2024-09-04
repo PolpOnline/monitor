@@ -25,6 +25,7 @@ thiserror = "1.0.56"
 dotenvy = "0.15.7"
 color-eyre = "0.6.3"
 tracing = "0.1.40"
+uuid = { version = "1.10.0", features = ["v4", "serde"] }
 
 [profile.dev.package.backtrace]
 opt-level = 3

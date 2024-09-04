@@ -1,8 +1,8 @@
-use crate::users::AuthSession;
-use axum::response::IntoResponse;
-use axum::Json;
+use axum::{response::IntoResponse, Json};
 use http::StatusCode;
 use serde::Serialize;
+
+use crate::users::AuthSession;
 
 #[derive(Debug, Serialize, Clone)]
 pub struct Protected {

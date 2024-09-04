@@ -18,7 +18,9 @@ async fn main() -> Result<()> {
 
     tracing_subscriber::registry()
         .with(EnvFilter::new(std::env::var("RUST_LOG").unwrap_or_else(
-            |_| "axum_login=debug,tower_sessions=debug,sqlx=warn,tower_http=debug".into(),
+            |_| {
+                "axum_login=info,tower_sessions=info,sqlx=warn,tower_http=info,monitor=debug".into()
+            },
         )))
         .with(tracing_subscriber::fmt::layer())
         .try_init()?;
