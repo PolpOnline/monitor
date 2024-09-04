@@ -1,8 +1,8 @@
 use axum_login::{
-    login_required,
     tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
 };
+use http::StatusCode;
 use sqlx::{postgres::PgPoolOptions, PgPool};
 use time::Duration;
 use tokio::{signal, task::AbortHandle};
@@ -11,6 +11,7 @@ use tower_sessions_sqlx_store::PostgresStore;
 use tracing::info;
 
 use crate::{
+    custom_login_required,
     users::Backend,
     web::{auth, protected, public},
 };
@@ -56,7 +57,10 @@ impl App {
         let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
 
         let app = protected::router()
-            .route_layer(login_required!(Backend, login_url = "/login"))
+            .route_layer(custom_login_required!(
+                Backend,
+                (StatusCode::UNAUTHORIZED, "You are not logged in.")
+            ))
             .merge(auth::router())
             .layer(auth_layer)
             .merge(public::router());
@@ -76,14 +80,14 @@ impl App {
     }
 
     async fn setup_db() -> color_eyre::Result<PgPool> {
-        info!("Connecting to database...");
+        info!("Connecting to the database...");
 
         let pool = PgPoolOptions::new()
             .max_connections(5)
             .connect(&std::env::var("DATABASE_URL")?)
             .await?;
 
-        info!("Connected to database");
+        info!("Connected to the database");
 
         sqlx::migrate!().run(&pool).await?;
 
