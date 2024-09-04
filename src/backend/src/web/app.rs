@@ -62,8 +62,8 @@ impl App {
                 (StatusCode::UNAUTHORIZED, "You are not logged in.")
             ))
             .merge(auth::router())
-            .layer(auth_layer)
-            .merge(public::router());
+            .merge(public::router())
+            .layer(auth_layer);
 
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
 
