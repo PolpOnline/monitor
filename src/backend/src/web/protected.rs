@@ -3,13 +3,6 @@ use serde::Serialize;
 
 use crate::users::AuthSession;
 
-// #[derive(Template)]
-// #[template(path = "protected.html")]
-// struct ProtectedTemplate<'a> {
-//     messages: Vec<Message>,
-//     username: &'a str,
-// }
-
 pub fn router() -> Router<()> {
     Router::new().route("/", get(get::protected))
 }
