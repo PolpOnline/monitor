@@ -1,0 +1,17 @@
+meta {
+  name: Remove system
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{host}}/remove_system
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id": "18f1e1bc-2823-444d-88ca-f451253e839f"
+  }
+}
