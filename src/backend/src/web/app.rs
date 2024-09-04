@@ -76,12 +76,18 @@ impl App {
     }
 
     async fn setup_db() -> color_eyre::Result<PgPool> {
+        info!("Connecting to database...");
+
         let pool = PgPoolOptions::new()
             .max_connections(5)
             .connect(&std::env::var("DATABASE_URL")?)
             .await?;
 
+        info!("Connected to database");
+
         sqlx::migrate!().run(&pool).await?;
+
+        info!("Migrations run");
 
         Ok(pool)
     }
