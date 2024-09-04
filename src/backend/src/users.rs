@@ -8,7 +8,7 @@ use tokio::task;
 #[derive(Clone, Serialize, Deserialize, FromRow)]
 pub struct User {
     id: i32,
-    pub username: String,
+    pub email: String,
     password: String,
 }
 
@@ -18,7 +18,7 @@ impl std::fmt::Debug for User {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("User")
             .field("id", &self.id)
-            .field("username", &self.username)
+            .field("email", &self.email)
             .field("password", &"[redacted]")
             .finish()
     }
@@ -43,7 +43,7 @@ impl AuthUser for User {
 // to authenticate requests with the backendOld.
 #[derive(Debug, Clone, Deserialize)]
 pub struct Credentials {
-    pub username: String,
+    pub email: String,
     pub password: String,
     pub next: Option<String>,
 }
@@ -78,13 +78,10 @@ impl AuthnBackend for Backend {
         &self,
         creds: Self::Credentials,
     ) -> Result<Option<Self::User>, Self::Error> {
-        let user: Option<Self::User> = sqlx::query_as!(
-            User,
-            "SELECT * FROM users WHERE username = $1",
-            creds.username
-        )
-        .fetch_optional(&self.db)
-        .await?;
+        let user: Option<Self::User> =
+            sqlx::query_as!(User, "SELECT * FROM users WHERE email = $1", creds.email)
+                .fetch_optional(&self.db)
+                .await?;
 
         // Verifying the password is blocking and potentially slow, so we'll do so via
         // `spawn_blocking`.

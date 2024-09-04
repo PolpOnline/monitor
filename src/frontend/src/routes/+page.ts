@@ -5,7 +5,7 @@ import type { PageLoad } from './$types';
 export const ssr = false;
 
 function generateRandomStatus(): Status {
-	const statuses: Status[] = ['ok', 'warning', 'error'];
+	const statuses: Status[] = ['ok', 'error'];
 	return statuses[Math.floor(Math.random() * statuses.length)];
 }
 

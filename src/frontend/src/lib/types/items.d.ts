@@ -1,4 +1,4 @@
-export type Status = 'ok' | 'warning' | 'error';
+export type Status = 'ok' | 'error';
 
 export type Instant = {
 	status: Status;

@@ -63,12 +63,6 @@
 		{#if lastInstant.status === 'ok'}
 			<HeroiconsCheck20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
 			Operational
-		{:else if lastInstant.status === 'warning'}
-			<HeroiconsExclamationTriangle20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
-			Not functioning properly
-			<br class="sm:hidden" />
-			(for
-			{calculateDownTime(data.instants, 'warning')})
 		{:else if lastInstant.status === 'error'}
 			<HeroiconsXMark20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
 			Down
@@ -111,8 +105,6 @@
 						<div class="flex items-center">
 							{#if instant.status === 'ok'}
 								<HeroiconsCheck20Solid class="mr-2 inline-block h-6" />
-							{:else if instant.status === 'warning'}
-								<HeroiconsExclamationTriangle20Solid class="mr-2 inline-block h-6" />
 							{:else if instant.status === 'error'}
 								<HeroiconsXMark20Solid class="mr-2 inline-block h-6" />
 							{/if}

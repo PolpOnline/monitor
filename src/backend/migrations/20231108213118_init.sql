@@ -1,12 +1,31 @@
--- Create users table.
-CREATE TABLE IF NOT EXISTS users
+-- Create the user table
+CREATE TABLE IF NOT EXISTS "user"
 (
     id       integer PRIMARY KEY NOT NULL,
-    username text                NOT NULL UNIQUE,
+    email    text                NOT NULL UNIQUE,
     password text                NOT NULL
 );
 
+-- Create the table for storing the systems
+CREATE TABLE IF NOT EXISTS system
+(
+    id        uuid PRIMARY KEY               NOT NULL,
+    name      text                           NOT NULL,
+    user_id   integer REFERENCES "user" (id) NOT NULL,
+    frequency interval                       NOT NULL,
+    starts_at timestamp                      NOT NULL
+);
+
+-- Create the table for storing the pings
+CREATE TABLE IF NOT EXISTS ping
+(
+    id        uuid PRIMARY KEY            NOT NULL,
+    system_id uuid REFERENCES system (id) NOT NULL,
+    timestamp timestamp                   NOT NULL
+);
+
+-- SEEDED DATA FOR TESTING PURPOSES
 -- Insert "ferris" user.
-INSERT INTO users (id, username, password)
-VALUES (1, 'ferris',
+INSERT INTO "user" (id, email, password)
+VALUES (1, 'ferris@example.com',
         '$argon2id$v=19$m=19456,t=2,p=1$VE0e3g7DalWHgDwou3nuRA$uC6TER156UQpk0lNQ5+jHM0l5poVjPA1he/Tyn9J4Zw');

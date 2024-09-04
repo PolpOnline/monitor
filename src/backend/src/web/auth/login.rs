@@ -17,7 +17,7 @@ pub async fn login(
     let user = match auth_session.authenticate(req.clone()).await {
         Ok(Some(user)) => user,
         Ok(None) => {
-            debug!("Failed to authenticate as {}", req.username);
+            debug!("Failed to authenticate as {}", req.email);
             return (
                 StatusCode::UNAUTHORIZED,
                 Json(LoginResponse {
@@ -33,7 +33,7 @@ pub async fn login(
         return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     }
 
-    info!("Successfully logged in as {}", user.username);
+    info!("Successfully logged in as {}", user.email);
 
     Json(LoginResponse {
         status: "success".to_string(),
