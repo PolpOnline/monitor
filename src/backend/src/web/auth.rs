@@ -1,10 +1,12 @@
 use crate::users::{AuthSession, Credentials};
+use axum::Json;
 use axum::{
     http::StatusCode,
-    response::{IntoResponse, Redirect},
+    response::IntoResponse,
     routing::{get, post},
     Router,
 };
+use axum_login::tracing::debug;
 use serde::Serialize;
 
 pub fn router() -> Router<()> {
@@ -18,10 +20,13 @@ pub struct LoginResponse {
     pub status: String,
 }
 
+#[derive(Debug, Serialize)]
+pub struct LogoutResponse {
+    pub status: String,
+}
+
 mod post {
     use super::*;
-    use axum::Json;
-    use axum_login::tracing::debug;
 
     pub async fn login(
         mut auth_session: AuthSession,
@@ -30,14 +35,14 @@ mod post {
         let user = match auth_session.authenticate(req.clone()).await {
             Ok(Some(user)) => user,
             Ok(None) => {
-                println!("Invalid credentials");
-
-                let mut login_url = "/login".to_string();
-                if let Some(next) = req.next {
-                    login_url = format!("{}?next={}", login_url, next);
-                };
-
-                return Redirect::to(&login_url).into_response();
+                debug!("Failed to authenticate as {}", req.username);
+                return (
+                    StatusCode::UNAUTHORIZED,
+                    Json(LoginResponse {
+                        status: "failed".to_string(),
+                    }),
+                )
+                    .into_response();
             }
             Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         };
@@ -60,7 +65,12 @@ mod get {
 
     pub async fn logout(mut auth_session: AuthSession) -> impl IntoResponse {
         match auth_session.logout().await {
-            Ok(_) => Redirect::to("/login").into_response(),
+            Ok(_) => {
+                let res = LogoutResponse {
+                    status: "success".to_string(),
+                };
+                Json(res).into_response()
+            }
             Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
         }
     }
