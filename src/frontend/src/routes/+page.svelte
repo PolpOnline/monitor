@@ -2,14 +2,15 @@
 	import ItemStatus from '$components/ItemStatus.svelte';
 	import type { PageData } from './$types';
 	import AddSystem from '$components/AddSystem.svelte';
+	import { title } from '$components/stores/title.store';
 
-	import { dev } from '$app/environment';
+	title.set('Monitor');
 
 	export let data: PageData;
 </script>
 
 <svelte:head>
-	<title>{dev ? '(DEV)' : ''} Monitor</title>
+	<title>Monitor</title>
 </svelte:head>
 
 {#each data.systems as system (system.name)}
