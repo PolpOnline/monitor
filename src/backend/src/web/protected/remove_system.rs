@@ -1,11 +1,13 @@
 use axum::{response::IntoResponse, Json};
 use http::StatusCode;
 use serde::Deserialize;
+use ts_rs::TS;
 use uuid::Uuid;
 
 use crate::users::AuthSession;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, TS)]
+#[ts(export)]
 pub struct RemoveSystemRequest {
     id: Uuid,
 }

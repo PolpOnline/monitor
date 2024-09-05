@@ -3,19 +3,23 @@ use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::types::PgInterval;
 use time::{Duration, OffsetDateTime};
+use ts_rs::TS;
 use uuid::Uuid;
 
 use crate::{users::AuthSession, web::utils::time_conversions::offset_to_primitive_date_time};
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, TS)]
+#[ts(export)]
 pub struct AddSystemRequest {
     name: String,
     frequency: i64, // in minutes
     #[serde(with = "time::serde::iso8601")]
+    #[ts(as = "String")]
     starts_at: OffsetDateTime,
 }
 
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Clone, TS)]
+#[ts(export)]
 pub struct AddSystemResponse {
     id: Uuid,
 }

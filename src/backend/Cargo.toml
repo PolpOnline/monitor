@@ -27,3 +27,10 @@ color-eyre = "0.6.3"
 tracing = "0.1.40"
 uuid = { version = "1.10.0", features = ["v4", "serde"] }
 chrono = "0.4.38"
+ts-rs = { version = "9.0.1", features = ["serde-json-impl", "uuid-impl", "format"] }
+
+[profile.dev.package.backtrace]
+opt-level = 3
+
+[profile.dev.package.sqlx-macros]
+opt-level = 3

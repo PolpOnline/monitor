@@ -4,6 +4,7 @@ use axum::{response::IntoResponse, Json};
 use http::StatusCode;
 use serde::Serialize;
 use time::{Duration, OffsetDateTime, PrimitiveDateTime};
+use ts_rs::TS;
 
 use crate::{
     users::AuthSession,
@@ -13,12 +14,14 @@ use crate::{
     },
 };
 
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Clone, TS)]
+#[ts(export)]
 pub struct ListSystemsResponse {
     systems: Vec<SystemData>,
 }
 
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Clone, TS)]
+#[ts(export)]
 pub struct SystemData {
     name: String,
     instants: Vec<Instant>,
@@ -26,16 +29,20 @@ pub struct SystemData {
     frequency: u64,
 }
 
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Clone, TS)]
+#[ts(export)]
 pub struct Instant {
     status: Status,
     #[serde(with = "time::serde::iso8601::option")]
+    #[ts(as = "Option<String>")]
     timestamp: Option<OffsetDateTime>,
     #[serde(with = "time::serde::iso8601")]
+    #[ts(as = "String")]
     expected_timestamp: OffsetDateTime,
 }
 
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Clone, TS)]
+#[ts(export)]
 pub enum Status {
     #[serde(rename = "up")]
     Up,

@@ -1,10 +1,12 @@
 use axum::{response::IntoResponse, Json};
 use http::StatusCode;
 use serde::Serialize;
+use ts_rs::TS;
 
 use crate::users::AuthSession;
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export)]
 pub struct LogoutResponse {
     pub status: String,
 }
