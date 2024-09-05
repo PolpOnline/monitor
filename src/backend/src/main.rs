@@ -25,7 +25,7 @@ async fn main() -> Result<()> {
         .with(tracing_subscriber::fmt::layer())
         .try_init()?;
 
-    dotenv().expect(".env file not found");
+    dotenv().unwrap_or_default();
 
     App::new().await?.serve().await
 }
