@@ -1,11 +1,10 @@
 <script lang="ts">
 	import HeroiconsXMark20Solid from '~icons/heroicons/x-mark-20-solid';
-	import HeroiconsExclamationTriangle20Solid from '~icons/heroicons/exclamation-triangle-20-solid';
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
-	import type { Instant, Status, SystemData } from '$lib/types/items';
 	import humanizeDuration from 'humanize-duration';
 	// noinspection ES6UnusedImports
 	import * as Tooltip from '$lib/components/ui/tooltip';
+	import type { Instant, SystemData } from '../../../../backend/bindings/index';
 
 	export let data: SystemData;
 

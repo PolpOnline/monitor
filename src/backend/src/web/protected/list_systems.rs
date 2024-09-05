@@ -26,7 +26,7 @@ pub struct SystemData {
     name: String,
     instants: Vec<Instant>,
     /// Frequency in minutes
-    frequency: u64,
+    frequency: u32,
 }
 
 #[derive(Debug, Serialize, Clone, TS)]
@@ -34,10 +34,10 @@ pub struct SystemData {
 pub struct Instant {
     status: Status,
     #[serde(with = "time::serde::iso8601::option")]
-    #[ts(as = "Option<String>")]
+    #[ts(type = "Date | null")]
     timestamp: Option<OffsetDateTime>,
     #[serde(with = "time::serde::iso8601")]
-    #[ts(as = "String")]
+    #[ts(type = "Date")]
     expected_timestamp: OffsetDateTime,
 }
 
@@ -97,7 +97,7 @@ pub async fn list_systems(auth_session: AuthSession) -> impl IntoResponse {
         let system_data = SystemData {
             name: system.name,
             instants,
-            frequency: (frequency.as_seconds_f64().round() as u64) / 60,
+            frequency: (frequency.as_seconds_f64().round() as u32) / 60,
         };
 
         systems.push(system_data);

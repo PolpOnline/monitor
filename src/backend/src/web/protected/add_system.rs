@@ -14,7 +14,7 @@ pub struct AddSystemRequest {
     name: String,
     frequency: i64, // in minutes
     #[serde(with = "time::serde::iso8601")]
-    #[ts(as = "String")]
+    #[ts(type = "Date")]
     starts_at: OffsetDateTime,
 }
 

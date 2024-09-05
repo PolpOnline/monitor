@@ -1,4 +1,4 @@
-import type { AllSystemsData, Instant, Status, SystemData } from '$lib/types/items';
+import type { Instant, Status, SystemData } from '../../../backend/bindings/index';
 import type { PageLoad } from './$types';
 
 // disable ssr for now, as it interferes with the random status generation
@@ -14,9 +14,12 @@ function generateSystemData(name: string, frequency: number): SystemData {
 	const startTime = new Date(Date.now());
 
 	for (let i = 0; i < 30; i++) {
+		const timestamp = new Date(startTime.getTime() - i * frequency * 60 * 1000);
+
 		instants.push({
 			status: generateRandomStatus(),
-			timestamp: new Date(startTime.getTime() - i * frequency * 60 * 1000)
+			timestamp,
+			expected_timestamp: timestamp
 		});
 	}
 
@@ -34,9 +37,7 @@ const exampleSystemData2 = generateSystemData('Test System 2', 60); // 1 hour
 const exampleSystemData3 = generateSystemData('Test System 3', 180); // 3 hours
 
 export const load: PageLoad = () => {
-	const allSystemsExampleData: AllSystemsData = {
+	return {
 		systems: [exampleSystemData1, exampleSystemData2, exampleSystemData3]
 	};
-
-	return allSystemsExampleData;
 };
