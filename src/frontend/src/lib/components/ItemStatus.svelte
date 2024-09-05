@@ -4,7 +4,7 @@
 	import humanizeDuration from 'humanize-duration';
 	// noinspection ES6UnusedImports
 	import * as Tooltip from '$lib/components/ui/tooltip';
-	import type { Instant, SystemData } from '../../../../backend/bindings/index';
+	import type { Instant, SystemData, Status } from '../../../../backend/bindings/index';
 
 	export let data: SystemData;
 
