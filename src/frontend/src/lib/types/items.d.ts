@@ -1,4 +1,4 @@
-export type Status = 'ok' | 'error';
+export type Status = 'up' | 'down';
 
 export type Instant = {
 	status: Status;

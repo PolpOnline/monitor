@@ -27,6 +27,3 @@ color-eyre = "0.6.3"
 tracing = "0.1.40"
 uuid = { version = "1.10.0", features = ["v4", "serde"] }
 chrono = "0.4.38"
-
-[profile.dev.package.backtrace]
-opt-level = 3

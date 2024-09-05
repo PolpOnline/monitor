@@ -5,6 +5,7 @@ use axum::{
 
 mod add_system;
 mod hello;
+mod list_systems;
 mod remove_system;
 
 pub fn router() -> Router<()> {
@@ -12,4 +13,5 @@ pub fn router() -> Router<()> {
         .route("/", get(hello::hello))
         .route("/add_system", post(add_system::add_system))
         .route("/remove_system", delete(remove_system::remove_system))
+        .route("/list_systems", get(list_systems::list_systems))
 }

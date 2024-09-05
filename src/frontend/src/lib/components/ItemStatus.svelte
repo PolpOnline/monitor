@@ -10,21 +10,18 @@
 	export let data: SystemData;
 
 	const colorMap = {
-		ok: 'bg-green-500',
-		warning: 'bg-yellow-500',
-		error: 'bg-red-500'
+		up: 'bg-green-500',
+		down: 'bg-red-500'
 	};
 
 	const colorMapText = {
-		ok: 'text-green-500',
-		warning: 'text-yellow-500',
-		error: 'text-red-500'
+		up: 'text-green-500',
+		down: 'text-red-500'
 	};
 
 	const colorMapBorder = {
-		ok: 'border-green-700',
-		warning: 'border-yellow-700',
-		error: 'border-red-700'
+		up: 'border-green-700',
+		down: 'border-red-700'
 	};
 
 	const lastInstant = data.instants[data.instants.length - 1];
@@ -36,7 +33,7 @@
 	}
 
 	const uptime =
-		(data.instants.filter((instant) => instant.status === 'ok').length / data.instants.length) *
+		(data.instants.filter((instant) => instant.status === 'up').length / data.instants.length) *
 		100;
 
 	function calculateDownTime(instants: Instant[], level: Status) {
@@ -60,15 +57,15 @@
 	</h1>
 
 	<h2 class="text-lg {colorMapText[lastInstant.status]} my-1 flex items-center">
-		{#if lastInstant.status === 'ok'}
+		{#if lastInstant.status === 'up'}
 			<HeroiconsCheck20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
 			Operational
-		{:else if lastInstant.status === 'error'}
+		{:else if lastInstant.status === 'down'}
 			<HeroiconsXMark20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
 			Down
 			<br class="sm:hidden" />
 			(for
-			{calculateDownTime(data.instants, 'error')})
+			{calculateDownTime(data.instants, 'down')})
 		{/if}
 	</h2>
 
@@ -103,9 +100,9 @@
 					<Tooltip.Content class="{colorMap[instant.status]} {colorMapBorder[instant.status]}">
 						<Tooltip.Arrow class="{colorMapText[instant.status]} rounded-[2px]" />
 						<div class="flex items-center">
-							{#if instant.status === 'ok'}
+							{#if instant.status === 'up'}
 								<HeroiconsCheck20Solid class="mr-2 inline-block h-6" />
-							{:else if instant.status === 'error'}
+							{:else if instant.status === 'down'}
 								<HeroiconsXMark20Solid class="mr-2 inline-block h-6" />
 							{/if}
 							{instant.timestamp.toLocaleString()}

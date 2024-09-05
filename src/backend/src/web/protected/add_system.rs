@@ -5,9 +5,7 @@ use sqlx::postgres::types::PgInterval;
 use time::{Duration, OffsetDateTime};
 use uuid::Uuid;
 
-use crate::{
-    users::AuthSession, web::utils::date_time::from_offset_date_time_to_primitive_date_time,
-};
+use crate::{users::AuthSession, web::utils::time_conversions::offset_to_primitive_date_time};
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct AddSystemRequest {
@@ -36,7 +34,7 @@ pub async fn add_system(
         Err(_) => return StatusCode::BAD_REQUEST.into_response(),
     };
 
-    let starts_at = from_offset_date_time_to_primitive_date_time(request.starts_at);
+    let starts_at = offset_to_primitive_date_time(request.starts_at);
 
     let id = Uuid::new_v4();
 
@@ -58,9 +56,5 @@ pub async fn add_system(
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    (
-        StatusCode::OK,
-        Json(AddSystemResponse { id }).into_response(),
-    )
-        .into_response()
+    Json(AddSystemResponse { id }).into_response()
 }
