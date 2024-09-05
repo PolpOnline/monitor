@@ -14,6 +14,8 @@ fn main() {
 
 // From https://github.com/Aleph-Alpha/ts-rs/issues/133#issuecomment-1399589933
 fn gen_binding_index() {
+    println!("generating bindings/index.ts");
+
     let exports: Vec<_> = fs::read_dir("./bindings")
         .unwrap()
         .filter_map(Result::ok)
