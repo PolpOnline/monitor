@@ -46,7 +46,7 @@ mod test {
         let start_at = primitive_datetime_now();
         let frequency = 30.minutes();
 
-        // Timestamp is sufficently near the expected timestamp
+        // Timestamp is sufficiently near the expected timestamp
         let timestamp = start_at + 2.minutes();
         assert_eq!(
             approx_expected_timestamp(timestamp, frequency, start_at).unwrap(),
