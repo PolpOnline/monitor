@@ -41,7 +41,6 @@ async function getLoginStatus(fetch: WindowOrWorkerGlobalScope['fetch']) {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
-		},
-		credentials: 'include'
+		}
 	}).then((res) => res.json() as Promise<LoginStatusResponse>);
 }
