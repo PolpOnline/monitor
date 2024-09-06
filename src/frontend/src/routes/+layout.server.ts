@@ -1,6 +1,6 @@
-import type { PageServerLoad } from './$types';
+import type { LayoutServerLoad } from './$types';
 
-export const load: PageServerLoad = ({ locals }) => {
+export const load: LayoutServerLoad = ({ locals }) => {
 	return {
 		loginStatus: locals.loginStatus
 	};
