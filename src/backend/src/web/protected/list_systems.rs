@@ -144,7 +144,7 @@ fn from_ping_records_to_instants(
     let mut instants = Vec::with_capacity(how_many as usize);
 
     let mut expected_timestamp = expected_timestamp_now;
-    while expected_timestamp >= how_many_datetime {
+    while expected_timestamp > how_many_datetime {
         let instant = match hashmap.get(&expected_timestamp) {
             Some(status) => Instant {
                 status: Status::Up,
