@@ -1,5 +1,5 @@
 import type { Instant, Status, SystemData } from '../../../backend/bindings/index';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
 // disable ssr for now, as it interferes with the random status generation
 export const ssr = false;
@@ -36,7 +36,7 @@ const exampleSystemData1 = generateSystemData('Test System 1', 30); // 30 minute
 const exampleSystemData2 = generateSystemData('Test System 2', 60); // 1 hour
 const exampleSystemData3 = generateSystemData('Test System 3', 180); // 3 hours
 
-export const load: PageLoad = () => {
+export const load: PageServerLoad = () => {
 	return {
 		systems: [exampleSystemData1, exampleSystemData2, exampleSystemData3] as SystemData[]
 	};
