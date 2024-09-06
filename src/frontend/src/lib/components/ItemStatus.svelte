@@ -90,7 +90,7 @@
 						style="width: calc((100% / {data.instants.length}) - 2px)"
 					>
 						<button
-							class="h-full w-full"
+							class="h-full w-full cursor-default"
 							on:mouseenter={() => {
 								clearTooltipsExcept(i);
 							}}
