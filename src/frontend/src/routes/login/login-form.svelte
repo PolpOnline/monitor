@@ -5,6 +5,7 @@
 	import { formSchema, type FormSchema } from './schema';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
+	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
@@ -13,9 +14,17 @@
 	});
 
 	const { form: formData, enhance } = form;
+
+	$: isLoading = false;
 </script>
 
-<form method="POST" use:enhance>
+<form
+	method="POST"
+	use:enhance
+	on:submit={() => {
+		isLoading = true;
+	}}
+>
 	<Form.Field {form} name="email">
 		<Form.Control let:attrs>
 			<Form.Label>Email</Form.Label>
@@ -30,5 +39,11 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
-	<Form.Button class="mt-8 w-full">Submit</Form.Button>
+	<Form.Button class="mt-8 w-full">
+		{#if !isLoading}
+			Submit
+		{:else}
+			<LineMdLoadingLoop class="h-6 w-6" />
+		{/if}
+	</Form.Button>
 </form>

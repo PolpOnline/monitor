@@ -13,6 +13,7 @@
 	},
 	"devDependencies": {
 		"@iconify-json/heroicons": "^1.2.0",
+		"@iconify-json/line-md": "^1.1.37",
 		"@iconify-json/material-symbols": "^1.2.0",
 		"@iconify-json/ph": "^1.2.0",
 		"@sveltejs/adapter-auto": "^3.2.4",
@@ -21,6 +22,7 @@
 		"@sveltejs/vite-plugin-svelte": "^3.1.2",
 		"@sveltejs/vite-plugin-svelte-inspector": "^2.1.0",
 		"@tailwindcss/typography": "^0.5.15",
+		"@types/cookie": "^0.6.0",
 		"@types/eslint": "^8.56.12",
 		"@types/humanize-duration": "^3.27.4",
 		"autoprefixer": "^10.4.20",
@@ -45,6 +47,7 @@
 	"dependencies": {
 		"bits-ui": "^0.21.13",
 		"clsx": "^2.1.1",
+		"cookie": "^0.6.0",
 		"formsnap": "^1.0.1",
 		"humanize-duration": "^3.32.1",
 		"lucide-svelte": "^0.438.0",

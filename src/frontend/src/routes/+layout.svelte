@@ -5,6 +5,8 @@
 	import { ModeWatcher } from 'mode-watcher';
 
 	import { title } from '$components/stores/title.store';
+
+	export let data: PageData;
 </script>
 
 <svelte:head>
@@ -12,7 +14,7 @@
 	<title>{$title}</title>
 </svelte:head>
 
-<Navbar />
+<Navbar loginStatus={data.loginStatus} />
 
 <ModeWatcher defaultMode={'dark'} />
 <main>

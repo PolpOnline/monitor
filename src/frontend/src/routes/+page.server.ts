@@ -38,6 +38,6 @@ const exampleSystemData3 = generateSystemData('Test System 3', 180); // 3 hours
 
 export const load: PageLoad = () => {
 	return {
-		systems: [exampleSystemData1, exampleSystemData2, exampleSystemData3]
+		systems: [exampleSystemData1, exampleSystemData2, exampleSystemData3] as SystemData[]
 	};
 };
