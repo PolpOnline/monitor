@@ -43,7 +43,7 @@
 			}
 			return humanizeDuration(
 				// Difference between now and the most recent instant
-				Date.now() - instants[instants.length - index - 1].timestamp.getTime(),
+				Date.now() - new Date(instants[instants.length - index - 1].expected_timestamp).getTime(),
 				{ round: true }
 			);
 		}
@@ -69,14 +69,14 @@
 	</h2>
 
 	<p class="mt-1 text-sm text-gray-500">
-		Last check: {lastInstant.timestamp.toLocaleString()} (checking every {humanizeDuration(
+		Last check: {new Date(lastInstant.expected_timestamp).toLocaleString()} (checking every {humanizeDuration(
 			data.frequency * 1000 * 60
 		)})
 	</p>
 
 	<div class="mx-auto my-3 max-w-[700px]">
 		<div class="flex h-[50px] justify-between">
-			{#each data.instants as instant, i (instant.timestamp)}
+			{#each data.instants as instant, i (instant.expected_timestamp)}
 				<Tooltip.Root
 					openDelay={0}
 					bind:open={tooltipOpens[i]}
@@ -104,7 +104,13 @@
 							{:else if instant.status === 'down'}
 								<HeroiconsXMark20Solid class="mr-2 inline-block h-6" />
 							{/if}
-							{instant.timestamp.toLocaleString()}
+
+							Expected: {new Date(instant.expected_timestamp).toLocaleString()}
+
+							{#if instant.timestamp}
+								<br />
+								Actual: {new Date(instant.timestamp).toLocaleString()}
+							{/if}
 						</div>
 					</Tooltip.Content>
 				</Tooltip.Root>
@@ -115,7 +121,7 @@
 			<span>
 				{humanizeDuration(
 					// Difference between now and the least recent instant
-					Date.now() - data.instants[0].timestamp.getTime(),
+					Date.now() - new Date(data.instants[0].expected_timestamp).getTime(),
 					{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
 				)} ago
 			</span>
@@ -127,7 +133,8 @@
 			<span>
 				{humanizeDuration(
 					// Difference between now and the most recent instant
-					Date.now() - data.instants[data.instants.length - 1].timestamp.getTime(),
+					Date.now() -
+						new Date(data.instants[data.instants.length - 1].expected_timestamp).getTime(),
 					{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
 				)} ago
 			</span>

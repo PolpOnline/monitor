@@ -34,10 +34,10 @@ pub struct SystemData {
 pub struct Instant {
     status: Status,
     #[serde(with = "time::serde::iso8601::option")]
-    #[ts(type = "Date | null")]
+    #[ts(type = "string | null")]
     timestamp: Option<OffsetDateTime>,
     #[serde(with = "time::serde::iso8601")]
-    #[ts(type = "Date")]
+    #[ts(type = "string")]
     expected_timestamp: OffsetDateTime,
 }
 
@@ -162,6 +162,8 @@ fn from_ping_records_to_instants(
 
         expected_timestamp -= frequency;
     }
+
+    instants.reverse();
 
     instants
 }
