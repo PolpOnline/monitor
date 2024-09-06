@@ -6,9 +6,6 @@ import type {
 } from '../../../backend/bindings/index';
 import { API_URL } from '$lib/api/api';
 
-// disable ssr for now, as it interferes with the random status generation
-export const ssr = false;
-
 // function generateRandomStatus(): Status {
 // 	const statuses: Status[] = ['up', 'down'];
 // 	return statuses[Math.floor(Math.random() * statuses.length)];
