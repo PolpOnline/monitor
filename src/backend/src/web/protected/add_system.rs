@@ -43,6 +43,7 @@ pub async fn add_system(
     let id = Uuid::new_v4();
 
     match sqlx::query!(
+        // language=PostgreSQL
         r#"
         INSERT INTO system (id, name, user_id, frequency, starts_at)
         VALUES ($1, $2, $3, $4, $5)

@@ -21,6 +21,7 @@ pub async fn remove_system(
     }
 
     match sqlx::query!(
+        // language=PostgreSQL
         r#"
         DELETE FROM system WHERE id = $1
         "#,

@@ -61,9 +61,15 @@ pub async fn list_systems(auth_session: AuthSession) -> impl IntoResponse {
         None => return StatusCode::UNAUTHORIZED.into_response(),
     };
 
-    let db_systems = match sqlx::query!("SELECT * FROM system WHERE user_id = $1", user.id)
-        .fetch_all(&auth_session.backend.db)
-        .await
+    let db_systems = match sqlx::query!(
+        // language=PostgreSQL
+        r#"
+        SELECT * FROM system WHERE user_id = $1
+        "#,
+        user.id
+    )
+    .fetch_all(&auth_session.backend.db)
+    .await
     {
         Ok(r) => r,
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
@@ -74,8 +80,9 @@ pub async fn list_systems(auth_session: AuthSession) -> impl IntoResponse {
     for system in db_systems {
         let db_instants = match sqlx::query_as!(
             PingRecord,
+            // language=PostgreSQL
             r#"
-            SELECT * FROM ping WHERE system_id = $1 ORDER BY timestamp ASC LIMIT $2
+            SELECT * FROM ping WHERE system_id = $1 ORDER BY timestamp LIMIT $2
             "#,
             system.id,
             LIMIT_INSTANTS

@@ -77,10 +77,16 @@ impl AuthnBackend for Backend {
         &self,
         creds: Self::Credentials,
     ) -> Result<Option<Self::User>, Self::Error> {
-        let user: Option<Self::User> =
-            sqlx::query_as!(User, "SELECT * FROM \"user\" WHERE email = $1", creds.email)
-                .fetch_optional(&self.db)
-                .await?;
+        let user: Option<Self::User> = sqlx::query_as!(
+            User,
+            // language=PostgreSQL
+            r#"
+                SELECT * FROM "user" WHERE email = $1
+                "#,
+            creds.email
+        )
+        .fetch_optional(&self.db)
+        .await?;
 
         // Verifying the password is blocking and potentially slow, so we'll do so via
         // `spawn_blocking`.
@@ -93,9 +99,16 @@ impl AuthnBackend for Backend {
     }
 
     async fn get_user(&self, user_id: &UserId<Self>) -> Result<Option<Self::User>, Self::Error> {
-        let user = sqlx::query_as!(User, "SELECT * FROM \"user\" WHERE id = $1", user_id)
-            .fetch_optional(&self.db)
-            .await?;
+        let user = sqlx::query_as!(
+            User,
+            // language=PostgreSQL
+            r#"
+            SELECT * FROM "user" WHERE id = $1
+            "#,
+            user_id
+        )
+        .fetch_optional(&self.db)
+        .await?;
 
         Ok(user)
     }
