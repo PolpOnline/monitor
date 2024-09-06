@@ -48,6 +48,8 @@ pub enum Status {
     Up,
     #[serde(rename = "down")]
     Down,
+    #[serde(rename = "untracked")]
+    Untracked,
 }
 
 // TODO: For now we are hardcoding the limit of instants to 30
@@ -151,11 +153,19 @@ fn from_ping_records_to_instants(
                 timestamp: Some(primitive_to_offset_date_time(*status)),
                 expected_timestamp: primitive_to_offset_date_time(expected_timestamp),
             },
-            None => Instant {
-                status: Status::Down,
-                timestamp: None,
-                expected_timestamp: primitive_to_offset_date_time(expected_timestamp),
-            },
+            None => {
+                let status = if expected_timestamp > starts_at {
+                    Status::Down
+                } else {
+                    Status::Untracked
+                };
+
+                Instant {
+                    status,
+                    timestamp: None,
+                    expected_timestamp: primitive_to_offset_date_time(expected_timestamp),
+                }
+            }
         };
 
         instants.push(instant);

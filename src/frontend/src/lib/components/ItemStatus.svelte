@@ -10,17 +10,20 @@
 
 	const colorMap = {
 		up: 'bg-green-500',
-		down: 'bg-red-500'
+		down: 'bg-red-500',
+		untracked: 'bg-gray-500'
 	};
 
 	const colorMapText = {
 		up: 'text-green-500',
-		down: 'text-red-500'
+		down: 'text-red-500',
+		untracked: 'text-gray-500'
 	};
 
 	const colorMapBorder = {
 		up: 'border-green-700',
-		down: 'border-red-700'
+		down: 'border-red-700',
+		untracked: 'border-gray-700'
 	};
 
 	const lastInstant = data.instants[data.instants.length - 1];
@@ -99,17 +102,21 @@
 					<Tooltip.Content class="{colorMap[instant.status]} {colorMapBorder[instant.status]}">
 						<Tooltip.Arrow class="{colorMapText[instant.status]} rounded-[2px]" />
 						<div class="flex items-center">
-							{#if instant.status === 'up'}
-								<HeroiconsCheck20Solid class="mr-2 inline-block h-6" />
-							{:else if instant.status === 'down'}
-								<HeroiconsXMark20Solid class="mr-2 inline-block h-6" />
-							{/if}
+							{#if instant.status !== 'untracked'}
+								{#if instant.status === 'up'}
+									<HeroiconsCheck20Solid class="mr-2 inline-block h-6" />
+								{:else if instant.status === 'down'}
+									<HeroiconsXMark20Solid class="mr-2 inline-block h-6" />
+								{/if}
 
-							Expected: {new Date(instant.expected_timestamp).toLocaleString()}
+								Expected: {new Date(instant.expected_timestamp).toLocaleString()}
 
-							{#if instant.timestamp}
-								<br />
-								Actual: {new Date(instant.timestamp).toLocaleString()}
+								{#if instant.timestamp}
+									<br />
+									Actual: {new Date(instant.timestamp).toLocaleString()}
+								{/if}
+							{:else}
+								<span>Untracked</span>
 							{/if}
 						</div>
 					</Tooltip.Content>
