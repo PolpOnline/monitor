@@ -72,21 +72,6 @@ pub async fn login(
 
     info!("Successfully logged in as {}", user.email);
 
-    // if status_code == Statu {
-    //     return (
-    //         StatusCode::CREATED,
-    //         Json(LoginResponse {
-    //             status: "success".to_string(),
-    //         }),
-    //     )
-    //         .into_response();
-    // }
-    //
-    // Json(LoginResponse {
-    //     status: "success".to_string(),
-    // })
-    // .into_response()
-
     match status_code {
         StatusCode::CREATED => (
             StatusCode::CREATED,

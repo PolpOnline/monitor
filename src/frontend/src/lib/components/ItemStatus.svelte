@@ -51,6 +51,8 @@
 			);
 		}
 	}
+
+	const downTime = calculateDownTime(data.instants, 'down');
 </script>
 
 <div class="mx-4 rounded-lg border p-3">
@@ -66,8 +68,10 @@
 			<HeroiconsXMark20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
 			Down
 			<br class="sm:hidden" />
-			(for
-			{calculateDownTime(data.instants, 'down')})
+			{#if downTime}
+				(for
+				{downTime})
+			{/if}
 		{/if}
 	</h2>
 
