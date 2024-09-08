@@ -13,19 +13,10 @@
 		validators: zodClient(formSchema)
 	});
 
-	const { form: formData, enhance } = form;
-
-	$: isLoading = false;
+	const { form: formData, enhance, message, delayed } = form;
 </script>
 
-<form
-	method="POST"
-	use:enhance
-	on:submit={() => {
-		isLoading = true;
-	}}
-	action="?/change_password"
->
+<form method="POST" use:enhance action="?/change_password">
 	<Form.Field {form} name="old_password">
 		<Form.Control let:attrs>
 			<Form.Label>Old Password</Form.Label>
@@ -47,8 +38,11 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
+	{#if $message}
+		<div class="text-red-600">{$message}</div>
+	{/if}
 	<Form.Button class="mt-8 w-full">
-		{#if !isLoading}
+		{#if !$delayed}
 			Submit
 		{:else}
 			<LineMdLoadingLoop class="h-6 w-6" />

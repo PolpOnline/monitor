@@ -1,10 +1,9 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms';
+import { message, superValidate } from 'sveltekit-superforms';
 import { formSchema } from './schema';
 import { zod } from 'sveltekit-superforms/adapters';
 import { API_URL } from '$lib/api/api';
-import cookie from 'cookie';
 
 export const load: PageServerLoad = async () => {
 	return {
@@ -34,10 +33,13 @@ export const actions: Actions = {
 
 		console.log(res);
 
+		const messageToSend = await res.text();
+
 		// If the request was not successful, return the status code and the form
 		if (!res.ok) {
-			return fail(res.status, {
-				form
+			return message(form, messageToSend, {
+				// @ts-ignore - assume res has a valid status code
+				status: res.status
 			});
 		}
 
