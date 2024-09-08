@@ -9,7 +9,7 @@
 	// noinspection ES6UnusedImports
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import LucideUser from '~icons/lucide/user';
-	import LucideRectangleEllipsis from '~icons/lucide/rectangle-ellipsis';
+	import LucideSettings from '~icons/lucide/settings';
 	import LucideRefreshCw from '~icons/lucide/refresh-cw';
 	import { mode } from 'mode-watcher';
 	import { invalidate, invalidateAll } from '$app/navigation';
@@ -55,9 +55,9 @@
 						<LucideRefreshCw class="mr-2 h-4 w-4" />
 						Refresh
 					</DropdownMenu.Item>
-					<DropdownMenu.Item>
-						<LucideRectangleEllipsis class="mr-2 h-4 w-4" />
-						Change Password
+					<DropdownMenu.Item href="/account_management">
+						<LucideSettings class="mr-2 h-4 w-4" />
+						Manage account
 					</DropdownMenu.Item>
 					<DropdownMenu.Item class="text-red-600" href="/logout" data-sveltekit-preload-data="off">
 						<LucideLogOut class="mr-2 h-4 w-4" />
