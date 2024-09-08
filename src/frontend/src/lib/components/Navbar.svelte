@@ -31,7 +31,7 @@
 	<a class="ml-3 justify-self-start text-3xl" href={loggedIn ? '/' : undefined}>
 		<PhHeartbeat />
 	</a>
-	<a class="absolute left-1/2 mx-2 -translate-x-1/2 text-3xl" href={loggedIn ? '/' : undefined}>
+	<a class="absolute left-1/2 -translate-x-1/2 text-3xl" href={loggedIn ? '/' : undefined}>
 		Monitor
 	</a>
 	<span class="mr-3 flex items-center gap-1 justify-self-end">

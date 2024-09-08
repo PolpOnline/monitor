@@ -1,7 +1,8 @@
 import type { LayoutServerLoad } from './$types';
 
-export const load: LayoutServerLoad = ({ locals }) => {
+export const load: LayoutServerLoad = ({ locals, url }) => {
 	return {
-		loginStatus: locals.loginStatus
+		loginStatus: locals.loginStatus,
+		pathname: url.pathname
 	};
 };
