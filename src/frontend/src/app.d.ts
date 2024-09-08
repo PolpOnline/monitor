@@ -6,6 +6,7 @@ import type { LoginStatus } from '../../backend/bindings/index';
 declare global {
 	namespace App {
 		// interface Error {}
+		// noinspection JSUnusedGlobalSymbols
 		interface Locals {
 			loginStatus: LoginStatus;
 		}

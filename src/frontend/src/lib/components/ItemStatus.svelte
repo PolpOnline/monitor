@@ -26,7 +26,7 @@
 		untracked: 'border-gray-700'
 	};
 
-	const lastInstant = data.instants[data.instants.length - 1];
+	$: lastInstant = data.instants[data.instants.length - 1];
 
 	let tooltipOpens: boolean[] = new Array(data.instants.length).fill(false);
 
@@ -34,7 +34,7 @@
 		tooltipOpens = tooltipOpens.map((_, i) => i === index);
 	}
 
-	const uptime =
+	$: uptime =
 		(data.instants.filter((instant) => instant.status === 'up').length / data.instants.length) *
 		100;
 
@@ -47,12 +47,22 @@
 			return humanizeDuration(
 				// Difference between now and the most recent instant
 				Date.now() - new Date(instants[instants.length - index - 1].expected_timestamp).getTime(),
-				{ round: true }
+				{ round: true, units: ['y', 'd', 'h', 'm'] }
 			);
 		}
 	}
 
-	const downTime = calculateDownTime(data.instants, 'down');
+	$: downTime = calculateDownTime(data.instants, 'down');
+	$: firstTime = humanizeDuration(
+		// Difference between now and the least recent instant
+		Date.now() - new Date(data.instants[0].expected_timestamp).getTime(),
+		{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
+	);
+	$: lastTime = humanizeDuration(
+		// Difference between now and the most recent instant
+		Date.now() - new Date(data.instants[data.instants.length - 1].expected_timestamp).getTime(),
+		{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
+	);
 </script>
 
 <div class="mx-4 rounded-lg border p-3">
@@ -130,11 +140,7 @@
 
 		<div class="mt-1 flex justify-between text-gray-500">
 			<span>
-				{humanizeDuration(
-					// Difference between now and the least recent instant
-					Date.now() - new Date(data.instants[0].expected_timestamp).getTime(),
-					{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
-				)} ago
+				{firstTime} ago
 			</span>
 
 			<span class="sm:absolute sm:left-1/2 sm:-translate-x-1/2">
@@ -142,12 +148,7 @@
 			</span>
 
 			<span>
-				{humanizeDuration(
-					// Difference between now and the most recent instant
-					Date.now() -
-						new Date(data.instants[data.instants.length - 1].expected_timestamp).getTime(),
-					{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
-				)} ago
+				{lastTime} ago
 			</span>
 		</div>
 	</div>
