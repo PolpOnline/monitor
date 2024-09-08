@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types.js';
-	import LoginForm from './login-form.svelte';
+	import LoginForm from './LoginForm.svelte';
 	import { title } from '$components/stores/title.store';
 
 	title.set('Login');
