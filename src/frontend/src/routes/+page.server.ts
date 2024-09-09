@@ -5,6 +5,11 @@ import type {
 	ListSystemsResponse
 } from '../../../backend/bindings/index';
 import { API_URL } from '$lib/api/api';
+import { formSchema } from '$lib/components/add_system/schema';
+import type { PageServerLoad, Actions } from './$types.js';
+import { fail } from '@sveltejs/kit';
+import { superValidate, message } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 
 // function generateRandomStatus(): Status {
 // 	const statuses: Status[] = ['up', 'down'];
@@ -42,7 +47,8 @@ export const load = async ({ fetch }) => {
 	const response = await getSystemsList(fetch);
 
 	return {
-		systems: response.systems as SystemData[]
+		systems: response.systems as SystemData[],
+		form: await superValidate(zod(formSchema))
 	};
 };
 
@@ -56,3 +62,41 @@ async function getSystemsList(
 		}
 	}).then((res) => res.json() as Promise<ListSystemsResponse>);
 }
+
+// noinspection JSUnusedGlobalSymbols
+export const actions: Actions = {
+	add_system: async (event) => {
+		const form = await superValidate(event, zod(formSchema));
+
+		console.log('form before validation', form.data);
+
+		if (!form.valid) {
+			return fail(400, {
+				form
+			});
+		}
+
+		console.log('form', form.data);
+
+		// const response = await fetch(`${API_URL}/add_system`, {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'Content-Type': 'application/json'
+		// 	},
+		// 	body: JSON.stringify(form.data)
+		// });
+		//
+		// const messageToSend = await response.text();
+		//
+		// if (!response.ok) {
+		// 	return message(form, messageToSend, {
+		// 		// @ts-expect-error - assume res has a valid status code
+		// 		status: res.status
+		// 	});
+		// }
+
+		return {
+			form
+		};
+	}
+};

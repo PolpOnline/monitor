@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ItemStatus from '$components/ItemStatus.svelte';
 	import type { PageData } from './$types';
-	import AddSystem from '$components/AddSystem.svelte';
+	import AddSystem from '$components/add_system/AddSystem.svelte';
 	import { title } from '$components/stores/title.store';
 
 	title.set('Monitor');
@@ -19,4 +19,4 @@
 	</div>
 {/each}
 
-<AddSystem />
+<AddSystem data={data.form} />
