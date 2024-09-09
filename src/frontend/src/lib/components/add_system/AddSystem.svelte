@@ -15,10 +15,10 @@
 
 	// noinspection JSUnusedGlobalSymbols
 	const form = superForm(data, {
-		validators: zodClient(formSchema),
-		onUpdated: () => {
-			sheetOpen = false;
-		}
+		validators: zodClient(formSchema)
+		// onUpdated: () => {
+		// 	sheetOpen = false;
+		// }
 	});
 
 	const { form: formData, enhance } = form;
