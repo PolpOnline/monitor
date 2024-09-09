@@ -9,8 +9,9 @@
 	// noinspection ES6UnusedImports
 	import * as Form from '$lib/components/ui/form';
 	import { formSchema, type FormSchema } from './schema';
-	import SuperDebug, { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { addSystemSheetOpen } from '$lib/components/stores/popovers.store';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
@@ -19,17 +20,16 @@
 		validators: zodClient(formSchema),
 		dataType: 'json',
 		onUpdated: () => {
-			sheetOpen = false;
+			$addSystemSheetOpen = false;
 		},
 		invalidateAll: true
 	});
 
 	const { form: formData, enhance, delayed } = form;
-
-	let sheetOpen = false;
 </script>
 
-<Sheet.Root bind:open={sheetOpen}>
+<!-- TODO: Use a drawer on mobile -->
+<Sheet.Root bind:open={$addSystemSheetOpen}>
 	<Sheet.Trigger asChild let:builder>
 		<Button builders={[builder]} class="fixed bottom-7 right-7 h-12 w-12">
 			<HeroiconsPlus20Solid class="h-6 w-6" />

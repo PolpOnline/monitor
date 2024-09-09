@@ -3,8 +3,9 @@
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
 	import humanizeDuration from 'humanize-duration';
 	// noinspection ES6UnusedImports
-	import * as Tooltip from '$lib/components/ui/tooltip';
-	import type { Instant, SystemData, Status } from '../../../../backend/bindings/index';
+	import * as Tooltip from '$components/ui/tooltip';
+	import type { Instant, Status, SystemData } from '../../../../../backend/bindings';
+	import ItemStatusDropdown from './ItemStatusDropdown.svelte';
 
 	export let data: SystemData;
 
@@ -66,7 +67,11 @@
 	);
 </script>
 
-<div class="mx-4 rounded-lg border p-3">
+<div class="relative mx-4 rounded-lg border p-3">
+	<div class="absolute right-3 top-3 mr-2 mt-2">
+		<ItemStatusDropdown systemId={data.id} />
+	</div>
+
 	<h1 class="mb-1 text-2xl font-bold">
 		{data.name}
 	</h1>

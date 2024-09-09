@@ -5,6 +5,7 @@ use http::StatusCode;
 use serde::Serialize;
 use time::{Duration, OffsetDateTime, PrimitiveDateTime};
 use ts_rs::TS;
+use uuid::Uuid;
 
 use crate::{
     users::AuthSession,
@@ -23,6 +24,7 @@ pub struct ListSystemsResponse {
 #[derive(Debug, Serialize, Clone, TS)]
 #[ts(export)]
 pub struct SystemData {
+    id: Uuid,
     name: String,
     instants: Vec<Instant>,
     /// Frequency in minutes
@@ -104,6 +106,7 @@ pub async fn list_systems(auth_session: AuthSession) -> impl IntoResponse {
         );
 
         let system_data = SystemData {
+            id: system.id,
             name: system.name,
             instants,
             frequency: (frequency.as_seconds_f64().round() as u32) / 60,

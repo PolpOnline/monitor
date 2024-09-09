@@ -8,13 +8,13 @@ use crate::users::AuthSession;
 
 #[derive(Debug, Deserialize, TS)]
 #[ts(export)]
-pub struct RemoveSystemRequest {
+pub struct DeleteSystemRequest {
     id: Uuid,
 }
 
-pub async fn remove_system(
+pub async fn delete_system(
     auth_session: AuthSession,
-    Json(request): Json<RemoveSystemRequest>,
+    Json(request): Json<DeleteSystemRequest>,
 ) -> impl IntoResponse {
     if auth_session.user.is_none() {
         return StatusCode::UNAUTHORIZED.into_response();

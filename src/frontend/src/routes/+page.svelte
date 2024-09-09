@@ -1,8 +1,9 @@
 <script lang="ts">
-	import ItemStatus from '$components/ItemStatus.svelte';
+	import ItemStatus from '$components/item_status/ItemStatus.svelte';
 	import type { PageData } from './$types';
 	import AddSystem from '$components/add_system/AddSystem.svelte';
 	import { title } from '$components/stores/title.store';
+	import DeleteSystemDialog from '$components/item_status/DeleteSystemDialog.svelte';
 
 	title.set('Monitor');
 
@@ -20,3 +21,5 @@
 {/each}
 
 <AddSystem data={data.form} />
+
+<DeleteSystemDialog />
