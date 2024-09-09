@@ -43,7 +43,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 // const exampleSystemData2 = generateRandomSystemData('Test System 2', 60); // 1 hour
 // const exampleSystemData3 = generateRandomSystemData('Test System 3', 180); // 3 hours
 
-export const load = async ({ fetch }) => {
+export const load: PageServerLoad = async ({ fetch }) => {
 	const response = await getSystemsList(fetch);
 
 	return {
