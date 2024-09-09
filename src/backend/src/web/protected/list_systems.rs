@@ -66,7 +66,7 @@ pub async fn list_systems(auth_session: AuthSession) -> impl IntoResponse {
     let db_systems = match sqlx::query!(
         // language=PostgreSQL
         r#"
-        SELECT * FROM system WHERE user_id = $1
+        SELECT * FROM system WHERE user_id = $1 AND deleted = false
         "#,
         user.id
     )
