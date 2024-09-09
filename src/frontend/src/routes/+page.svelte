@@ -14,11 +14,13 @@
 	<title>Monitor</title>
 </svelte:head>
 
-{#each data.systems as system (system.name)}
-	<div class="my-3">
-		<ItemStatus data={system} />
-	</div>
-{/each}
+<main>
+	{#each data.systems as system (system.name)}
+		<div class="my-3">
+			<ItemStatus data={system} />
+		</div>
+	{/each}
+</main>
 
 <AddSystem data={data.form} />
 

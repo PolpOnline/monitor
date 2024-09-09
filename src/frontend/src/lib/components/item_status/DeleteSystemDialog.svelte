@@ -34,10 +34,16 @@
 			</Dialog.Description>
 
 			<Dialog.Footer>
-				<Button variant="secondary" on:click={() => ($deleteSystemDialogOpen = false)}>
+				<Button
+					variant="secondary"
+					class="mt-3 sm:mt-0"
+					on:click={() => ($deleteSystemDialogOpen = false)}
+				>
 					Cancel
 				</Button>
-				<Button variant="destructive" on:click={() => deleteSystem()}>Delete</Button>
+				<Button variant="destructive" class="mt-5 sm:mt-0" on:click={() => deleteSystem()}>
+					Delete
+				</Button>
 			</Dialog.Footer>
 		</Dialog.Header>
 	</Dialog.Content>

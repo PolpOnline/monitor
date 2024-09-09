@@ -34,10 +34,11 @@
 	<title>{$title}</title>
 </svelte:head>
 
-<Navbar loginStatus={data.loginStatus} />
+<div data-vaul-drawer-wrapper>
+	<Navbar loginStatus={data.loginStatus} />
 
-<ModeWatcher defaultMode={'dark'} />
-<main>
+	<ModeWatcher defaultMode={'dark'} />
+
 	{#if isLoading}
 		<Loader />
 	{/if}
@@ -47,4 +48,4 @@
 			<slot />
 		</div>
 	{/key}
-</main>
+</div>
