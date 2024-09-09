@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS system
     name      text                           NOT NULL,
     user_id   integer REFERENCES "user" (id) NOT NULL,
     frequency interval                       NOT NULL,
-    starts_at timestamp                      NOT NULL
+    starts_at timestamp                      NOT NULL,
+    deleted   boolean                        NOT NULL DEFAULT FALSE
 );
 
 -- Create the table for storing the pings
@@ -21,7 +22,7 @@ CREATE TABLE IF NOT EXISTS ping
 (
     id        SERIAL PRIMARY KEY          NOT NULL,
     system_id uuid REFERENCES system (id) NOT NULL,
-    timestamp timestamp                 NOT NULL DEFAULT NOW()
+    timestamp timestamp                   NOT NULL DEFAULT NOW()
 );
 
 -- SEEDED DATA FOR TESTING PURPOSES
