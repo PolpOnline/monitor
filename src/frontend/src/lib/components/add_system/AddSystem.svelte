@@ -15,7 +15,8 @@
 
 	// noinspection JSUnusedGlobalSymbols
 	const form = superForm(data, {
-		validators: zodClient(formSchema)
+		validators: zodClient(formSchema),
+		dataType: 'json'
 		// onUpdated: () => {
 		// 	sheetOpen = false;
 		// }
