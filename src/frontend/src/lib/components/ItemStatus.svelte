@@ -35,7 +35,8 @@
 	}
 
 	$: uptime =
-		(data.instants.filter((instant) => instant.status === 'up').length / data.instants.length) *
+		(data.instants.filter((instant) => instant.status === 'up').length /
+			data.instants.filter((instant) => instant.status !== 'untracked').length) *
 		100;
 
 	function calculateDownTime(instants: Instant[], level: Status) {
