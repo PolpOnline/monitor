@@ -29,6 +29,7 @@ uuid = { version = "1.10.0", features = ["v4", "serde"] }
 chrono = "0.4.38"
 ts-rs = { version = "9.0.1", features = ["serde-json-impl", "uuid-impl", "format"] }
 axum_thiserror = "0.1.0"
+tower-http = { version = "0.5.2", features = ["trace"] }
 
 [profile.dev.package.backtrace]
 opt-level = 3

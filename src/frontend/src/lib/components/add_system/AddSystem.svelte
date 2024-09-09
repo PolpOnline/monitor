@@ -4,6 +4,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import HeroiconsPlus20Solid from '~icons/heroicons/plus-20-solid';
+	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import DateTimePicker from '$components/date_time_picker/DateTimePicker.svelte';
 	// noinspection ES6UnusedImports
 	import * as Form from '$lib/components/ui/form';
@@ -16,17 +17,16 @@
 	// noinspection JSUnusedGlobalSymbols
 	const form = superForm(data, {
 		validators: zodClient(formSchema),
-		dataType: 'json'
-		// onUpdated: () => {
-		// 	sheetOpen = false;
-		// }
+		dataType: 'json',
+		onUpdated: () => {
+			sheetOpen = false;
+		},
+		invalidateAll: true
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, enhance, delayed } = form;
 
 	let sheetOpen = false;
-
-	$: console.log($formData);
 </script>
 
 <Sheet.Root bind:open={sheetOpen}>
@@ -72,10 +72,14 @@
 				<Form.FieldErrors />
 			</Form.Field>
 
-			<SuperDebug data={$formData} />
-
 			<Sheet.Footer>
-				<Form.Button>Add System</Form.Button>
+				<Form.Button>
+					{#if !$delayed}
+						Add System
+					{:else}
+						<LineMdLoadingLoop class="h-6 w-6" />
+					{/if}
+				</Form.Button>
 			</Sheet.Footer>
 		</form>
 	</Sheet.Content>

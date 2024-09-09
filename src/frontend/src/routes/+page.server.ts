@@ -68,32 +68,28 @@ export const actions: Actions = {
 	add_system: async (event) => {
 		const form = await superValidate(event, zod(formSchema));
 
-		console.log('form before validation', form.data);
-
 		if (!form.valid) {
 			return fail(400, {
 				form
 			});
 		}
 
-		console.log('form', form.data);
+		const response = await event.fetch(`${API_URL}/add_system`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(form.data)
+		});
 
-		// const response = await fetch(`${API_URL}/add_system`, {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'Content-Type': 'application/json'
-		// 	},
-		// 	body: JSON.stringify(form.data)
-		// });
-		//
-		// const messageToSend = await response.text();
-		//
-		// if (!response.ok) {
-		// 	return message(form, messageToSend, {
-		// 		// @ts-expect-error - assume res has a valid status code
-		// 		status: res.status
-		// 	});
-		// }
+		const messageToSend = await response.text();
+
+		if (!response.ok) {
+			return message(form, messageToSend, {
+				// @ts-expect-error - assume res has a valid status code
+				status: response.status
+			});
+		}
 
 		return {
 			form
