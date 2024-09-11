@@ -5,7 +5,6 @@ import type { Actions, PageServerLoad } from './$types.js';
 import { fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import type { ListSystemRequest } from '../../../backend/bindings/ListSystemRequest';
 
 // function generateRandomStatus(): Status {
 // 	const statuses: Status[] = ['up', 'down'];
