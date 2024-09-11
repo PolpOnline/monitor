@@ -51,23 +51,25 @@ mode=https check-certificate=yes http-method=post output=none"`
 		<Dialog.Header>
 			<Dialog.Title>Presets</Dialog.Title>
 
-			<Select.Root portal={null} bind:selected={chosenPreset}>
-				<Select.Trigger class="w-[180px]">
-					<Select.Value placeholder="Select a preset" />
-				</Select.Trigger>
-				<Select.Content>
-					<Select.Group>
-						{#each presets as preset (preset.value)}
-							<Select.Item value={preset.value} label={preset.label}>
-								{preset.label}
-							</Select.Item>
-						{/each}
-					</Select.Group>
-				</Select.Content>
-			</Select.Root>
+			<div class="!mt-4">
+				<Select.Root portal={null} bind:selected={chosenPreset}>
+					<Select.Trigger class="w-[180px]">
+						<Select.Value placeholder="Select a preset" />
+					</Select.Trigger>
+					<Select.Content>
+						<Select.Group>
+							{#each presets as preset (preset.value)}
+								<Select.Item value={preset.value} label={preset.label}>
+									{preset.label}
+								</Select.Item>
+							{/each}
+						</Select.Group>
+					</Select.Content>
+				</Select.Root>
+			</div>
 
 			{#if chosenPreset}
-				<CopyableTextarea value={presetMap[chosenPreset.value]} class="mt-3 h-[320px]" />
+				<CopyableTextarea value={presetMap[chosenPreset.value]} class="h-[320px]" />
 			{/if}
 
 			<Dialog.Footer>

@@ -22,7 +22,7 @@
 	}
 </script>
 
-<div class="relative">
+<div class="relative my-3">
 	<Textarea bind:value readonly class={className} />
 	<Button on:click={copyValue} class="absolute bottom-2 right-2">
 		{#if !displayCheckMark}
