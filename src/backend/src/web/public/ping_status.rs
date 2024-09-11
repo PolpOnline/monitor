@@ -9,7 +9,7 @@ pub async fn ping_status(Path(id): Path<Uuid>, auth_session: AuthSession) -> imp
     info!("System {} just pinged!", id);
 
     // Check if the system exists and is not deleted
-    let Err(_) = sqlx::query!(
+    if (sqlx::query!(
         // language=PostgreSQL
         r#"
         SELECT id FROM system WHERE id = $1 AND deleted = false
@@ -17,8 +17,9 @@ pub async fn ping_status(Path(id): Path<Uuid>, auth_session: AuthSession) -> imp
         id
     )
     .fetch_optional(&auth_session.backend.db)
-    .await
-    else {
+    .await)
+        .is_err()
+    {
         return StatusCode::NOT_FOUND.into_response();
     };
 
