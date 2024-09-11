@@ -1,6 +1,7 @@
 import { API_URL } from '$lib/api/api';
-import type { LoginStatusResponse } from '../../backend/bindings/index';
+import type { LoginStatusResponse } from '../../backend/bindings';
 import type { HandleFetch, Handle } from '@sveltejs/kit';
+import cookie from 'cookie';
 
 // Forwards all cookies to the API, see https://kit.svelte.dev/docs/hooks#server-hooks-handlefetch
 export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
@@ -10,7 +11,26 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 			request.headers.set('cookie', cookies);
 		}
 	}
-	return fetch(request);
+
+	const res = await fetch(request);
+
+	const setCookieHeader = res.headers.get('set-cookie');
+
+	// Response is a normal request, no need to do anything
+	if (!setCookieHeader) {
+		return res;
+	}
+
+	const backendSetCookie = cookie.parse(setCookieHeader);
+
+	event.cookies.set('id', backendSetCookie.id, {
+		sameSite: 'strict',
+		path: '/',
+		maxAge: parseInt(backendSetCookie['Max-Age']),
+		httpOnly: true
+	});
+
+	return res;
 };
 
 export const handle: Handle = async ({ event, resolve }) => {

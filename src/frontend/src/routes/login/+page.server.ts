@@ -4,7 +4,6 @@ import { superValidate, message } from 'sveltekit-superforms';
 import { formSchema } from './schema';
 import { zod } from 'sveltekit-superforms/adapters';
 import { API_URL } from '$lib/api/api';
-import cookie from 'cookie';
 
 export const load: PageServerLoad = async () => {
 	return {
@@ -41,25 +40,7 @@ export const actions: Actions = {
 			});
 		}
 
-		const backendSetCookieUnparsed = res.headers.get('set-cookie');
-
-		if (!backendSetCookieUnparsed) {
-			// return fail(500, {
-			// 	form
-			// });
-			return message(form, 'The server set no cookie', {
-				status: 500
-			});
-		}
-
-		const backendSetCookie = cookie.parse(backendSetCookieUnparsed);
-
-		event.cookies.set('id', backendSetCookie.id, {
-			sameSite: 'strict',
-			path: '/',
-			maxAge: parseInt(backendSetCookie['Max-Age']),
-			httpOnly: true
-		});
+		// Cookie is handled by handleFetch in hooks.server.ts
 
 		redirect(303, '/');
 	}
