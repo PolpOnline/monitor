@@ -10,8 +10,6 @@ pub fn primitive_datetime_now() -> PrimitiveDateTime {
 pub enum ApproxError {
     #[error("Invalid frequency")]
     InvalidFrequency,
-    #[error("Invalid timestamp order")]
-    InvalidTimestampOrder,
 }
 
 /// Rounds the timestamp to the closest expected timestamp given a frequency and
@@ -23,10 +21,6 @@ pub fn approx_expected_timestamp(
 ) -> Result<PrimitiveDateTime, ApproxError> {
     if frequency.is_zero() {
         return Err(ApproxError::InvalidFrequency);
-    }
-
-    if timestamp_to_approx < starts_at {
-        return Err(ApproxError::InvalidTimestampOrder);
     }
 
     let duration_since_start = timestamp_to_approx - starts_at;

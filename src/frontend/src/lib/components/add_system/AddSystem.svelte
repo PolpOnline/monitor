@@ -3,8 +3,6 @@
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import HeroiconsPlus20Solid from '~icons/heroicons/plus-20-solid';
-	// noinspection ES6UnusedImports
-	import * as Form from '$lib/components/ui/form';
 	import { type FormSchema } from './schema';
 	import { type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { addSystemSheetOpen } from '$lib/components/stores/popovers.store';
