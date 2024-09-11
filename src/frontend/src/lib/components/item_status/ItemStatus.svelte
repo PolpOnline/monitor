@@ -69,7 +69,7 @@
 
 <div class="relative mx-4 rounded-lg border p-3">
 	<div class="absolute right-3 top-3 mr-2 mt-2">
-		<ItemStatusDropdown systemId={data.id} systemName={data.name} />
+		<ItemStatusDropdown {data} />
 	</div>
 
 	<h1 class="mb-1 text-2xl font-bold">

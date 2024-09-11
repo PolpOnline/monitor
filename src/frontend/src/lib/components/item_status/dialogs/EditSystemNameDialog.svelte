@@ -1,22 +1,17 @@
 <script lang="ts">
 	// noinspection ES6UnusedImports
-	import * as Dialog from '$lib/components/ui/dialog';
+	import * as Dialog from '$components/ui/dialog';
 	import { Button } from '$components/ui/form';
-	import {
-		editSystemNameDialogId,
-		editSystemNameDialogOpen,
-		editSystemNameDialogOldName
-	} from '$components/stores/popovers.store';
+	import { editSystemNameDialogOpen, targetSystemData } from '$components/stores/popovers.store';
 	import { invalidateAll } from '$app/navigation';
-	import { Input } from '$components/ui/input/index.js';
-	import { get } from 'svelte/store';
+	import { Input } from '$components/ui/input';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 
 	let newSystemName = '';
 
 	async function editSystemName() {
 		isLoading = true;
-		const id = $editSystemNameDialogId;
+		const id = $targetSystemData?.id;
 
 		await fetch(`/api/edit_system_name`, {
 			method: 'PATCH',
@@ -41,7 +36,7 @@
 	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
-			<Dialog.Title>Edit system name of {get(editSystemNameDialogOldName)}</Dialog.Title>
+			<Dialog.Title>Edit system name of {$targetSystemData?.name}</Dialog.Title>
 
 			<Input bind:value={newSystemName} placeholder="New system name" class="!my-3" />
 

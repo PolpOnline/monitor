@@ -4,23 +4,25 @@
 	import LucideEllipsis from '~icons/lucide/ellipsis';
 	import LucideTrash2 from '~icons/lucide/trash-2';
 	import {
-		deleteSystemDialogId,
 		deleteSystemDialogOpen,
-		editSystemNameDialogId,
-		editSystemNameDialogOldName,
-		editSystemNameDialogOpen
+		editSystemNameDialogOpen,
+		presetDialogOpen,
+		targetSystemData
 	} from '$lib/components/stores/popovers.store';
 	import LucideClipboardCopy from '~icons/lucide/clipboard-copy';
 	import LucidePencilLine from '~icons/lucide/pencil-line';
 	import { API_URL } from '$lib/api/api';
+	import LucideSettings from '~icons/lucide/settings';
+	import type { SystemData } from '../../../../../backend/bindings';
 
 	let className = '';
 
 	// noinspection ReservedWordAsName
 	export { className as class };
 
-	export let systemId: string;
-	export let systemName: string;
+	export let data: SystemData;
+
+	$targetSystemData = data;
 </script>
 
 <DropdownMenu.Root>
@@ -31,7 +33,7 @@
 		<DropdownMenu.Group>
 			<DropdownMenu.Item
 				on:click={() => {
-					navigator.clipboard.writeText(`${API_URL}/ping_status/${systemId}`);
+					navigator.clipboard.writeText(`${API_URL}/ping_status/${data.id}`);
 				}}
 			>
 				<LucideClipboardCopy class="mr-2 h-4 w-4" />
@@ -39,8 +41,14 @@
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				on:click={() => {
-					editSystemNameDialogId.set(systemId);
-					editSystemNameDialogOldName.set(systemName);
+					$presetDialogOpen = true;
+				}}
+			>
+				<LucideSettings class="mr-2 h-4 w-4" />
+				Configuration presets
+			</DropdownMenu.Item>
+			<DropdownMenu.Item
+				on:click={() => {
 					$editSystemNameDialogOpen = true;
 				}}
 			>
@@ -52,7 +60,6 @@
 				class="text-red-600"
 				on:click={() => {
 					$deleteSystemDialogOpen = true;
-					deleteSystemDialogId.set(systemId);
 				}}
 			>
 				<LucideTrash2 class="mr-2 h-4 w-4" />

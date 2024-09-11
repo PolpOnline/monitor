@@ -29,6 +29,9 @@ pub struct SystemData {
     instants: Vec<Instant>,
     /// Frequency in minutes
     frequency: u32,
+    #[serde(with = "time::serde::iso8601")]
+    #[ts(type = "string")]
+    starts_at: OffsetDateTime,
 }
 
 #[derive(Debug, Serialize, Clone, TS)]
@@ -110,6 +113,7 @@ pub async fn list_systems(auth_session: AuthSession) -> impl IntoResponse {
             name: system.name,
             instants,
             frequency: (frequency.as_seconds_f64().round() as u32) / 60,
+            starts_at: primitive_to_offset_date_time(system.starts_at),
         };
 
         systems.push(system_data);

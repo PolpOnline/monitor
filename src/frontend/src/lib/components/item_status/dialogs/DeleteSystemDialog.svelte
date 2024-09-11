@@ -1,14 +1,14 @@
 <script lang="ts">
 	// noinspection ES6UnusedImports
-	import * as Dialog from '$lib/components/ui/dialog';
+	import * as Dialog from '$components/ui/dialog';
 	import { Button } from '$components/ui/form';
-	import { deleteSystemDialogId, deleteSystemDialogOpen } from '$components/stores/popovers.store';
+	import { deleteSystemDialogOpen, targetSystemData } from '$components/stores/popovers.store';
 	import { invalidateAll } from '$app/navigation';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 
 	async function deleteSystem() {
 		isLoading = true;
-		const id = $deleteSystemDialogId;
+		const id = $targetSystemData?.id;
 
 		await fetch(`/api/delete_system`, {
 			method: 'DELETE',
