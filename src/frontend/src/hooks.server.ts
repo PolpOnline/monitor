@@ -34,17 +34,17 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 };
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const requestedPath = event.url.pathname;
-
-	if (requestedPath === '/login') {
-		return await resolve(event);
-	}
-
 	// Auth check
 	const status = await getLoginStatus(event.fetch);
 
 	// Set the login status in the locals object, so we can access it in the page component
 	event.locals.loginStatus = status.status;
+
+	const requestedPath = event.url.pathname;
+
+	if (requestedPath === '/login') {
+		return await resolve(event);
+	}
 
 	if (status.status === 'logged_out') {
 		return new Response(null, {

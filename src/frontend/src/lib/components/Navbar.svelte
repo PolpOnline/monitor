@@ -18,10 +18,9 @@
 
 	export let loginStatus: LoginStatus;
 
-	const loggedIn = loginStatus === ('logged_in' as LoginStatus);
+	$: loggedIn = loginStatus === ('logged_in' as LoginStatus);
 
 	async function refresh() {
-		// await invalidate(`${API_URL}/list_systems`);
 		await invalidateAll();
 	}
 </script>
