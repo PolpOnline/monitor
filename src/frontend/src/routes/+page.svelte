@@ -4,6 +4,7 @@
 	import AddSystem from '$components/add_system/AddSystem.svelte';
 	import { title } from '$components/stores/title.store';
 	import DeleteSystemDialog from '$components/item_status/DeleteSystemDialog.svelte';
+	import EditSystemNameDialog from '$components/item_status/EditSystemNameDialog.svelte';
 
 	title.set('Monitor');
 
@@ -25,3 +26,5 @@
 <AddSystem data={data.form} />
 
 <DeleteSystemDialog />
+
+<EditSystemNameDialog />

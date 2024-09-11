@@ -4,8 +4,10 @@
 	import { Button } from '$components/ui/form';
 	import { deleteSystemDialogId, deleteSystemDialogOpen } from '$components/stores/popovers.store';
 	import { invalidateAll } from '$app/navigation';
+	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 
 	async function deleteSystem() {
+		isLoading = true;
 		const id = $deleteSystemDialogId;
 
 		await fetch(`/api/delete_system`, {
@@ -18,8 +20,11 @@
 
 		invalidateAll();
 
+		isLoading = false;
 		deleteSystemDialogOpen.set(false);
 	}
+
+	let isLoading = false;
 </script>
 
 <Dialog.Root bind:open={$deleteSystemDialogOpen}>
@@ -42,7 +47,11 @@
 					Cancel
 				</Button>
 				<Button variant="destructive" class="mt-5 sm:mt-0" on:click={() => deleteSystem()}>
-					Delete
+					{#if !isLoading}
+						Delete
+					{:else}
+						<LineMdLoadingLoop class="h-6 w-6" />
+					{/if}
 				</Button>
 			</Dialog.Footer>
 		</Dialog.Header>

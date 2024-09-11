@@ -9,7 +9,6 @@
       <excludeFolder url="file://$MODULE_DIR$/src/frontend/.svelte-kit" />
       <excludeFolder url="file://$MODULE_DIR$/src/backend/target" />
       <excludeFolder url="file://$MODULE_DIR$/src/frontend/node_modules" />
-      <excludeFolder url="file://$MODULE_DIR$/src/backend/bindings" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

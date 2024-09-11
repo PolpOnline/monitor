@@ -1,0 +1,18 @@
+meta {
+  name: Edit name
+  type: http
+  seq: 10
+}
+
+patch {
+  url: {{host}}/edit_name
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id": "",
+    "name": ""
+  }
+}

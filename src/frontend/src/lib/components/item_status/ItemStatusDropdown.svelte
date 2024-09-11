@@ -4,10 +4,14 @@
 	import LucideEllipsis from '~icons/lucide/ellipsis';
 	import LucideTrash2 from '~icons/lucide/trash-2';
 	import {
+		deleteSystemDialogId,
 		deleteSystemDialogOpen,
-		deleteSystemDialogId
+		editSystemNameDialogId,
+		editSystemNameDialogOldName,
+		editSystemNameDialogOpen
 	} from '$lib/components/stores/popovers.store';
 	import LucideClipboardCopy from '~icons/lucide/clipboard-copy';
+	import LucidePencilLine from '~icons/lucide/pencil-line';
 	import { API_URL } from '$lib/api/api';
 
 	let className = '';
@@ -16,6 +20,7 @@
 	export { className as class };
 
 	export let systemId: string;
+	export let systemName: string;
 </script>
 
 <DropdownMenu.Root>
@@ -24,6 +29,24 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
+			<DropdownMenu.Item
+				on:click={() => {
+					navigator.clipboard.writeText(`${API_URL}/ping_status/${systemId}`);
+				}}
+			>
+				<LucideClipboardCopy class="mr-2 h-4 w-4" />
+				Copy endpoint URL
+			</DropdownMenu.Item>
+			<DropdownMenu.Item
+				on:click={() => {
+					editSystemNameDialogId.set(systemId);
+					editSystemNameDialogOldName.set(systemName);
+					$editSystemNameDialogOpen = true;
+				}}
+			>
+				<LucidePencilLine class="mr-2 h-4 w-4" />
+				Edit name
+			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				data-sveltekit-preload-data="off"
 				class="text-red-600"
@@ -34,14 +57,6 @@
 			>
 				<LucideTrash2 class="mr-2 h-4 w-4" />
 				Delete
-			</DropdownMenu.Item>
-			<DropdownMenu.Item
-				on:click={() => {
-					navigator.clipboard.writeText(`${API_URL}/ping_status/${systemId}`);
-				}}
-			>
-				<LucideClipboardCopy class="mr-2 h-4 w-4" />
-				Copy endpoint URL
 			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>

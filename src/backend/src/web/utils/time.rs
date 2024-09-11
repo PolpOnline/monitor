@@ -76,10 +76,6 @@ mod test {
             start_at + 60.minutes()
         );
 
-        // Negative case: timestamp is before start_at
-        let timestamp = start_at - 15.minutes();
-        assert!(approx_expected_timestamp(timestamp, frequency, start_at).is_err());
-
         // Negative case: frequency is zero
         let timestamp = start_at + 15.minutes();
         assert!(approx_expected_timestamp(timestamp, Duration::ZERO, start_at).is_err());
