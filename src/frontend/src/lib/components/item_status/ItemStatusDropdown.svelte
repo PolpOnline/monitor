@@ -7,6 +7,8 @@
 		deleteSystemDialogOpen,
 		deleteSystemDialogId
 	} from '$lib/components/stores/popovers.store';
+	import LucideClipboardCopy from '~icons/lucide/clipboard-copy';
+	import { API_URL } from '$lib/api/api';
 
 	let className = '';
 
@@ -32,6 +34,14 @@
 			>
 				<LucideTrash2 class="mr-2 h-4 w-4" />
 				Delete
+			</DropdownMenu.Item>
+			<DropdownMenu.Item
+				on:click={() => {
+					navigator.clipboard.writeText(`${API_URL}/ping_status/${systemId}`);
+				}}
+			>
+				<LucideClipboardCopy class="mr-2 h-4 w-4" />
+				Copy endpoint URL
 			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>
