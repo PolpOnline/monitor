@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use axum::{response::IntoResponse, Json};
+use axum::{extract::Path, response::IntoResponse, Json};
 use http::StatusCode;
 use serde::Serialize;
 use time::{Duration, OffsetDateTime, PrimitiveDateTime};
@@ -57,14 +57,20 @@ pub enum Status {
     Untracked,
 }
 
-// TODO: For now we are hardcoding the limit of instants to 30
-const LIMIT_INSTANTS: i64 = 30;
+const LIMIT_SYSTEM_REQUEST: i32 = 100;
 
-pub async fn list_systems(auth_session: AuthSession) -> impl IntoResponse {
+pub async fn list_systems(
+    auth_session: AuthSession,
+    Path(list_size): Path<i32>,
+) -> impl IntoResponse {
     let user = match auth_session.user {
         Some(user) => user,
         None => return StatusCode::UNAUTHORIZED.into_response(),
     };
+
+    if list_size > LIMIT_SYSTEM_REQUEST {
+        return StatusCode::BAD_REQUEST.into_response();
+    }
 
     let db_systems = match sqlx::query!(
         // language=PostgreSQL
@@ -90,7 +96,7 @@ pub async fn list_systems(auth_session: AuthSession) -> impl IntoResponse {
             SELECT * FROM ping WHERE system_id = $1 ORDER BY timestamp LIMIT $2
             "#,
             system.id,
-            LIMIT_INSTANTS
+            list_size as i64
         )
         .fetch_all(&auth_session.backend.db)
         .await
@@ -101,12 +107,8 @@ pub async fn list_systems(auth_session: AuthSession) -> impl IntoResponse {
 
         let frequency = from_pg_interval_to_duration(system.frequency);
 
-        let instants = from_ping_records_to_instants(
-            db_instants,
-            frequency,
-            system.starts_at,
-            LIMIT_INSTANTS as i32,
-        );
+        let instants =
+            from_ping_records_to_instants(db_instants, frequency, system.starts_at, list_size);
 
         let system_data = SystemData {
             id: system.id,

@@ -1,15 +1,11 @@
-import type {
-	// Instant,
-	// Status,
-	SystemData,
-	ListSystemsResponse
-} from '../../../backend/bindings/index';
+import type { ListSystemsResponse, SystemData } from '../../../backend/bindings/index';
 import { API_URL } from '$lib/api/api';
 import { formSchema } from '$lib/components/add_system/schema';
-import type { PageServerLoad, Actions } from './$types.js';
+import type { Actions, PageServerLoad } from './$types.js';
 import { fail } from '@sveltejs/kit';
-import { superValidate, message } from 'sveltekit-superforms';
+import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import type { ListSystemRequest } from '../../../backend/bindings/ListSystemRequest';
 
 // function generateRandomStatus(): Status {
 // 	const statuses: Status[] = ['up', 'down'];
@@ -52,10 +48,12 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	};
 };
 
+const LIST_SIZE = 30;
+
 async function getSystemsList(
 	fetch: WindowOrWorkerGlobalScope['fetch']
 ): Promise<ListSystemsResponse> {
-	return fetch(`${API_URL}/list_systems`, {
+	return fetch(`${API_URL}/list_systems/${LIST_SIZE}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
