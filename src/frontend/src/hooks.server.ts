@@ -1,19 +1,25 @@
 import { API_URL } from '$lib/api/api';
 import type { LoginStatusResponse } from '../../backend/bindings';
-import type { HandleFetch, Handle } from '@sveltejs/kit';
+import type { Handle, HandleFetch } from '@sveltejs/kit';
 import cookie from 'cookie';
 
 // Forwards all cookies to the API, see https://kit.svelte.dev/docs/hooks#server-hooks-handlefetch
 export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
-	if (request.url.startsWith(API_URL)) {
-		const cookies = event.request.headers.get('cookie');
-		if (cookies) {
-			request.headers.set('cookie', cookies);
-		}
+	const isApiRequest = request.url.startsWith(API_URL);
+
+	if (!isApiRequest) {
+		return fetch(request);
+	}
+
+	// Forward all cookies to the API
+	const cookies = event.request.headers.get('cookie');
+	if (cookies) {
+		request.headers.set('cookie', cookies);
 	}
 
 	const res = await fetch(request);
 
+	// Check if the response contains a set-cookie header and set the cookie in to the client if it does
 	const setCookieHeader = res.headers.get('set-cookie');
 
 	// Response is a normal request, no need to do anything
