@@ -75,7 +75,7 @@ pub async fn list_systems(
     let db_systems = match sqlx::query!(
         // language=PostgreSQL
         r#"
-        SELECT * FROM system WHERE user_id = $1 AND deleted = false
+        SELECT * FROM system WHERE user_id = $1 AND deleted = false ORDER BY id
         "#,
         user.id
     )
@@ -93,7 +93,7 @@ pub async fn list_systems(
             PingRecord,
             // language=PostgreSQL
             r#"
-            SELECT * FROM ping WHERE system_id = $1 ORDER BY timestamp LIMIT $2
+            SELECT * FROM ping WHERE system_id = $1 ORDER BY timestamp DESC LIMIT $2
             "#,
             system.id,
             list_size as i64
