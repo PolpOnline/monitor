@@ -49,7 +49,7 @@ impl App {
         let key = parse_cookie_key(key);
 
         let session_layer = SessionManagerLayer::new(session_store)
-            .with_secure(false)
+            .with_secure(true)
             .with_expiry(Expiry::OnInactivity(Duration::days(7)))
             .with_signed(key);
 

@@ -27,7 +27,8 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 		sameSite: 'strict',
 		path: '/',
 		maxAge: parseInt(backendSetCookie['Max-Age']),
-		httpOnly: true
+		httpOnly: true,
+		secure: true
 	});
 
 	return res;
