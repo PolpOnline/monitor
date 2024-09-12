@@ -36,3 +36,6 @@ opt-level = 3
 
 [profile.dev.package.sqlx-macros]
 opt-level = 3
+
+[profile.release]
+lto = true
