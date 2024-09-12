@@ -29,8 +29,6 @@
 
 	$: startsAtTime = startsAtDateTime.toLocaleTimeString('en-GB', { hour12: false }); // Format: 00:00:00
 
-	console.log($targetSystemData.frequency);
-
 	$: frequencyHours = Math.floor($targetSystemData.frequency / 60);
 	$: frequencyMinutes = $targetSystemData.frequency % 60;
 

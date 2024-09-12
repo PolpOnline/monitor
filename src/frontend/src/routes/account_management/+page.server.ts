@@ -31,8 +31,6 @@ export const actions: Actions = {
 			body: JSON.stringify(form.data)
 		});
 
-		console.log(res);
-
 		const messageToSend = await res.text();
 
 		// If the request was not successful, return the status code and the form
