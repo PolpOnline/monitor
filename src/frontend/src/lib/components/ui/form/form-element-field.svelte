@@ -20,7 +20,7 @@
 </script>
 
 <FormPrimitive.ElementField {form} let:constraints let:errors let:tainted let:value {name}>
-	<div class={cn("space-y-2", className)}>
+	<div class={cn('space-y-2', className)}>
 		<slot {constraints} {errors} {tainted} {value} />
 	</div>
 </FormPrimitive.ElementField>

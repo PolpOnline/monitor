@@ -14,8 +14,8 @@
 <CalendarPrimitive.PrevButton
 	{...$$restProps}
 	class={cn(
-		buttonVariants({ variant: "outline" }),
-		"h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+		buttonVariants({ variant: 'outline' }),
+		'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100',
 		className
 	)}
 	let:builder

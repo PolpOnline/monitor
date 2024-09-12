@@ -18,7 +18,7 @@
 	{...$$restProps}
 	bind:placeholder
 	bind:value
-	class={cn("p-3", className)}
+	class={cn('p-3', className)}
 	let:months
 	let:weekdays
 	on:keydown

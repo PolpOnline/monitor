@@ -8,6 +8,6 @@
 	export { className as class };
 </script>
 
-<div {...$$restProps} class={cn("flex flex-col space-y-1.5 text-center sm:text-left", className)}>
+<div {...$$restProps} class={cn('flex flex-col space-y-1.5 text-center sm:text-left', className)}>
 	<slot />
 </div>

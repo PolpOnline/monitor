@@ -19,7 +19,7 @@
 </script>
 
 <FormPrimitive.Fieldset
-	class={cn("space-y-2", className)}
+	class={cn('space-y-2', className)}
 	{form}
 	let:constraints
 	let:errors

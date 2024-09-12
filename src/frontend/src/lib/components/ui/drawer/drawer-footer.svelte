@@ -11,6 +11,6 @@
 	export { className as class };
 </script>
 
-<div {...$$restProps} bind:this={el} class={cn("mt-auto flex flex-col gap-2 p-4", className)}>
+<div {...$$restProps} bind:this={el} class={cn('mt-auto flex flex-col gap-2 p-4', className)}>
 	<slot />
 </div>

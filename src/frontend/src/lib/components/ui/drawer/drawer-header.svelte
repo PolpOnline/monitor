@@ -13,7 +13,7 @@
 <div
 	{...$$restProps}
 	bind:this={el}
-	class={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
+	class={cn('grid gap-1.5 p-4 text-center sm:text-left', className)}
 >
 	<slot />
 </div>

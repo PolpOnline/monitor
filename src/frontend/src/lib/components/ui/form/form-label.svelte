@@ -12,6 +12,6 @@
 	const { labelAttrs } = getFormControl();
 </script>
 
-<Label {...$labelAttrs} {...$$restProps} class={cn("data-[fs-error]:text-destructive", className)}>
+<Label {...$labelAttrs} {...$$restProps} class={cn('data-[fs-error]:text-destructive', className)}>
 	<slot {labelAttrs} />
 </Label>

@@ -10,7 +10,7 @@
 
 <DialogPrimitive.Title
 	{...$$restProps}
-	class={cn("text-lg font-semibold leading-none tracking-tight", className)}
+	class={cn('text-lg font-semibold leading-none tracking-tight', className)}
 >
 	<slot />
 </DialogPrimitive.Title>

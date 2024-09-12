@@ -8,4 +8,4 @@
 	export { className as class };
 </script>
 
-<SelectPrimitive.Separator {...$$restProps} class={cn("bg-muted -mx-1 my-1 h-px", className)} />
+<SelectPrimitive.Separator {...$$restProps} class={cn('-mx-1 my-1 h-px bg-muted', className)} />
