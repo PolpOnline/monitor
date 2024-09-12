@@ -48,11 +48,11 @@ pub struct Credentials {
 }
 
 #[derive(Debug, Clone)]
-pub struct Backend {
+pub struct LoginBackend {
     pub db: PgPool,
 }
 
-impl Backend {
+impl LoginBackend {
     pub fn new(db: PgPool) -> Self {
         Self { db }
     }
@@ -68,7 +68,7 @@ pub enum Error {
 }
 
 #[async_trait]
-impl AuthnBackend for Backend {
+impl AuthnBackend for LoginBackend {
     type User = User;
     type Credentials = Credentials;
     type Error = Error;
@@ -117,4 +117,4 @@ impl AuthnBackend for Backend {
 // We use a type alias for convenience.
 //
 // Note that we've supplied our concrete backendOld here.
-pub type AuthSession = axum_login::AuthSession<Backend>;
+pub type AuthSession = axum_login::AuthSession<LoginBackend>;

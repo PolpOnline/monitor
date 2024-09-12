@@ -11,6 +11,7 @@ use web::App;
 
 mod users;
 mod web;
+mod workers;
 
 #[tokio::main]
 async fn main() -> Result<()> {

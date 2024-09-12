@@ -4,7 +4,9 @@ use axum_login::{
     tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
 };
+use futures::TryFutureExt;
 use http::StatusCode;
+use sidekiq::{periodic, Processor, RedisConnectionManager};
 use sqlx::{postgres::PgPoolOptions, PgPool};
 use time::Duration;
 use tokio::{signal, task::AbortHandle};
@@ -15,19 +17,24 @@ use tracing::info;
 
 use crate::{
     custom_login_required,
-    users::Backend,
+    users::LoginBackend,
     web::{auth, protected, public},
+    workers::register_workers,
 };
+
+type RedisPool = bb8::Pool<RedisConnectionManager>;
 
 pub struct App {
     db: PgPool,
+    redis: RedisPool,
 }
 
 impl App {
     pub async fn new() -> color_eyre::Result<Self> {
         let db = Self::setup_db().await?;
+        let redis = Self::setup_redis().await?;
 
-        Ok(Self { db })
+        Ok(Self { db, redis })
     }
 
     pub async fn serve(self) -> color_eyre::Result<()> {
@@ -41,8 +48,13 @@ impl App {
         let deletion_task = tokio::task::spawn(
             session_store
                 .clone()
-                .continuously_delete_expired(tokio::time::Duration::from_secs(60)),
+                .continuously_delete_expired(tokio::time::Duration::from_secs(60))
+                .map_err(color_eyre::Report::from),
         );
+
+        let processor = Self::init_workers(self.redis.clone(), self.db.clone()).await?;
+
+        let worker_task = tokio::task::spawn(Self::start_workers(processor));
 
         // Generate a cryptographic key to sign the session cookie.
         let key = &std::env::var("COOKIE_KEY")?;
@@ -57,12 +69,12 @@ impl App {
         //
         // This combines the session layer with our backendOld to establish the auth
         // service which will provide the auth session as a request extension.
-        let backend = Backend::new(self.db);
+        let backend = LoginBackend::new(self.db);
         let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
 
         let app = protected::router()
             .route_layer(custom_login_required!(
-                Backend,
+                LoginBackend,
                 (StatusCode::UNAUTHORIZED, "You are not logged in.")
             ))
             .merge(auth::router())
@@ -76,10 +88,13 @@ impl App {
 
         // Ensure we use a shutdown signal to abort the deletion task.
         axum::serve(listener, app.into_make_service())
-            .with_graceful_shutdown(shutdown_signal(deletion_task.abort_handle()))
+            .with_graceful_shutdown(shutdown_signal(vec![
+                deletion_task.abort_handle(),
+                worker_task.abort_handle(),
+            ]))
             .await?;
 
-        deletion_task.await??;
+        futures::future::join_all(vec![deletion_task, worker_task]).await;
 
         Ok(())
     }
@@ -111,19 +126,53 @@ impl App {
 
         Ok(pool)
     }
+
+    async fn setup_redis() -> color_eyre::Result<RedisPool> {
+        info!("Connecting to Redis...");
+
+        let redis_url = std::env::var("REDIS_URL")?;
+        let manager = RedisConnectionManager::new(redis_url)?;
+        let redis = bb8::Pool::builder().build(manager).await?;
+
+        info!("Connected to Redis");
+
+        Ok(redis)
+    }
+
+    async fn start_workers(p: Processor) -> color_eyre::Result<()> {
+        info!("Workers started");
+
+        // Start the server
+        p.run().await;
+
+        Ok(())
+    }
+
+    async fn init_workers(redis: RedisPool, db: PgPool) -> color_eyre::Result<Processor> {
+        // Clear out all periodic jobs and their schedules
+        periodic::destroy_all(redis.clone()).await?;
+
+        // Sidekiq server
+        let mut p = Processor::new(redis, vec!["down_emails".to_string()]);
+
+        // Add known workers
+        register_workers(&mut p, db).await?;
+
+        Ok(p)
+    }
 }
 
-async fn shutdown_signal(deletion_task_abort_handle: AbortHandle) {
+async fn shutdown_signal(abort_handles: Vec<AbortHandle>) {
     let ctrl_c = async {
         signal::ctrl_c()
             .await
-            .expect("failed to install Ctrl+C handler");
+            .expect("Failed to install Ctrl+C handler");
     };
 
     #[cfg(unix)]
     let terminate = async {
         signal::unix::signal(signal::unix::SignalKind::terminate())
-            .expect("failed to install signal handler")
+            .expect("Failed to install signal handler")
             .recv()
             .await;
     };
@@ -132,8 +181,12 @@ async fn shutdown_signal(deletion_task_abort_handle: AbortHandle) {
     let terminate = std::future::pending::<()>();
 
     tokio::select! {
-        _ = ctrl_c => { deletion_task_abort_handle.abort() },
-        _ = terminate => { deletion_task_abort_handle.abort() },
+        _ = ctrl_c => {
+            abort_handles.iter().for_each(|handle| handle.abort());
+        },
+        _ = terminate => {
+            abort_handles.iter().for_each(|handle| handle.abort());
+        },
     }
 }
 
