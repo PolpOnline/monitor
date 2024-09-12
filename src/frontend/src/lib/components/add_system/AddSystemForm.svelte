@@ -1,8 +1,6 @@
 <script lang="ts">
 	// noinspection ES6UnusedImports
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
-	// noinspection ES6UnusedImports
-	import { Button } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import DateTimePicker from '$components/date_time_picker/DateTimePicker.svelte';
 	// noinspection ES6UnusedImports
@@ -39,7 +37,7 @@
 	export let typeOfWrapper: 'sheet' | 'drawer' = 'sheet';
 </script>
 
-<form method="POST" action="?/add_system" use:enhance class={className}>
+<form action="?/add_system" class={className} method="POST" use:enhance>
 	<div class="p-4">
 		<Form.Field {form} name="name">
 			<Form.Control let:attrs>

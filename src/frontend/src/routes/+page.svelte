@@ -8,7 +8,7 @@
 	import PresetDialog from '$components/item_status/dialogs/PresetDialog.svelte';
 	import { fly, type FlyParams } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
-	import { flip, type AnimationConfig } from 'svelte/animate';
+	import { type AnimationConfig, flip } from 'svelte/animate';
 
 	title.set('Monitor');
 

@@ -1,21 +1,19 @@
 <script lang="ts">
-	import { Calendar as CalendarPrimitive } from "bits-ui";
-	import { buttonVariants } from "$lib/components/ui/button/index.js";
-	import { cn } from "$lib/utils.js";
+	import { Calendar as CalendarPrimitive } from 'bits-ui';
+	import { buttonVariants } from '$lib/components/ui/button/index.js';
+	import { cn } from '$lib/utils.js';
 
 	type $$Props = CalendarPrimitive.DayProps;
 	type $$Events = CalendarPrimitive.DayEvents;
 
-	export let date: $$Props["date"];
-	export let month: $$Props["month"];
-	let className: $$Props["class"] = undefined;
+	export let date: $$Props['date'];
+	export let month: $$Props['month'];
+	let className: $$Props['class'] = undefined;
 	export { className as class };
 </script>
 
 <CalendarPrimitive.Day
-	on:click
-	{date}
-	{month}
+	{...$$restProps}
 	class={cn(
 		buttonVariants({ variant: "ghost" }),
 		"h-9 w-9 p-0 font-normal ",
@@ -30,13 +28,15 @@
 		"data-[outside-month]:text-muted-foreground [&[data-outside-month][data-selected]]:bg-accent/50 [&[data-outside-month][data-selected]]:text-muted-foreground data-[outside-month]:pointer-events-none data-[outside-month]:opacity-50 [&[data-outside-month][data-selected]]:opacity-30",
 		className
 	)}
-	{...$$restProps}
-	let:selected
-	let:disabled
-	let:unavailable
+	{date}
 	let:builder
+	let:disabled
+	let:selected
+	let:unavailable
+	{month}
+	on:click
 >
-	<slot {selected} {disabled} {unavailable} {builder}>
+	<slot {builder} {disabled} {selected} {unavailable}>
 		{date.day}
 	</slot>
 </CalendarPrimitive.Day>

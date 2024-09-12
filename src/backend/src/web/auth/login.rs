@@ -95,7 +95,7 @@ pub async fn re_auth_after_sign_up(
     match auth_session.authenticate(credentials.clone()).await {
         Ok(Some(_)) => Ok(()),
         Ok(None) => {
-            debug!("User does not exist after sign up");
+            debug!("User does not exist after signup");
             Err(AuthError::UserNotExistingAfterSignUp)
         }
         Err(_) => Err(AuthError::FailedToReAuthenticateAfterSignUp),
@@ -114,7 +114,7 @@ pub async fn get_user_existence(email: String, auth_session: AuthSession) -> boo
     )
     .fetch_optional(&auth_session.backend.db)
     .await
-    .expect("Failed to check if user exists");
+    .expect("Failed to check if the user exists");
 
     user.is_some()
 }

@@ -8,7 +8,7 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	vitePlugin: {
-		// set to true for defaults or customize with object
+		// set to true for defaults or customize with an object
 		inspector: {
 			toggleKeyCombo: 'meta-shift',
 			showToggleButton: 'always',

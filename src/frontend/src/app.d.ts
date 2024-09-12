@@ -1,5 +1,5 @@
 import 'unplugin-icons/types/svelte';
-import type { LoginStatus } from '../../backend/bindings/index';
+import type { LoginStatus } from '../../backend/bindings';
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
@@ -10,6 +10,7 @@ declare global {
 		interface Locals {
 			loginStatus: LoginStatus;
 		}
+
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}

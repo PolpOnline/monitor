@@ -36,7 +36,7 @@ export const actions: Actions = {
 		// If the request was not successful, return the status code and the form
 		if (!res.ok) {
 			return message(form, messageToSend, {
-				// @ts-ignore - assume res has a valid status code
+				// @ts-expect-error - assume res has a valid status code
 				status: res.status
 			});
 		}

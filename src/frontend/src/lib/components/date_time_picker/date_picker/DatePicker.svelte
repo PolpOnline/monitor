@@ -17,9 +17,9 @@
 <Popover.Root>
 	<Popover.Trigger asChild let:builder>
 		<Button
-			variant="outline"
-			class={cn('w-[280px] justify-start text-left font-normal', !value && 'text-muted-foreground')}
 			builders={[builder]}
+			class={cn('w-[280px] justify-start text-left font-normal', !value && 'text-muted-foreground')}
+			variant="outline"
 		>
 			<CalendarIcon class="mr-2 h-4 w-4" />
 			{value ? df.format(value.toDate(getLocalTimeZone())) : 'Pick a date'}

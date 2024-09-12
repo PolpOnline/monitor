@@ -40,13 +40,13 @@
 
 			<Dialog.Footer>
 				<Button
-					variant="secondary"
 					class="mt-3 sm:mt-0"
 					on:click={() => ($deleteSystemDialogOpen = false)}
+					variant="secondary"
 				>
 					Cancel
 				</Button>
-				<Button variant="destructive" class="mt-5 sm:mt-0" on:click={() => deleteSystem()}>
+				<Button class="mt-5 sm:mt-0" on:click={() => deleteSystem()} variant="destructive">
 					{#if !isLoading}
 						Delete
 					{:else}

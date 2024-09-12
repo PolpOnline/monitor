@@ -23,8 +23,8 @@
 </script>
 
 <div class="relative my-3">
-	<Textarea bind:value readonly class={className} />
-	<Button on:click={copyValue} class="absolute bottom-2 right-2" variant="secondary">
+	<Textarea bind:value class={className} readonly />
+	<Button class="absolute bottom-2 right-2" on:click={copyValue} variant="secondary">
 		{#if !displayCheckMark}
 			<LucideClipboardCopy class="h-6 w-6" />
 		{:else}

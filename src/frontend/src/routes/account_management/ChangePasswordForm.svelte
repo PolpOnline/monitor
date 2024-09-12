@@ -16,25 +16,25 @@
 	const { form: formData, enhance, message, delayed } = form;
 </script>
 
-<form method="POST" use:enhance action="?/change_password">
+<form action="?/change_password" method="POST" use:enhance>
 	<Form.Field {form} name="old_password">
 		<Form.Control let:attrs>
 			<Form.Label>Old Password</Form.Label>
-			<Input type="password" {...attrs} bind:value={$formData.old_password} />
+			<Input {...attrs} bind:value={$formData.old_password} type="password" />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Field {form} name="new_password">
 		<Form.Control let:attrs>
 			<Form.Label>New password</Form.Label>
-			<Input type="password" {...attrs} bind:value={$formData.new_password} />
+			<Input {...attrs} bind:value={$formData.new_password} type="password" />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Field {form} name="new_password_confirm">
 		<Form.Control let:attrs>
 			<Form.Label>Confirm new password</Form.Label>
-			<Input type="password" {...attrs} bind:value={$formData.new_password_confirm} />
+			<Input {...attrs} bind:value={$formData.new_password_confirm} type="password" />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>

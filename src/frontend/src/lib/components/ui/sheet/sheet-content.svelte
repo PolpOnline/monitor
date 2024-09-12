@@ -2,13 +2,7 @@
 	import { Dialog as SheetPrimitive } from 'bits-ui';
 	import X from 'lucide-svelte/icons/x';
 	import { fly } from 'svelte/transition';
-	import {
-		SheetOverlay,
-		SheetPortal,
-		sheetTransitions,
-		sheetVariants,
-		type Side
-	} from './index.js';
+	import { SheetOverlay, SheetPortal, sheetTransitions, sheetVariants, type Side } from './index.js';
 	import { cn } from '$lib/utils.js';
 
 	type $$Props = SheetPrimitive.ContentProps & {

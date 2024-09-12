@@ -1,7 +1,6 @@
-mod app;
-mod auth;
-mod protected;
-mod public;
-mod utils;
+pub mod auth;
+pub mod protected;
+pub mod public;
+pub mod utils;
 
-pub use app::App;
+pub use crate::app::App;

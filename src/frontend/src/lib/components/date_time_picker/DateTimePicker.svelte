@@ -4,9 +4,9 @@
 	import DatePicker from './date_picker/DatePicker.svelte';
 	import {
 		type DateValue,
+		getLocalTimeZone,
 		Time,
-		toCalendarDateTime,
-		getLocalTimeZone
+		toCalendarDateTime
 	} from '@internationalized/date';
 
 	export let value: string | undefined;

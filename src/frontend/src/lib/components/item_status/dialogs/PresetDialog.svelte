@@ -50,7 +50,7 @@ mode=https check-certificate=yes http-method=post output=none"`
 			<Dialog.Title>Presets</Dialog.Title>
 
 			<div class="!mt-4">
-				<Select.Root portal={null} bind:selected={chosenPreset}>
+				<Select.Root bind:selected={chosenPreset} portal={null}>
 					<Select.Trigger class="w-[180px]">
 						<Select.Value placeholder="Select a preset" />
 					</Select.Trigger>

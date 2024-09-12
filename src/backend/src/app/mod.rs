@@ -32,7 +32,7 @@ pub struct App {
 impl App {
     pub async fn new() -> color_eyre::Result<Self> {
         let db = Self::setup_db().await?;
-        let redis = Self::setup_redis().await?;
+        let redis = Self::setup_redis_lib().await?;
 
         Ok(Self { db, redis })
     }
@@ -100,7 +100,7 @@ impl App {
     }
 
     async fn setup_db() -> color_eyre::Result<PgPool> {
-        info!("Connecting to the database...");
+        info!("SQLx: Connecting to the database...");
 
         let database_url = match std::env::var("DATABASE_PRIVATE_URL") {
             Ok(url) => {
@@ -118,23 +118,23 @@ impl App {
             .connect(&database_url)
             .await?;
 
-        info!("Connected to the database");
+        info!("SQLx: Connected to the database");
 
         sqlx::migrate!().run(&pool).await?;
 
-        info!("Migrations run");
+        info!("SQLx: Migrations run");
 
         Ok(pool)
     }
 
-    async fn setup_redis() -> color_eyre::Result<RedisPool> {
-        info!("Connecting to Redis...");
+    async fn setup_redis_lib() -> color_eyre::Result<RedisPool> {
+        info!("Redis: Connecting to Redis (to manage workers)...");
 
         let redis_url = std::env::var("REDIS_URL")?;
         let manager = RedisConnectionManager::new(redis_url)?;
         let redis = bb8::Pool::builder().build(manager).await?;
 
-        info!("Connected to Redis");
+        info!("Redis: Connected to Redis (to manage workers)");
 
         Ok(redis)
     }

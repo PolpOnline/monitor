@@ -56,8 +56,8 @@
 				Edit name
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
-				data-sveltekit-preload-data="off"
 				class="text-red-600"
+				data-sveltekit-preload-data="off"
 				on:click={() => {
 					$deleteSystemDialogOpen = true;
 				}}

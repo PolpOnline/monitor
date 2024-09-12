@@ -9,9 +9,10 @@ use dotenvy::dotenv;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 use web::App;
 
-mod users;
-mod web;
-mod workers;
+pub mod app;
+pub mod users;
+pub mod web;
+pub mod workers;
 
 #[tokio::main]
 async fn main() -> Result<()> {

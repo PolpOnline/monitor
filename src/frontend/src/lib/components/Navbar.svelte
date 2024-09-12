@@ -4,17 +4,15 @@
 	import LucideMoon from '~icons/lucide/moon';
 	import LucideSun from '~icons/lucide/sun';
 	import LucideLogOut from '~icons/lucide/log-out';
-	import type { LoginStatus } from '../../../../backend/bindings/index';
+	import type { LoginStatus } from '../../../../backend/bindings';
 	// import { page } from '$app/stores';
 	// noinspection ES6UnusedImports
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import LucideUser from '~icons/lucide/user';
 	import LucideSettings from '~icons/lucide/settings';
 	import LucideRefreshCw from '~icons/lucide/refresh-cw';
-	import { mode } from 'mode-watcher';
+	import { mode, toggleMode } from 'mode-watcher';
 	import { invalidateAll } from '$app/navigation';
-
-	import { toggleMode } from 'mode-watcher';
 
 	export let loginStatus: LoginStatus;
 

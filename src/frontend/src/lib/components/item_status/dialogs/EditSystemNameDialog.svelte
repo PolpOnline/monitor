@@ -38,7 +38,7 @@
 		<Dialog.Header>
 			<Dialog.Title>Edit system name of {$targetSystemData?.name}</Dialog.Title>
 
-			<Input bind:value={newSystemName} placeholder="New system name" class="!my-3" />
+			<Input bind:value={newSystemName} class="!my-3" placeholder="New system name" />
 
 			<Dialog.Footer>
 				<Button on:click={() => editSystemName()}>
