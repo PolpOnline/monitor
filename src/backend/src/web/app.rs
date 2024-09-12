@@ -84,9 +84,20 @@ impl App {
     async fn setup_db() -> color_eyre::Result<PgPool> {
         info!("Connecting to the database...");
 
+        let database_url = match std::env::var("DATABASE_PRIVATE_URL") {
+            Ok(url) => {
+                info!("Using DATABASE_PRIVATE_URL");
+                url
+            }
+            Err(_) => {
+                info!("Using DATABASE_URL");
+                std::env::var("DATABASE_URL")?
+            }
+        };
+
         let pool = PgPoolOptions::new()
             .max_connections(5)
-            .connect(&std::env::var("DATABASE_URL")?)
+            .connect(&database_url)
             .await?;
 
         info!("Connected to the database");
