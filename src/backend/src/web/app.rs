@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use axum_login::{
     tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
@@ -43,11 +45,12 @@ impl App {
         );
 
         // Generate a cryptographic key to sign the session cookie.
-        let key = Key::generate();
+        let key = &std::env::var("COOKIE_KEY")?;
+        let key = parse_cookie_key(key);
 
         let session_layer = SessionManagerLayer::new(session_store)
             .with_secure(false)
-            .with_expiry(Expiry::OnInactivity(Duration::days(30)))
+            .with_expiry(Expiry::OnInactivity(Duration::days(7)))
             .with_signed(key);
 
         // Auth service.
@@ -132,4 +135,13 @@ async fn shutdown_signal(deletion_task_abort_handle: AbortHandle) {
         _ = ctrl_c => { deletion_task_abort_handle.abort() },
         _ = terminate => { deletion_task_abort_handle.abort() },
     }
+}
+
+fn parse_cookie_key(cookie_key: &str) -> Key {
+    let key: Vec<u8> = cookie_key[1..cookie_key.len() - 1]
+        .split(", ")
+        .filter_map(|byte| u8::from_str(byte.trim()).ok())
+        .collect();
+
+    Key::from(&key)
 }
