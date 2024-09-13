@@ -75,7 +75,7 @@ pub async fn list_systems(
     let db_systems = match sqlx::query!(
         // language=PostgreSQL
         r#"
-        SELECT * FROM system WHERE user_id = $1 AND deleted = false ORDER BY id
+        SELECT * FROM system WHERE user_id = $1 AND deleted = false ORDER BY starts_at
         "#,
         user.id
     )
