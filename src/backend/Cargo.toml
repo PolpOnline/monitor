@@ -20,7 +20,6 @@ tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 tower-sessions = { version = "0.13.0", default-features = false, features = [
     "signed",
 ] }
-tower-sessions-sqlx-store = { version = "0.14.0", features = ["postgres"] }
 thiserror = "1.0.56"
 dotenvy = "0.15.7"
 color-eyre = "0.6.3"
@@ -37,6 +36,7 @@ rusty-sidekiq = { version = "0.10.5", default-features = false }
 futures = "0.3.30"
 lettre = { version = "0.11.8", features = ["tokio1-native-tls", "tokio1"] }
 once_cell = "1.19.0"
+tower-sessions-redis-store = { version = "0.14.0", features = ["enable-native-tls"] }
 
 [profile.dev.package.backtrace]
 opt-level = 3

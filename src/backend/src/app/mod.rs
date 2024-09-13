@@ -1,10 +1,9 @@
 use std::str::FromStr;
 
 use axum_login::{
-    tower_sessions::{ExpiredDeletion, Expiry, SessionManagerLayer},
+    tower_sessions::{Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
 };
-use futures::TryFutureExt;
 use http::StatusCode;
 use sidekiq::{periodic, Processor, RedisConnectionManager};
 use sqlx::{postgres::PgPoolOptions, PgPool};
@@ -12,7 +11,10 @@ use time::Duration;
 use tokio::{signal, task::AbortHandle};
 use tower_http::{compression::CompressionLayer, trace::TraceLayer};
 use tower_sessions::cookie::Key;
-use tower_sessions_sqlx_store::PostgresStore;
+use tower_sessions_redis_store::{
+    fred::prelude::{ClientLike, RedisConfig as RedisFredConfig, RedisPool as RedisFredPool},
+    RedisStore,
+};
 use tracing::info;
 
 use crate::{
@@ -26,23 +28,26 @@ use crate::{
     PRODUCTION,
 };
 
-type RedisPool = bb8::Pool<RedisConnectionManager>;
+type RedisLibPool = bb8::Pool<RedisConnectionManager>;
 
 pub struct App {
     db: PgPool,
-    redis: RedisPool,
+    redis_lib: RedisLibPool,
+    redis_fred: RedisFredPool,
     smtp_client: SmtpClient,
 }
 
 impl App {
     pub async fn new() -> color_eyre::Result<Self> {
         let db = Self::setup_db().await?;
-        let redis = Self::setup_redis_lib().await?;
+        let redis_lib = Self::setup_redis_lib().await?;
+        let redis_fred = Self::setup_redis_fred().await?;
         let smtp_client = init_smtp_client()?;
 
         Ok(Self {
             db,
-            redis,
+            redis_lib,
+            redis_fred,
             smtp_client,
         })
     }
@@ -52,18 +57,10 @@ impl App {
         //
         // This uses `tower-sessions` to establish a layer that will provide the session
         // as a request extension.
-        let session_store = PostgresStore::new(self.db.clone());
-        session_store.migrate().await?;
-
-        let deletion_task = tokio::task::spawn(
-            session_store
-                .clone()
-                .continuously_delete_expired(tokio::time::Duration::from_secs(60))
-                .map_err(color_eyre::Report::from),
-        );
+        let session_store = RedisStore::new(self.redis_fred.clone());
 
         let processor =
-            Self::init_workers(self.redis.clone(), self.db.clone(), self.smtp_client).await?;
+            Self::init_workers(self.redis_lib.clone(), self.db.clone(), self.smtp_client).await?;
 
         let worker_task = tokio::task::spawn(Self::start_workers(processor));
 
@@ -100,13 +97,10 @@ impl App {
 
         // Ensure we use a shutdown signal to abort the deletion task.
         axum::serve(listener, app.into_make_service())
-            .with_graceful_shutdown(shutdown_signal(vec![
-                deletion_task.abort_handle(),
-                worker_task.abort_handle(),
-            ]))
+            .with_graceful_shutdown(shutdown_signal(vec![worker_task.abort_handle()]))
             .await?;
 
-        futures::future::join_all(vec![deletion_task, worker_task]).await;
+        futures::future::join_all(vec![worker_task]).await;
 
         Ok(())
     }
@@ -139,16 +133,38 @@ impl App {
         Ok(pool)
     }
 
-    async fn setup_redis_lib() -> color_eyre::Result<RedisPool> {
-        info!("Redis: Connecting to Redis (to manage workers)...");
+    async fn setup_redis_lib() -> color_eyre::Result<RedisLibPool> {
+        info!("Redis Lib: Connecting to Redis (to manage workers)...");
+
+        let db_num = 1u8;
 
         let redis_url = std::env::var("REDIS_URL")?;
+        let redis_url = format!("{}/{}", redis_url, db_num);
         let manager = RedisConnectionManager::new(redis_url)?;
         let redis = bb8::Pool::builder().build(manager).await?;
 
-        info!("Redis: Connected to Redis (to manage workers)");
+        info!("Redis Lib: Connected to Redis (to manage workers)");
 
         Ok(redis)
+    }
+
+    async fn setup_redis_fred() -> color_eyre::Result<RedisFredPool> {
+        info!("Redis Fred: Connecting to Redis (to manage sessions)...");
+
+        let db_num = 0u8;
+
+        let redis_url = std::env::var("REDIS_URL")?;
+        let redis_url = format!("{}/{}", redis_url, db_num);
+
+        let config = RedisFredConfig::from_url(&redis_url)?;
+
+        let pool = RedisFredPool::new(config, None, None, None, 6)?;
+
+        pool.init().await?;
+
+        info!("Redis Fred: Connected to Redis (to manage sessions)");
+
+        Ok(pool)
     }
 
     async fn start_workers(p: Processor) -> color_eyre::Result<()> {
@@ -168,7 +184,7 @@ impl App {
     }
 
     async fn init_workers(
-        redis: RedisPool,
+        redis: RedisLibPool,
         db: PgPool,
         smtp_client: SmtpClient,
     ) -> color_eyre::Result<Processor> {
