@@ -35,7 +35,7 @@
 	$: presetMap = {
 		mikrotik: `/system scheduler add name="ping_status" start-date="${startsAtDate}" start-time="${startsAtTime}" interval="${frequencyHours}:${frequencyMinutes}:00" \
 on-event="/tool fetch url=\\"${API_URL}/ping_status/${$targetSystemData?.id}\\" \
-mode=https check-certificate=yes http-method=post output=none"`
+mode=https http-method=post output=none"`
 	} as Record<string, string>;
 
 	let chosenPreset: (typeof presets)[0] | undefined = undefined;
