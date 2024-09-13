@@ -23,9 +23,15 @@ pub async fn ping_status(Path(id): Path<Uuid>, auth_session: AuthSession) -> imp
         return StatusCode::NOT_FOUND.into_response();
     };
 
+    // Insert the ping into the database and reset the down_sent_email flag
     sqlx::query!(
         // language=PostgreSQL
         r#"
+        WITH updated AS (
+            UPDATE system
+            SET down_sent_email = false
+            WHERE id = $1
+        )
         INSERT INTO ping (system_id) VALUES ($1)
         "#,
         id
