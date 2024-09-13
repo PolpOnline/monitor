@@ -103,32 +103,35 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
     let rows = sqlx::query!(
         // language=PostgreSQL
         r#"
-        WITH ranked_pings AS (
-            SELECT p.id,
-                   p.system_id,
-                   p.timestamp,
-                   s.down_after,
-                   s.down_sent_email,
-                   s.name AS system_name,
-                   u.email AS user_email,
-                   ROW_NUMBER() OVER (PARTITION BY p.system_id ORDER BY p.timestamp DESC) AS rn
-            FROM ping p
-            JOIN system s ON p.system_id = s.id
-            JOIN "user" u ON s.user_id = u.id
-            WHERE p.timestamp < NOW() - s.down_after
-              AND s.down_sent_email = FALSE
-              AND s.deleted = FALSE
-        ),
+        WITH ranked_pings AS (SELECT p.id,
+                             p.system_id,
+                             p.timestamp,
+                             s.down_after,
+                             s.down_sent_email,
+                             s.name                                                                 AS system_name,
+                             u.email                                                                AS user_email,
+                             ROW_NUMBER() OVER (PARTITION BY p.system_id ORDER BY p.timestamp DESC) AS rn
+                      FROM ping p
+                               JOIN
+                           system s ON p.system_id = s.id
+                               JOIN
+                           "user" u ON s.user_id = u.id
+                      WHERE NOT EXISTS (SELECT 1
+                                        FROM ping
+                                        WHERE ping.system_id = s.id
+                                          AND ping.timestamp >= NOW() - s.down_after)
+                        AND s.down_sent_email = FALSE
+                        AND s.deleted = FALSE),
         updated_systems AS (
             UPDATE system
-            SET down_sent_email = TRUE
-            FROM ranked_pings rp
-            WHERE system.id = rp.system_id
-              AND rp.rn = 1
-              AND system.deleted = FALSE
-            RETURNING rp.system_id, rp.timestamp, rp.down_after, rp.system_name, rp.user_email
-        )
-        SELECT * FROM updated_systems;
+                SET down_sent_email = TRUE
+                FROM ranked_pings rp
+                WHERE system.id = rp.system_id
+                    AND rp.rn = 1
+                    AND system.deleted = FALSE
+                RETURNING rp.system_id, rp.timestamp, rp.down_after, rp.system_name, rp.user_email)
+        SELECT *
+        FROM updated_systems;
         "#
     )
     .fetch_all(db)
