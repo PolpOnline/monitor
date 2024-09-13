@@ -9,4 +9,4 @@ export const editSystemNameDialogOpen = writable(false);
 
 export const presetDialogOpen = writable(false);
 
-export const targetSystemData: Writable<SystemData | null> = writable(null);
+export const targetSystemData: Writable<SystemData | undefined> = writable(undefined);

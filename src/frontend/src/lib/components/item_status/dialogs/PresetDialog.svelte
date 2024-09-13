@@ -15,22 +15,22 @@
 		}
 	];
 
-	if (!$targetSystemData) {
-		throw new Error('targetSystemData is not defined');
-	}
-
-	$: startsAtDateTime = new Date($targetSystemData?.starts_at);
+	$: startsAtDateTime = $targetSystemData ? new Date($targetSystemData.starts_at) : undefined;
 
 	$: startsAtDate = startsAtDateTime
-		.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' })
-		.replace(',', '')
-		.replaceAll(' ', '/')
-		.toLowerCase(); // Format: mmm/dd/yyyy (e.g. jan/01/2022)
+		? startsAtDateTime
+				.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' })
+				.replace(',', '')
+				.replaceAll(' ', '/')
+				.toLowerCase()
+		: undefined; // Format: mmm/dd/yyyy (e.g. jan/01/2022)
 
-	$: startsAtTime = startsAtDateTime.toLocaleTimeString('en-GB', { hour12: false }); // Format: 00:00:00
+	$: startsAtTime = startsAtDateTime
+		? startsAtDateTime.toLocaleTimeString('en-GB', { hour12: false })
+		: undefined; // Format: 00:00:00
 
-	$: frequencyHours = Math.floor($targetSystemData.frequency / 60);
-	$: frequencyMinutes = $targetSystemData.frequency % 60;
+	$: frequencyHours = $targetSystemData ? Math.floor($targetSystemData.frequency / 60) : undefined;
+	$: frequencyMinutes = $targetSystemData ? $targetSystemData.frequency % 60 : undefined;
 
 	$: presetMap = {
 		mikrotik: `/system scheduler add name="ping_status" start-date="${startsAtDate}" start-time="${startsAtTime}" interval="${frequencyHours}:${frequencyMinutes}:00" \
