@@ -94,7 +94,7 @@ impl App {
 
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
 
-        info!("Listening on {}", listener.local_addr()?);
+        info!("Axum: Listening on {}", listener.local_addr()?);
 
         // Ensure we use a shutdown signal to abort the deletion task.
         axum::serve(listener, app.into_make_service())
@@ -114,11 +114,11 @@ impl App {
 
         let database_url = match std::env::var("DATABASE_PRIVATE_URL") {
             Ok(url) => {
-                info!("Using DATABASE_PRIVATE_URL");
+                info!("SQLx: Using DATABASE_PRIVATE_URL");
                 url
             }
             Err(_) => {
-                info!("Using DATABASE_URL");
+                info!("SQLx: Using DATABASE_URL");
                 std::env::var("DATABASE_URL")?
             }
         };
@@ -150,7 +150,7 @@ impl App {
     }
 
     async fn start_workers(p: Processor) -> color_eyre::Result<()> {
-        info!("Workers started");
+        info!("Sidekiq: Workers started");
 
         // Start the server
         p.run().await;

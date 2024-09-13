@@ -44,16 +44,16 @@ impl Worker<()> for EmailWorker {
         let emails = emails.into_iter().filter_map(|email| match email {
             Ok(email) => Some(email),
             Err(e) => {
-                error!("Error composing email: {}", e);
+                error!("Scheduled task: Error composing email: {}", e);
                 None
             }
         });
 
         for email in emails {
-            self.smtp_client
-                .send(email)
-                .await
-                .map_err(GenericError::from)?;
+            self.smtp_client.send(email).await.map_err(|e| {
+                error!("Scheduled task: Error sending email: {}", e);
+                GenericError::from(e)
+            })?;
         }
 
         Ok(())
