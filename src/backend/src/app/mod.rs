@@ -10,7 +10,7 @@ use sidekiq::{periodic, Processor, RedisConnectionManager};
 use sqlx::{postgres::PgPoolOptions, PgPool};
 use time::Duration;
 use tokio::{signal, task::AbortHandle};
-use tower_http::trace::TraceLayer;
+use tower_http::{compression::CompressionLayer, trace::TraceLayer};
 use tower_sessions::cookie::Key;
 use tower_sessions_sqlx_store::PostgresStore;
 use tracing::info;
@@ -90,7 +90,8 @@ impl App {
             .merge(auth::router())
             .merge(public::router())
             .layer(auth_layer)
-            .layer(TraceLayer::new_for_http());
+            .layer(TraceLayer::new_for_http())
+            .layer(CompressionLayer::new());
 
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
 
