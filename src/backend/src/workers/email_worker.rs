@@ -61,6 +61,11 @@ impl Worker<()> for EmailWorker {
 }
 
 fn compose_email(down_service: EmailData) -> GenericResult<Message> {
+    info!(
+        "Scheduled task: Composing email for system {} (id {}, user email {})",
+        down_service.system_name, down_service.system_id, down_service.user_email
+    );
+
     let message = Message::builder()
         .from("Monitor Mailer <monitor@polp.online>".parse()?)
         .reply_to("Monitor Mailer <monitor@polp.online>".parse()?)
