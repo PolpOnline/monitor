@@ -6,6 +6,8 @@
 
 use color_eyre::Result;
 use dotenvy::dotenv;
+use once_cell::sync::Lazy;
+use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 use web::App;
 
@@ -13,6 +15,8 @@ pub mod app;
 pub mod users;
 pub mod web;
 pub mod workers;
+
+pub static PRODUCTION: Lazy<bool> = Lazy::new(|| std::env::var("PRODUCTION").is_ok());
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -29,6 +33,12 @@ async fn main() -> Result<()> {
         .try_init()?;
 
     dotenv().unwrap_or_default();
+
+    if *PRODUCTION {
+        info!("System: Production mode");
+    } else {
+        info!("System: Development mode");
+    }
 
     App::new().await?.serve().await
 }

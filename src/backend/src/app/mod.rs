@@ -23,6 +23,7 @@ use crate::{
         email_worker::{init_smtp_client, SmtpClient},
         register_workers,
     },
+    PRODUCTION,
 };
 
 type RedisPool = bb8::Pool<RedisConnectionManager>;
@@ -151,7 +152,14 @@ impl App {
     }
 
     async fn start_workers(p: Processor) -> color_eyre::Result<()> {
-        info!("Sidekiq: Workers started");
+        info!(
+            "Sidekiq: Workers started in {} mode",
+            if *PRODUCTION {
+                "production"
+            } else {
+                "development"
+            }
+        );
 
         // Start the server
         p.run().await;
