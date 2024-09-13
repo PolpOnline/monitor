@@ -19,7 +19,10 @@ use crate::{
     custom_login_required,
     users::LoginBackend,
     web::{auth, protected, public},
-    workers::register_workers,
+    workers::{
+        email_worker::{init_smtp_client, SmtpClient},
+        register_workers,
+    },
 };
 
 type RedisPool = bb8::Pool<RedisConnectionManager>;
@@ -27,14 +30,20 @@ type RedisPool = bb8::Pool<RedisConnectionManager>;
 pub struct App {
     db: PgPool,
     redis: RedisPool,
+    smtp_client: SmtpClient,
 }
 
 impl App {
     pub async fn new() -> color_eyre::Result<Self> {
         let db = Self::setup_db().await?;
         let redis = Self::setup_redis_lib().await?;
+        let smtp_client = init_smtp_client()?;
 
-        Ok(Self { db, redis })
+        Ok(Self {
+            db,
+            redis,
+            smtp_client,
+        })
     }
 
     pub async fn serve(self) -> color_eyre::Result<()> {
@@ -52,7 +61,8 @@ impl App {
                 .map_err(color_eyre::Report::from),
         );
 
-        let processor = Self::init_workers(self.redis.clone(), self.db.clone()).await?;
+        let processor =
+            Self::init_workers(self.redis.clone(), self.db.clone(), self.smtp_client).await?;
 
         let worker_task = tokio::task::spawn(Self::start_workers(processor));
 
@@ -148,7 +158,11 @@ impl App {
         Ok(())
     }
 
-    async fn init_workers(redis: RedisPool, db: PgPool) -> color_eyre::Result<Processor> {
+    async fn init_workers(
+        redis: RedisPool,
+        db: PgPool,
+        smtp_client: SmtpClient,
+    ) -> color_eyre::Result<Processor> {
         // Clear out all periodic jobs and their schedules
         periodic::destroy_all(redis.clone()).await?;
 
@@ -156,7 +170,7 @@ impl App {
         let mut p = Processor::new(redis, vec!["down_emails".to_string()]);
 
         // Add known workers
-        register_workers(&mut p, db).await?;
+        register_workers(&mut p, db, smtp_client).await?;
 
         Ok(p)
     }

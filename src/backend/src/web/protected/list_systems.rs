@@ -125,7 +125,7 @@ pub async fn list_systems(
 }
 
 #[derive(Debug)]
-struct PingRecord {
+pub struct PingRecord {
     #[allow(dead_code)]
     id: i32,
     #[allow(dead_code)]

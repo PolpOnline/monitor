@@ -3,11 +3,11 @@ use axum::{
     Router,
 };
 
-mod add_system;
-mod delete_system;
-mod edit_system_name;
-mod list_systems;
-mod user;
+pub mod add_system;
+pub mod delete_system;
+pub mod edit_system_name;
+pub mod list_systems;
+pub mod user;
 
 pub fn router() -> Router<()> {
     Router::new()
