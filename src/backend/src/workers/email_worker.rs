@@ -76,8 +76,8 @@ fn compose_email(down_service: EmailData) -> GenericResult<Message> {
         .header(ContentType::TEXT_PLAIN)
         .body(
             format!(
-                "Service {} (system id {}) is down since {}. It was supposed to be up after {}. \
-                 Please check it.",
+                "Service {} (system id {}) is down since {} UTC. It was supposed to be up after \
+                 {}. Please check it.",
                 down_service.system_name,
                 down_service.system_id,
                 down_service.timestamp,
