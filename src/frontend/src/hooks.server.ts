@@ -45,7 +45,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const status = await getLoginStatus(event.fetch);
 
 	// Set the login status in the "locals" object, so we can access it in the page component
-	event.locals.loginStatus = status.status;
+	event.locals.loginStatus = status;
 
 	const requestedPath = event.url.pathname;
 

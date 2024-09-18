@@ -4,8 +4,7 @@
 	import LucideMoon from '~icons/lucide/moon';
 	import LucideSun from '~icons/lucide/sun';
 	import LucideLogOut from '~icons/lucide/log-out';
-	import type { LoginStatus } from '../../../../backend/bindings';
-	// import { page } from '$app/stores';
+	import type { LoginStatusResponse } from '../../../../backend/bindings';
 	// noinspection ES6UnusedImports
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import LucideUser from '~icons/lucide/user';
@@ -14,15 +13,10 @@
 	import { mode, toggleMode } from 'mode-watcher';
 	import { invalidateAll } from '$app/navigation';
 
-	export let loginStatus: LoginStatus;
+	export let loginStatus: LoginStatusResponse;
 
-	function isLoggedIn(status: LoginStatus): status is { logged_in: string } {
-		// noinspection JSIncompatibleTypesComparison
-		return (status as { logged_in: string }).logged_in !== undefined;
-	}
-
-	$: loggedIn = isLoggedIn(loginStatus);
-	$: loggedInEmail = loggedIn ? (loginStatus as { logged_in: string }).logged_in : '';
+	$: loggedIn = loginStatus.status === 'logged_in';
+	$: loggedInEmail = loginStatus.email;
 
 	async function refresh() {
 		await invalidateAll();
@@ -44,10 +38,10 @@
 				</Button>
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
-				{#if loggedIn}
+				{#if loggedInEmail}
 					<DropdownMenu.Label>{loggedInEmail}</DropdownMenu.Label>
+					<DropdownMenu.Separator />
 				{/if}
-				<DropdownMenu.Separator />
 				<DropdownMenu.Group>
 					<DropdownMenu.Item on:click={toggleMode}>
 						{#if $mode === 'dark'}

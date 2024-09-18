@@ -1,5 +1,6 @@
 use axum::{response::IntoResponse, Json};
 use serde::Serialize;
+use tracing::info;
 use ts_rs::TS;
 
 use crate::users::AuthSession;
@@ -8,7 +9,7 @@ use crate::users::AuthSession;
 #[ts(export)]
 pub enum LoginStatus {
     #[serde(rename = "logged_in")]
-    LoggedIn(String),
+    LoggedIn,
     #[serde(rename = "logged_out")]
     LoggedOut,
 }
@@ -17,13 +18,22 @@ pub enum LoginStatus {
 #[ts(export)]
 pub struct LoginStatusResponse {
     pub status: LoginStatus,
+    pub email: Option<String>,
 }
 
 pub async fn login_status(auth_session: AuthSession) -> impl IntoResponse {
-    let status = match auth_session.user {
-        Some(user) => LoginStatus::LoggedIn(user.email),
-        None => LoginStatus::LoggedOut,
+    info!("{:?}", auth_session.user);
+
+    let res = match auth_session.user {
+        Some(user) => LoginStatusResponse {
+            status: LoginStatus::LoggedIn,
+            email: Some(user.email.clone()),
+        },
+        None => LoginStatusResponse {
+            status: LoginStatus::LoggedOut,
+            email: None,
+        },
     };
 
-    Json(LoginStatusResponse { status }).into_response()
+    Json(res).into_response()
 }
