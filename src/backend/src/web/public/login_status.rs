@@ -1,6 +1,5 @@
 use axum::{response::IntoResponse, Json};
 use serde::Serialize;
-use tracing::info;
 use ts_rs::TS;
 
 use crate::users::AuthSession;
@@ -22,8 +21,6 @@ pub struct LoginStatusResponse {
 }
 
 pub async fn login_status(auth_session: AuthSession) -> impl IntoResponse {
-    info!("{:?}", auth_session.user);
-
     let res = match auth_session.user {
         Some(user) => LoginStatusResponse {
             status: LoginStatus::LoggedIn,
