@@ -6,19 +6,28 @@
 	import { Calendar } from '$lib/components/ui/calendar/index.js';
 	// noinspection ES6UnusedImports
 	import * as Popover from '$lib/components/ui/popover/index.js';
+	import { type ClassValue } from 'clsx';
 
 	const df = new DateFormatter('en-US', {
 		dateStyle: 'long'
 	});
 
 	export let value: DateValue = today(getLocalTimeZone());
+
+	let className: ClassValue = '';
+	// noinspection ReservedWordAsName
+	export { className as class };
 </script>
 
 <Popover.Root>
 	<Popover.Trigger asChild let:builder>
 		<Button
 			builders={[builder]}
-			class={cn('w-[280px] justify-start text-left font-normal', !value && 'text-muted-foreground')}
+			class={cn(
+				'justify-start text-left font-normal',
+				!value && 'text-muted-foreground',
+				className
+			)}
 			variant="outline"
 		>
 			<CalendarIcon class="mr-2 h-4 w-4" />
