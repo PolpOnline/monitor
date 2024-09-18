@@ -16,7 +16,13 @@
 
 	export let loginStatus: LoginStatus;
 
-	$: loggedIn = loginStatus === ('logged_in' as LoginStatus);
+	function isLoggedIn(status: LoginStatus): status is { logged_in: string } {
+		// noinspection JSIncompatibleTypesComparison
+		return (status as { logged_in: string }).logged_in !== undefined;
+	}
+
+	$: loggedIn = isLoggedIn(loginStatus);
+	$: loggedInEmail = loggedIn ? (loginStatus as { logged_in: string }).logged_in : '';
 
 	async function refresh() {
 		await invalidateAll();
@@ -38,6 +44,10 @@
 				</Button>
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
+				{#if loggedIn}
+					<DropdownMenu.Label>{loggedInEmail}</DropdownMenu.Label>
+				{/if}
+				<DropdownMenu.Separator />
 				<DropdownMenu.Group>
 					<DropdownMenu.Item on:click={toggleMode}>
 						{#if $mode === 'dark'}

@@ -8,7 +8,7 @@ use crate::users::AuthSession;
 #[ts(export)]
 pub enum LoginStatus {
     #[serde(rename = "logged_in")]
-    LoggedIn,
+    LoggedIn(String),
     #[serde(rename = "logged_out")]
     LoggedOut,
 }
@@ -21,7 +21,7 @@ pub struct LoginStatusResponse {
 
 pub async fn login_status(auth_session: AuthSession) -> impl IntoResponse {
     let status = match auth_session.user {
-        Some(_) => LoginStatus::LoggedIn,
+        Some(user) => LoginStatus::LoggedIn(user.email),
         None => LoginStatus::LoggedOut,
     };
 
