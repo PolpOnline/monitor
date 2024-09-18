@@ -11,6 +11,7 @@
 	import LucideSettings from '~icons/lucide/settings';
 	import LucideRefreshCw from '~icons/lucide/refresh-cw';
 	import { mode, toggleMode } from 'mode-watcher';
+	import LucideGithub from '~icons/lucide/github';
 	import { invalidateAll } from '$app/navigation';
 
 	export let loginStatus: LoginStatusResponse;
@@ -70,6 +71,11 @@
 						</DropdownMenu.Item>
 					{/if}
 				</DropdownMenu.Group>
+				<DropdownMenu.Separator />
+				<DropdownMenu.Item href="https://github.com/PolpOnline/monitor" target="_blank">
+					<LucideGithub class="mr-2 h-4 w-4" />
+					View on GitHub
+				</DropdownMenu.Item>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</span>
