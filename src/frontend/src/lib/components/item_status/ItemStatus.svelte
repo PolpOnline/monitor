@@ -150,7 +150,12 @@
 			</span>
 
 			<span class="sm:absolute sm:left-1/2 sm:-translate-x-1/2">
-				{uptime.toFixed(2)}% uptime
+				{#if uptime}
+					{uptime.toFixed(2)}%
+				{:else}
+					Unknown
+				{/if}
+				uptime
 			</span>
 
 			<span>
