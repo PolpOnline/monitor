@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+use axum::middleware;
 use axum_login::{
     tower_sessions::{Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
@@ -19,6 +20,7 @@ use tracing::info;
 
 use crate::{
     custom_login_required,
+    middleware::set_cache_control::set_cache_control,
     users::LoginBackend,
     web::{auth, protected, public},
     workers::{
@@ -88,6 +90,7 @@ impl App {
             .merge(auth::router())
             .merge(public::router())
             .layer(auth_layer)
+            .layer(middleware::from_fn(set_cache_control))
             .layer(TraceLayer::new_for_http())
             .layer(CompressionLayer::new());
 

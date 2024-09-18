@@ -12,6 +12,7 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilte
 use web::App;
 
 pub mod app;
+pub mod middleware;
 pub mod users;
 pub mod web;
 pub mod workers;
