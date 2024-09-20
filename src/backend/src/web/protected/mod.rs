@@ -4,6 +4,7 @@ use axum::{
 };
 
 pub mod add_system;
+pub mod change_visibility;
 pub mod delete_system;
 pub mod edit_system_name;
 pub mod list_systems;
@@ -18,5 +19,9 @@ pub fn router() -> Router<()> {
         .route(
             "/edit_system_name",
             patch(edit_system_name::edit_system_name),
+        )
+        .route(
+            "/change_visibility",
+            patch(change_visibility::change_visibility),
         )
 }

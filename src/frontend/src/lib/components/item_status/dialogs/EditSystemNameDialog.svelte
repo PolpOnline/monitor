@@ -18,7 +18,7 @@
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ id, newSystemName })
+			body: JSON.stringify({ id, name: newSystemName })
 		});
 
 		invalidateAll();

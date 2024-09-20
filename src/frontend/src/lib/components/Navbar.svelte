@@ -14,6 +14,7 @@
 	import { mode, toggleMode } from 'mode-watcher';
 	import LucideGithub from '~icons/lucide/github';
 	import { invalidateAll } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	export let loginStatus: LoginStatusResponse;
 
@@ -24,7 +25,7 @@
 		await invalidateAll();
 	}
 
-	$: isPublicPage = location.pathname.startsWith('/public/');
+	$: isPublicPage = $page.url.pathname.startsWith('/public');
 </script>
 
 <nav class="flex h-20 flex-row items-center justify-between">

@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use axum::{extract::Path, response::IntoResponse, Json};
 use http::StatusCode;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use sqlx::{postgres::types::PgInterval, PgPool};
 use time::{Duration, OffsetDateTime, PrimitiveDateTime};
 use ts_rs::TS;
@@ -33,6 +33,7 @@ pub struct SystemData {
     #[serde(with = "time::serde::iso8601")]
     #[ts(type = "string")]
     starts_at: OffsetDateTime,
+    visibility: Visibility,
 }
 
 #[derive(Debug, Serialize, Clone, TS)]
@@ -58,7 +59,7 @@ pub enum Status {
 
 const LIMIT_SYSTEM_REQUEST: i32 = 100;
 
-#[derive(Debug, Serialize, Clone, TS, sqlx::Type)]
+#[derive(Debug, Serialize, Deserialize, Clone, TS, sqlx::Type)]
 #[sqlx(type_name = "visibility", rename_all = "snake_case")]
 #[serde(rename_all = "snake_case")]
 #[ts(export)]
@@ -171,6 +172,7 @@ impl SystemData {
             instants,
             frequency: (frequency.as_seconds_f64().round() as u32) / 60,
             starts_at: primitive_to_offset_date_time(db_system.starts_at),
+            visibility: db_system.visibility,
         })
     }
 

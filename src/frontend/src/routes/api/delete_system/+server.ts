@@ -2,7 +2,7 @@ import { API_URL } from '$lib/api/api';
 import type { DeleteSystemRequest } from '../../../../../backend/bindings';
 
 export async function DELETE({ request, fetch }) {
-	const { id } = await request.json();
+	const { id } = (await request.json()) as DeleteSystemRequest;
 
 	const res = await fetch(`${API_URL}/delete_system`, {
 		method: 'DELETE',
