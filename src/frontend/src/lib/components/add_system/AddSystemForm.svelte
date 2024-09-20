@@ -12,6 +12,9 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { addSystemSheetOpen } from '$lib/components/stores/popovers.store';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
+	// noinspection ES6UnusedImports
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
@@ -63,6 +66,41 @@
 				<DateTimePicker {...attrs} bind:value={$formData.starts_at} />
 			</Form.Control>
 			<Form.Description>When the system should start being monitored</Form.Description>
+			<Form.FieldErrors />
+		</Form.Field>
+
+		<Form.Field {form} name="down_after">
+			<Form.Control let:attrs>
+				<Form.Label>Down after (in minutes)</Form.Label>
+				<Input {...attrs} bind:value={$formData.down_after} type="number" />
+			</Form.Control>
+			<Form.Description>How long the system can be down before an email is sent</Form.Description>
+			<Form.FieldErrors />
+		</Form.Field>
+
+		<Form.Field {form} name="visibility">
+			<Form.Control let:attrs>
+				<Form.Label>Visibility</Form.Label>
+
+				<div {...attrs}>
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger asChild let:builder>
+							<Button variant="outline" builders={[builder]}>
+								{$formData.visibility === 'public' ? 'Public' : 'Private'}
+							</Button>
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content class="w-56">
+							<DropdownMenu.Label>Panel Position</DropdownMenu.Label>
+							<DropdownMenu.Separator />
+							<DropdownMenu.RadioGroup bind:value={$formData.visibility}>
+								<DropdownMenu.RadioItem value="public">Public</DropdownMenu.RadioItem>
+								<DropdownMenu.RadioItem value="private">Private</DropdownMenu.RadioItem>
+							</DropdownMenu.RadioGroup>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
+				</div>
+			</Form.Control>
+			<Form.Description>Select if the system should be public or private</Form.Description>
 			<Form.FieldErrors />
 		</Form.Field>
 	</div>

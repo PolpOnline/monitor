@@ -6,16 +6,25 @@ use time::{Duration, OffsetDateTime};
 use ts_rs::TS;
 use uuid::Uuid;
 
-use crate::{users::AuthSession, web::utils::time_conversions::offset_to_primitive_date_time};
+use crate::{
+    users::AuthSession,
+    web::{
+        protected::list_systems::Visibility, utils::time_conversions::offset_to_primitive_date_time,
+    },
+};
 
 #[derive(Debug, Deserialize, Clone, TS)]
 #[ts(export)]
 pub struct AddSystemRequest {
     name: String,
-    frequency: i64, // in minutes
+    /// Frequency in minutes
+    frequency: i64,
     #[serde(with = "time::serde::iso8601")]
     #[ts(type = "string")]
     starts_at: OffsetDateTime,
+    /// Time in minutes after which the user will get emailed
+    down_after: i64,
+    visibility: Visibility,
 }
 
 #[derive(Debug, Serialize, Clone, TS)]
@@ -42,17 +51,24 @@ pub async fn add_system(
 
     let id = Uuid::new_v4();
 
+    let down_after: PgInterval = match Duration::minutes(request.down_after).try_into() {
+        Ok(interval) => interval,
+        Err(_) => return StatusCode::BAD_REQUEST.into_response(),
+    };
+
     match sqlx::query!(
         // language=PostgreSQL
         r#"
-        INSERT INTO system (id, name, user_id, frequency, starts_at)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO system (id, name, user_id, frequency, starts_at, down_after, visibility)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         "#,
         id,
         request.name,
         user.id,
         frequency,
         starts_at,
+        down_after,
+        request.visibility as Visibility
     )
     .execute(&auth_session.backend.db)
     .await
