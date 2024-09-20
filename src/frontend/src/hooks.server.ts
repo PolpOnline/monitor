@@ -49,7 +49,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const requestedPath = event.url.pathname;
 
-	if (requestedPath === '/login') {
+	if (requestedPath === '/login' || requestedPath.startsWith('/public/')) {
 		return await resolve(event);
 	}
 

@@ -5,6 +5,7 @@ use axum::{
 };
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 use uuid::Uuid;
 
 use crate::{
@@ -12,12 +13,14 @@ use crate::{
     web::protected::list_systems::{SystemData, SystemRecord, Visibility},
 };
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, TS)]
+#[ts(export)]
 pub struct GetPublicRequest {
     pub list_size: i32,
 }
 
-#[derive(Debug, Serialize, Clone)]
+#[derive(Debug, Serialize, Clone, TS)]
+#[ts(export)]
 pub struct GetPublicResponse {
     pub system: SystemData,
 }
@@ -32,7 +35,7 @@ pub async fn get_public(
         // language=PostgreSQL
         r#"
         SELECT id, name, user_id, frequency, starts_at, deleted, down_after, down_sent_email, visibility AS "visibility: Visibility"
-        FROM system WHERE id = $1
+        FROM system WHERE id = $1 AND visibility = 'public'
         "#,
         uuid
     )
@@ -40,7 +43,12 @@ pub async fn get_public(
     .await
     {
         Ok(r) => r,
-        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        Err(sqlx::error::Error::RowNotFound) => {
+            return StatusCode::NOT_FOUND.into_response()
+        }
+        Err(_) => {
+            return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+        }
     };
 
     let system_data =
