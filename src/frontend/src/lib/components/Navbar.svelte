@@ -3,6 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import LucideMoon from '~icons/lucide/moon';
 	import LucideSun from '~icons/lucide/sun';
+	import LucideLogIn from '~icons/lucide/log-in';
 	import LucideLogOut from '~icons/lucide/log-out';
 	import type { LoginStatusResponse } from '../../../../backend/bindings';
 	// noinspection ES6UnusedImports
@@ -13,6 +14,7 @@
 	import { mode, toggleMode } from 'mode-watcher';
 	import LucideGithub from '~icons/lucide/github';
 	import { invalidateAll } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	export let loginStatus: LoginStatusResponse;
 
@@ -22,6 +24,8 @@
 	async function refresh() {
 		await invalidateAll();
 	}
+
+	$: isPublicPage = $page.url.pathname.startsWith('/public');
 </script>
 
 <nav class="flex h-20 flex-row items-center justify-between">
@@ -44,6 +48,12 @@
 					<DropdownMenu.Separator />
 				{/if}
 				<DropdownMenu.Group>
+					{#if isPublicPage && !loggedIn}
+						<DropdownMenu.Item href="/login">
+							<LucideLogIn class="mr-2 h-4 w-4" />
+							Login
+						</DropdownMenu.Item>
+					{/if}
 					<DropdownMenu.Item on:click={toggleMode}>
 						{#if $mode === 'dark'}
 							<LucideSun class="mr-2 h-4 w-4" />

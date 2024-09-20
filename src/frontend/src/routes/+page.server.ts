@@ -1,5 +1,5 @@
 import type { ListSystemsResponse, SystemData } from '../../../backend/bindings';
-import { API_URL } from '$lib/api/api';
+import { API_URL, LIST_SIZE } from '$lib/api/api';
 import { formSchema } from '$lib/components/add_system/schema';
 import type { Actions, PageServerLoad } from './$types.js';
 import { fail } from '@sveltejs/kit';
@@ -46,8 +46,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		form: await superValidate(zod(formSchema))
 	};
 };
-
-const LIST_SIZE = 30;
 
 async function getSystemsList(
 	fetch: WindowOrWorkerGlobalScope['fetch']

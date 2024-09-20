@@ -13,7 +13,17 @@
 	import LucidePencilLine from '~icons/lucide/pencil-line';
 	import { API_URL } from '$lib/api/api';
 	import LucideSettings from '~icons/lucide/settings';
-	import type { SystemData } from '../../../../../backend/bindings';
+	import LucideEarth from '~icons/lucide/earth';
+	import LucideLock from '~icons/lucide/lock';
+	import { invalidateAll } from '$app/navigation';
+	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
+	import LucideLink from '~icons/lucide/link';
+	import {
+		type ChangeVisibilityRequest,
+		type SystemData,
+		type Visibility
+	} from '../../../../../backend/bindings';
+	import { page } from '$app/stores';
 
 	let className = '';
 
@@ -22,10 +32,29 @@
 
 	export let data: SystemData;
 
-	$targetSystemData = data;
+	$: isPublic = $targetSystemData ? $targetSystemData.visibility === 'public' : undefined;
+
+	let isVisibilityChanging = false;
+
+	async function changeVisibility(newVisibility: Visibility, id: string) {
+		isVisibilityChanging = true;
+		const request = { id, visibility: newVisibility } as ChangeVisibilityRequest;
+
+		await fetch(`/api/change_visibility`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(request)
+		});
+
+		invalidateAll();
+
+		isVisibilityChanging = false;
+	}
 </script>
 
-<DropdownMenu.Root>
+<DropdownMenu.Root onOpenChange={() => targetSystemData.set(data)}>
 	<DropdownMenu.Trigger class={className}>
 		<LucideEllipsis class="h-6 w-6" />
 	</DropdownMenu.Trigger>
@@ -33,12 +62,48 @@
 		<DropdownMenu.Group>
 			<DropdownMenu.Item
 				on:click={() => {
-					navigator.clipboard.writeText(`${API_URL}/ping_status/${data.id}`);
+					if (!$targetSystemData) return;
+
+					navigator.clipboard.writeText(`${API_URL}/ping_status/${$targetSystemData.id}`);
 				}}
 			>
 				<LucideClipboardCopy class="mr-2 h-4 w-4" />
 				Copy endpoint URL
 			</DropdownMenu.Item>
+			<DropdownMenu.Item
+				on:click={async () => {
+					if (!$targetSystemData) return;
+
+					const newVisibility = isPublic ? 'private' : 'public';
+
+					$targetSystemData.visibility = newVisibility;
+
+					await changeVisibility(newVisibility, $targetSystemData.id);
+				}}
+			>
+				{#if isVisibilityChanging}
+					<LineMdLoadingLoop class="mr-2 h-4 w-4" />
+					Changing visibility...
+				{:else if isPublic}
+					<LucideLock class="mr-2 h-4 w-4" />
+					Make Private
+				{:else}
+					<LucideEarth class="mr-2 h-4 w-4" />
+					Make Public
+				{/if}
+			</DropdownMenu.Item>
+			{#if isPublic}
+				<DropdownMenu.Item
+					on:click={() => {
+						if (!$targetSystemData) return;
+
+						navigator.clipboard.writeText(`${$page.url.origin}/public/${$targetSystemData.id}`);
+					}}
+				>
+					<LucideLink class="mr-2 h-4 w-4" />
+					Copy public link
+				</DropdownMenu.Item>
+			{/if}
 			<DropdownMenu.Item
 				on:click={() => {
 					$presetDialogOpen = true;
