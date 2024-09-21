@@ -32,7 +32,6 @@ importers:
       mode-watcher:
         specifier: ^0.4.1
         version: 0.4.1(svelte@4.2.19)
-      os: {specifier: ^0.1.2, version: 0.1.2}
       svelte-device-info:
         specifier: ^1.0.5
         version: 1.0.5
@@ -1744,9 +1743,6 @@ packages:
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
-
-  os@0.1.2:
-    resolution: {integrity: sha512-ZoXJkvAnljwvc56MbvhtKVWmSkzV712k42Is2mA0+0KTSRakq5XXuXpjZjgAt9ctzl51ojhQWakQQpmOvXWfjQ==}
 
   p-limit@3.1.0:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
@@ -3946,8 +3942,6 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
       word-wrap: 1.2.5
-
-  os@0.1.2: {}
 
   p-limit@3.1.0:
     dependencies:
