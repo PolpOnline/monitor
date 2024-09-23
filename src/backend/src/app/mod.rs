@@ -10,7 +10,9 @@ use sidekiq::{periodic, Processor, RedisConnectionManager};
 use sqlx::{postgres::PgPoolOptions, PgPool};
 use time::Duration;
 use tokio::{signal, task::AbortHandle};
-use tower_http::{compression::CompressionLayer, trace::TraceLayer};
+use tower_http::{
+    compression::CompressionLayer, decompression::DecompressionLayer, trace::TraceLayer,
+};
 use tower_sessions::cookie::Key;
 use tower_sessions_redis_store::{
     fred::prelude::{ClientLike, RedisConfig as RedisFredConfig, RedisPool as RedisFredPool},
@@ -92,7 +94,8 @@ impl App {
             .layer(auth_layer)
             .layer(middleware::from_fn(set_cache_control))
             .layer(TraceLayer::new_for_http())
-            .layer(CompressionLayer::new());
+            .layer(CompressionLayer::new())
+            .layer(DecompressionLayer::new());
 
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
 
