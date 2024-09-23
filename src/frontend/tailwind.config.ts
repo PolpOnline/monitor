@@ -6,6 +6,9 @@ const config: Config = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	safelist: ['dark'],
 	theme: {
+		fontFamily: {
+			jetbrainsMono: ['Jetbrains Mono Variable']
+		},
 		container: {
 			center: true,
 			padding: '2rem',
@@ -55,7 +58,7 @@ const config: Config = {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			fontFamily: {
-				sans: ['"JetBrains Mono"', ...fontFamily.sans]
+				sans: ['Jetbrains Mono Variable', ...fontFamily.sans]
 			}
 		}
 	}

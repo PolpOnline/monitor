@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.pcss';
+	import 'unfonts.css';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import favicon from '$lib/images/favicon.svg';
 	import { ModeWatcher } from 'mode-watcher';
@@ -32,14 +33,6 @@
 <svelte:head>
 	<link href={favicon} rel="icon" type="image/svg+xml" />
 	<title>{$title}</title>
-
-	<!--	Cloudflare Fonts will replace this with their CDN-->
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-	<link
-		href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
-		rel="stylesheet"
-	/>
 </svelte:head>
 
 <div data-vaul-drawer-wrapper>
