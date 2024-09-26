@@ -148,7 +148,7 @@
 		</div>
 
 		<div class="mt-1 grid grid-flow-col text-gray-500">
-			<div class="grid-cols-4">
+			<div class="grid-cols-4 text-left">
 				{firstTime} ago
 			</div>
 
