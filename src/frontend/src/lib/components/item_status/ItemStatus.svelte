@@ -147,23 +147,23 @@
 			{/each}
 		</div>
 
-		<div class="mt-1 flex justify-between text-gray-500">
-			<span>
+		<div class="mt-1 grid grid-flow-col text-gray-500">
+			<div class="grid-cols-4">
 				{firstTime} ago
-			</span>
+			</div>
 
-			<span class="sm:absolute sm:left-1/2 sm:-translate-x-1/2">
+			<div class="grid-cols-4 text-center">
 				{#if uptime}
 					{uptime.toFixed(2)}%
 				{:else}
 					Unknown
 				{/if}
 				uptime
-			</span>
+			</div>
 
-			<span>
+			<div class="grid-cols-4 text-right">
 				{lastTime} ago
-			</span>
+			</div>
 		</div>
 	</div>
 </div>
