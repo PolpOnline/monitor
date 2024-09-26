@@ -100,7 +100,7 @@
 		)})
 	</p>
 
-	<div class="mx-auto my-3 max-w-[700px]">
+	<div class="mx-auto my-3 max-w-[800px]">
 		<div class="flex h-[50px] justify-between">
 			{#each data.instants as instant, i (instant.expected_timestamp)}
 				<Tooltip.Root
@@ -147,12 +147,12 @@
 			{/each}
 		</div>
 
-		<div class="mt-1 grid grid-flow-col text-gray-500">
-			<div class="grid-cols-4 text-left">
+		<div class="mt-1 grid grid-flow-col grid-cols-3 text-gray-500">
+			<div class="text-left">
 				{firstTime} ago
 			</div>
 
-			<div class="grid-cols-4 text-center">
+			<div class="text-center">
 				{#if uptime}
 					{uptime.toFixed(2)}%
 				{:else}
@@ -161,7 +161,7 @@
 				uptime
 			</div>
 
-			<div class="grid-cols-4 text-right">
+			<div class="text-right">
 				{lastTime} ago
 			</div>
 		</div>
