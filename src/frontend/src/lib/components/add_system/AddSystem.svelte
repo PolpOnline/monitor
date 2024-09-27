@@ -44,10 +44,7 @@
 {:else}
 	<Drawer.Root bind:open={$addSystemSheetOpen}>
 		<Drawer.Trigger asChild let:builder>
-			<Button
-				builders={[builder]}
-				class="fixed bottom-5 right-5 h-12 w-12 {$addSystemSheetOpen ? 'hidden' : ''}"
-			>
+			<Button builders={[builder]} class="fixed bottom-5 right-5 h-12 w-12">
 				<HeroiconsPlus20Solid class="h-6 w-6" />
 			</Button>
 		</Drawer.Trigger>
