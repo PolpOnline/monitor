@@ -10,13 +10,14 @@ use uuid::Uuid;
 
 use crate::{
     users::AuthSession,
-    web::protected::list_systems::{SystemData, SystemRecord, Visibility},
+    web::protected::list_systems::{SystemData, SystemRecord, Visibility, LIMIT_SYSTEM_REQUEST},
 };
 
 #[derive(Debug, Deserialize, Clone, TS)]
 #[ts(export)]
-pub struct GetPublicRequest {
-    pub list_size: i32,
+pub struct GetPublicQuery {
+    pub list_size: i64,
+    pub page: i64,
 }
 
 #[derive(Debug, Serialize, Clone, TS)]
@@ -28,8 +29,12 @@ pub struct GetPublicResponse {
 pub async fn get_public(
     auth_session: AuthSession,
     Path(uuid): Path<Uuid>,
-    Query(req): Query<GetPublicRequest>,
+    Query(query): Query<GetPublicQuery>,
 ) -> impl IntoResponse {
+    if query.list_size > LIMIT_SYSTEM_REQUEST {
+        return StatusCode::BAD_REQUEST.into_response();
+    }
+
     let db_system = match sqlx::query_as!(
         SystemRecord,
         // language=PostgreSQL
@@ -51,11 +56,17 @@ pub async fn get_public(
         }
     };
 
-    let system_data =
-        match SystemData::fetch_from_db(&auth_session.backend.db, req.list_size, db_system).await {
-            Ok(r) => r,
-            Err(s) => return s.into_response(),
-        };
+    let system_data = match SystemData::fetch_from_db(
+        &auth_session.backend.db,
+        query.list_size,
+        query.page,
+        db_system,
+    )
+    .await
+    {
+        Ok(r) => r,
+        Err(s) => return s.into_response(),
+    };
 
     Json(GetPublicResponse {
         system: system_data,

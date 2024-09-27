@@ -9,6 +9,7 @@
 	import { fly, type FlyParams } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { type AnimationConfig, flip } from 'svelte/animate';
+	import PageSelector from '$components/PageSelector.svelte';
 
 	title.set('Monitor');
 
@@ -24,11 +25,15 @@
 </svelte:head>
 
 <main>
-	{#each data.systems as system (system.name)}
-		<div class="my-3" in:fly={inParams} out:fly={outParams} animate:flip={animateParams}>
-			<ItemStatus data={system} />
-		</div>
-	{/each}
+	<div class="mx-4">
+		<PageSelector />
+
+		{#each data.systems as system (system.name)}
+			<div in:fly={inParams} out:fly={outParams} animate:flip={animateParams}>
+				<ItemStatus data={system} />
+			</div>
+		{/each}
+	</div>
 </main>
 
 <AddSystem data={data.form} />

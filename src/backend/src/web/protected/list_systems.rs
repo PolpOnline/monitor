@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use axum::{extract::Path, response::IntoResponse, Json};
+use axum::{extract::Query, response::IntoResponse, Json};
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::types::PgInterval, PgPool};
@@ -11,7 +11,7 @@ use uuid::Uuid;
 use crate::{
     users::AuthSession,
     web::utils::{
-        time::{approx_expected_timestamp, primitive_datetime_now},
+        time::approx_expected_timestamp,
         time_conversions::{from_pg_interval_to_duration, primitive_to_offset_date_time},
     },
 };
@@ -57,7 +57,7 @@ pub enum Status {
     Untracked,
 }
 
-const LIMIT_SYSTEM_REQUEST: i32 = 100;
+pub const LIMIT_SYSTEM_REQUEST: i64 = 100;
 
 #[derive(Debug, Serialize, Deserialize, Clone, TS, sqlx::Type)]
 #[sqlx(type_name = "visibility", rename_all = "snake_case")]
@@ -91,16 +91,22 @@ pub struct PingRecord {
     timestamp: PrimitiveDateTime,
 }
 
+#[derive(Debug, Deserialize, Clone)]
+pub struct ListSystemsQuery {
+    pub page: i64,
+    pub list_size: i64,
+}
+
 pub async fn list_systems(
     auth_session: AuthSession,
-    Path(list_size): Path<i32>,
+    Query(query): Query<ListSystemsQuery>,
 ) -> impl IntoResponse {
     let user = match auth_session.user {
         Some(user) => user,
         None => return StatusCode::UNAUTHORIZED.into_response(),
     };
 
-    if list_size > LIMIT_SYSTEM_REQUEST {
+    if query.list_size > LIMIT_SYSTEM_REQUEST {
         return StatusCode::BAD_REQUEST.into_response();
     }
 
@@ -123,11 +129,17 @@ pub async fn list_systems(
     let mut systems: Vec<SystemData> = Vec::with_capacity(db_systems.len());
 
     for db_system in db_systems {
-        let system_data =
-            match SystemData::fetch_from_db(&auth_session.backend.db, list_size, db_system).await {
-                Ok(r) => r,
-                Err(s) => return s.into_response(),
-            };
+        let system_data = match SystemData::fetch_from_db(
+            &auth_session.backend.db,
+            query.list_size,
+            query.page,
+            db_system,
+        )
+        .await
+        {
+            Ok(r) => r,
+            Err(s) => return s.into_response(),
+        };
 
         systems.push(system_data);
     }
@@ -138,17 +150,19 @@ pub async fn list_systems(
 impl SystemData {
     pub async fn fetch_from_db(
         pg_pool: &PgPool,
-        list_size: i32,
+        list_size: i64,
+        page: i64,
         db_system: SystemRecord,
     ) -> Result<Self, StatusCode> {
         let db_instants = match sqlx::query_as!(
             PingRecord,
             // language=PostgreSQL
             r#"
-            SELECT * FROM ping WHERE system_id = $1 ORDER BY timestamp DESC LIMIT $2
+            SELECT * FROM ping WHERE system_id = $1 ORDER BY timestamp DESC LIMIT $2 OFFSET $3
             "#,
             db_system.id,
-            list_size as i64
+            list_size,
+            page * list_size
         )
         .fetch_all(pg_pool)
         .await
@@ -159,12 +173,8 @@ impl SystemData {
 
         let frequency = from_pg_interval_to_duration(db_system.frequency);
 
-        let instants = Self::from_ping_records_to_instants(
-            db_instants,
-            frequency,
-            db_system.starts_at,
-            list_size,
-        );
+        let instants =
+            Self::from_ping_records_to_instants(db_instants, frequency, db_system.starts_at);
 
         Ok(SystemData {
             id: db_system.id,
@@ -185,11 +195,7 @@ impl SystemData {
         ping_records: Vec<PingRecord>,
         frequency: Duration,
         starts_at: PrimitiveDateTime,
-        how_many: i32,
     ) -> Vec<Instant> {
-        let expected_timestamp_now =
-            approx_expected_timestamp(primitive_datetime_now(), frequency, starts_at).unwrap();
-
         // Hashmap that contains the key as the expected timestamp and the value as the
         // actual timestamp
         let hashmap = ping_records.iter().fold(HashMap::new(), |mut acc, t| {
@@ -200,20 +206,22 @@ impl SystemData {
             acc
         });
 
-        let how_many_datetime = expected_timestamp_now - frequency * how_many;
+        let mut instants = Vec::with_capacity(ping_records.len());
 
-        let mut instants = Vec::with_capacity(how_many as usize);
+        let nearest_ping_record = ping_records.first().unwrap().timestamp;
+        let mut nearest_datetime =
+            approx_expected_timestamp(nearest_ping_record, frequency, starts_at).unwrap();
+        let furthest_datetime = nearest_datetime - frequency * ping_records.len() as i32;
 
-        let mut expected_timestamp = expected_timestamp_now;
-        while expected_timestamp > how_many_datetime {
-            let instant = match hashmap.get(&expected_timestamp) {
+        while nearest_datetime > furthest_datetime {
+            let instant = match hashmap.get(&nearest_datetime) {
                 Some(status) => Instant {
                     status: Status::Up,
                     timestamp: Some(primitive_to_offset_date_time(*status)),
-                    expected_timestamp: primitive_to_offset_date_time(expected_timestamp),
+                    expected_timestamp: primitive_to_offset_date_time(nearest_datetime),
                 },
                 None => {
-                    let status = if expected_timestamp > starts_at {
+                    let status = if nearest_datetime > starts_at {
                         Status::Down
                     } else {
                         Status::Untracked
@@ -222,14 +230,14 @@ impl SystemData {
                     Instant {
                         status,
                         timestamp: None,
-                        expected_timestamp: primitive_to_offset_date_time(expected_timestamp),
+                        expected_timestamp: primitive_to_offset_date_time(nearest_datetime),
                     }
                 }
             };
 
             instants.push(instant);
 
-            expected_timestamp -= frequency;
+            nearest_datetime -= frequency;
         }
 
         instants.reverse();

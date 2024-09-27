@@ -38,8 +38,10 @@ import { zod } from 'sveltekit-superforms/adapters';
 // const exampleSystemData2 = generateRandomSystemData('Test System 2', 60); // 1 hour
 // const exampleSystemData3 = generateRandomSystemData('Test System 3', 180); // 3 hours
 
-export const load: PageServerLoad = async ({ fetch }) => {
-	const response = await getSystemsList(fetch);
+export const load: PageServerLoad = async ({ fetch, url }) => {
+	const page = Number(url.searchParams.get('page')) || 0;
+
+	const response = await getSystemsList(fetch, page);
 
 	return {
 		systems: response.systems as SystemData[],
@@ -48,9 +50,10 @@ export const load: PageServerLoad = async ({ fetch }) => {
 };
 
 async function getSystemsList(
-	fetch: WindowOrWorkerGlobalScope['fetch']
+	fetch: WindowOrWorkerGlobalScope['fetch'],
+	page: number
 ): Promise<ListSystemsResponse> {
-	return fetch(`${API_URL}/list_systems/${LIST_SIZE}`, {
+	return fetch(`${API_URL}/list_systems?list_size=${LIST_SIZE}&page=${page}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'

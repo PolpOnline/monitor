@@ -2,6 +2,7 @@
 	import ItemStatus from '$components/item_status/ItemStatus.svelte';
 	import type { PageData } from './$types';
 	import { title } from '$components/stores/title.store';
+	import PageSelector from '$components/PageSelector.svelte';
 
 	title.set('Public Monitor');
 
@@ -10,4 +11,8 @@
 	title.set(data.system.name);
 </script>
 
-<ItemStatus data={data.system} showDropdown={false} />
+<div class="mx-4">
+	<PageSelector />
+
+	<ItemStatus data={data.system} showDropdown={false} />
+</div>
