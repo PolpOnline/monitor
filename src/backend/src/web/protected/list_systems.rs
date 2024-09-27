@@ -1,6 +1,10 @@
 use std::collections::HashMap;
 
-use axum::{extract::Query, response::IntoResponse, Json};
+use axum::{
+    extract::Query,
+    response::{IntoResponse, Response},
+    Json,
+};
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::types::PgInterval, PgPool};
@@ -153,7 +157,7 @@ impl SystemData {
         list_size: i64,
         page: i64,
         db_system: SystemRecord,
-    ) -> Result<Self, StatusCode> {
+    ) -> Result<Self, Response> {
         let db_instants = match sqlx::query_as!(
             PingRecord,
             // language=PostgreSQL
@@ -168,13 +172,13 @@ impl SystemData {
         .await
         {
             Ok(r) => r,
-            Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR),
+            Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR.into_response()),
         };
 
         let frequency = from_pg_interval_to_duration(db_system.frequency);
 
         let instants =
-            Self::from_ping_records_to_instants(db_instants, frequency, db_system.starts_at);
+            Self::from_ping_records_to_instants(db_instants, frequency, db_system.starts_at)?;
 
         Ok(SystemData {
             id: db_system.id,
@@ -195,7 +199,7 @@ impl SystemData {
         ping_records: Vec<PingRecord>,
         frequency: Duration,
         starts_at: PrimitiveDateTime,
-    ) -> Vec<Instant> {
+    ) -> Result<Vec<Instant>, Response> {
         // Hashmap that contains the key as the expected timestamp and the value as the
         // actual timestamp
         let hashmap = ping_records.iter().fold(HashMap::new(), |mut acc, t| {
@@ -208,9 +212,15 @@ impl SystemData {
 
         let mut instants = Vec::with_capacity(ping_records.len());
 
-        let nearest_ping_record = ping_records.first().unwrap().timestamp;
+        let nearest_ping_record = match ping_records.first() {
+            Some(x) => x,
+            None => {
+                return Err((StatusCode::INTERNAL_SERVER_ERROR, "Too early in time").into_response())
+            }
+        };
+
         let mut nearest_datetime =
-            approx_expected_timestamp(nearest_ping_record, frequency, starts_at).unwrap();
+            approx_expected_timestamp(nearest_ping_record.timestamp, frequency, starts_at).unwrap();
         let furthest_datetime = nearest_datetime - frequency * ping_records.len() as i32;
 
         while nearest_datetime > furthest_datetime {
@@ -242,6 +252,6 @@ impl SystemData {
 
         instants.reverse();
 
-        instants
+        Ok(instants)
     }
 }

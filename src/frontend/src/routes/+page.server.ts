@@ -5,6 +5,7 @@ import type { Actions, PageServerLoad } from './$types.js';
 import { fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
+import { redirect } from '@sveltejs/kit';
 
 // function generateRandomStatus(): Status {
 // 	const statuses: Status[] = ['up', 'down'];
@@ -53,12 +54,22 @@ async function getSystemsList(
 	fetch: WindowOrWorkerGlobalScope['fetch'],
 	page: number
 ): Promise<ListSystemsResponse> {
-	return fetch(`${API_URL}/list_systems?list_size=${LIST_SIZE}&page=${page}`, {
+	const res = await fetch(`${API_URL}/list_systems?list_size=${LIST_SIZE}&page=${page}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
 		}
-	}).then((res) => res.json() as Promise<ListSystemsResponse>);
+	});
+
+	if (!res.ok) {
+		const text = await res.text();
+
+		if (text.includes('Too early in time')) {
+			redirect(307, `?page=${page - 1}`);
+		}
+	}
+
+	return (await res.json()) as Promise<ListSystemsResponse>;
 }
 
 // noinspection JSUnusedGlobalSymbols

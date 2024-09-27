@@ -56,11 +56,13 @@
 	}
 
 	$: downTime = calculateDownTime(data.instants, 'down');
+
 	$: firstTime = humanizeDuration(
 		// Difference between now and the least recent instant
 		Date.now() - new Date(data.instants[0].expected_timestamp).getTime(),
 		{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
 	);
+
 	$: lastTime = humanizeDuration(
 		// Difference between now and the most recent instant
 		Date.now() - new Date(data.instants[data.instants.length - 1].expected_timestamp).getTime(),
