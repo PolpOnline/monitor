@@ -214,9 +214,7 @@ impl SystemData {
 
         let nearest_ping_record = match ping_records.first() {
             Some(x) => x,
-            None => {
-                return Err((StatusCode::INTERNAL_SERVER_ERROR, "Too early in time").into_response())
-            }
+            None => return Err((StatusCode::NOT_FOUND, "Too early in time").into_response()),
         };
 
         let mut nearest_datetime =
