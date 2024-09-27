@@ -13,8 +13,7 @@ use crate::{
     web::protected::list_systems::{SystemData, SystemRecord, Visibility, LIMIT_SYSTEM_REQUEST},
 };
 
-#[derive(Debug, Deserialize, Clone, TS)]
-#[ts(export)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct GetPublicQuery {
     pub list_size: i64,
     pub page: i64,

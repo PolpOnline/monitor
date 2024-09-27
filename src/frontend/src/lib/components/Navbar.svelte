@@ -5,7 +5,6 @@
 	import LucideSun from '~icons/lucide/sun';
 	import LucideLogIn from '~icons/lucide/log-in';
 	import LucideLogOut from '~icons/lucide/log-out';
-	import type { LoginStatusResponse } from '../../../../backend/bindings';
 	// noinspection ES6UnusedImports
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import LucideUser from '~icons/lucide/user';
@@ -15,11 +14,12 @@
 	import LucideGithub from '~icons/lucide/github';
 	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
+	import type { LoginStatus } from '../../app';
 
-	export let loginStatus: LoginStatusResponse;
+	export let loginStatus: LoginStatus;
+	export let loggedInEmail: string | undefined;
 
-	$: loggedIn = loginStatus.status === 'logged_in';
-	$: loggedInEmail = loginStatus.email;
+	$: loggedIn = loginStatus === 'logged_in';
 
 	async function refresh() {
 		await invalidateAll();

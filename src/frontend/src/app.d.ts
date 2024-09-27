@@ -1,5 +1,5 @@
 import 'unplugin-icons/types/svelte';
-import type { LoginStatusResponse } from '../../backend/bindings';
+export type LoginStatus = 'logged_in' | 'logged_out';
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
@@ -8,7 +8,8 @@ declare global {
 		// interface Error {}
 		// noinspection JSUnusedGlobalSymbols
 		interface Locals {
-			loginStatus: LoginStatusResponse;
+			loginStatus: LoginStatus;
+			email?: string;
 		}
 
 		// interface PageData {}

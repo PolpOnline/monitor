@@ -1,7 +1,8 @@
 import { API_URL } from '$lib/api/api';
-import type { LoginStatusResponse } from '../../backend/bindings';
 import type { Handle, HandleFetch } from '@sveltejs/kit';
 import cookie from 'cookie';
+import type { LoginStatus } from './app';
+import type { UserInfoResponse } from '../../backend/bindings';
 
 // Forwards all cookies to the API, see https://kit.svelte.dev/docs/hooks#server-hooks-handlefetch
 export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
@@ -42,10 +43,14 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// Auth check
-	const status = await getLoginStatus(event.fetch);
+	const status: LoginStatus = event.cookies.get('id') ? 'logged_in' : 'logged_out';
 
 	// Set the login status in the "locals" object, so we can access it in the page component
 	event.locals.loginStatus = status;
+
+	if (event.locals.loginStatus === 'logged_in' && event.locals.email === undefined) {
+		event.locals.email = await getEmail(event.fetch);
+	}
 
 	const requestedPath = event.url.pathname;
 
@@ -53,7 +58,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return await resolve(event);
 	}
 
-	if (status.status === 'logged_out') {
+	if (status === 'logged_out') {
 		return new Response(null, {
 			status: 302,
 			headers: { location: '/login' }
@@ -63,11 +68,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 	return await resolve(event);
 };
 
-async function getLoginStatus(fetch: WindowOrWorkerGlobalScope['fetch']) {
-	return fetch(`${API_URL}/login_status`, {
+async function getEmail(fetch: WindowOrWorkerGlobalScope['fetch']) {
+	const res = await fetch(`${API_URL}/user_info`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
 		}
-	}).then((res) => res.json() as Promise<LoginStatusResponse>);
+	}).then((res) => res.json() as Promise<UserInfoResponse>);
+
+	return res.email;
 }

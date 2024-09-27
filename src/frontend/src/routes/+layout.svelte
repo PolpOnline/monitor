@@ -36,7 +36,7 @@
 </svelte:head>
 
 <div data-vaul-drawer-wrapper>
-	<Navbar loginStatus={data.loginStatus} />
+	<Navbar loginStatus={data.loginStatus} loggedInEmail={data.loggedInEmail} />
 
 	<ModeWatcher defaultMode={'dark'} />
 
