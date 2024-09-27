@@ -35,7 +35,7 @@
 	<title>{$title}</title>
 </svelte:head>
 
-<div data-vaul-drawer-wrapper>
+<div>
 	<Navbar loginStatus={data.loginStatus} loggedInEmail={data.loggedInEmail} />
 
 	<ModeWatcher defaultMode={'dark'} />

@@ -25,7 +25,7 @@
 </svelte:head>
 
 <main>
-	<div class="mx-4">
+	<div class="mx-4" data-vaul-drawer-wrapper>
 		<PageSelector />
 
 		{#each data.systems as system (system.name)}
@@ -34,12 +34,12 @@
 			</div>
 		{/each}
 	</div>
+
+	<AddSystem data={data.form} />
+
+	<DeleteSystemDialog />
+
+	<EditSystemNameDialog />
+
+	<PresetDialog />
 </main>
-
-<AddSystem data={data.form} />
-
-<DeleteSystemDialog />
-
-<EditSystemNameDialog />
-
-<PresetDialog />
