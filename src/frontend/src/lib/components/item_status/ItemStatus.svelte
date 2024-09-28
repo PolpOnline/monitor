@@ -4,11 +4,10 @@
 	import humanizeDuration from 'humanize-duration';
 	// noinspection ES6UnusedImports
 	import * as Tooltip from '$components/ui/tooltip';
-	import type { Instant, Status, SystemData } from '../../../../../backend/bindings';
+	import type { SystemData } from '../../../../../backend/bindings';
 	import ItemStatusDropdown from './ItemStatusDropdown.svelte';
 	import { page } from '$app/stores';
-	import { slide } from 'svelte/transition';
-	import { cubicIn, cubicOut } from 'svelte/easing';
+	import ItemStatusOperationalStatus from '$components/item_status/ItemStatusOperationalStatus.svelte';
 
 	export let showDropdown: boolean = true;
 	export let data: SystemData;
@@ -18,21 +17,19 @@
 		up: 'bg-green-500',
 		down: 'bg-red-500',
 		untracked: 'bg-gray-500'
-	};
+	} as const;
 
 	const colorMapText = {
 		up: 'text-green-500',
 		down: 'text-red-500',
 		untracked: 'text-gray-500'
-	};
+	} as const;
 
 	const colorMapBorder = {
 		up: 'border-green-700',
 		down: 'border-red-700',
 		untracked: 'border-gray-700'
-	};
-
-	$: lastInstant = data.instants[data.instants.length - 1];
+	} as const;
 
 	let tooltipOpens: boolean[] = new Array(data.instants.length).fill(false);
 
@@ -43,22 +40,6 @@
 	$: uptime = ((data.instants.filter((instant) => instant.status === 'up').length /
 		data.instants.filter((instant) => instant.status !== 'untracked').length) *
 		100) as number;
-
-	function calculateDownTime(instants: Instant[], level: Status) {
-		// back track from the most recent instant to find the first error
-		for (const [index, instant] of instants.toReversed().entries()) {
-			if (instant.status === level) {
-				continue;
-			}
-			return humanizeDuration(
-				// Difference between now and the most recent instant
-				Date.now() - new Date(instants[instants.length - index - 1].expected_timestamp).getTime(),
-				{ round: true, units: ['y', 'd', 'h', 'm'] }
-			);
-		}
-	}
-
-	$: downTime = calculateDownTime(data.instants, 'down');
 
 	$: firstTime = humanizeDuration(
 		// Difference between now and the least recent instant
@@ -71,9 +52,6 @@
 		Date.now() - new Date(data.instants[data.instants.length - 1].expected_timestamp).getTime(),
 		{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
 	);
-
-	let transitionIn = { easing: cubicOut, duration: 300 };
-	let transitionOut = { easing: cubicIn, duration: 300 };
 </script>
 
 <div class="relative my-3 rounded-lg border p-3">
@@ -88,31 +66,8 @@
 	</h1>
 
 	{#if pageNumber === 0}
-		<h2
-			class="text-lg {colorMapText[lastInstant.status]} my-1 flex items-center"
-			in:slide={transitionIn}
-			out:slide={transitionOut}
-		>
-			{#if lastInstant.status === 'up'}
-				<HeroiconsCheck20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
-				Operational
-			{:else if lastInstant.status === 'down'}
-				<HeroiconsXMark20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
-				Down
-				<br class="sm:hidden" />
-				{#if downTime}
-					(for
-					{downTime})
-				{/if}
-			{/if}
-		</h2>
+		<ItemStatusOperationalStatus {colorMapText} {data} />
 	{/if}
-
-	<p class="mt-1 text-sm text-gray-500">
-		Last check: {new Date(lastInstant.expected_timestamp).toLocaleString()} (checking every {humanizeDuration(
-			data.frequency * 1000 * 60
-		)})
-	</p>
 
 	<div class="mx-auto my-3 max-w-[800px]">
 		<div class="flex h-[50px] justify-between">
