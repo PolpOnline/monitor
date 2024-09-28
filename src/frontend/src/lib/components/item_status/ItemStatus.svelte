@@ -32,6 +32,7 @@
 	} as const;
 
 	let timeoutId: ReturnType<typeof setTimeout>;
+	let intervalId: ReturnType<typeof setInterval>;
 
 	function refresh(system: SystemData) {
 		return () => {
@@ -54,7 +55,7 @@
 
 		timeoutId = setTimeout(() => {
 			refresh(system)();
-			setInterval(refresh(system), frequency.as('milliseconds'));
+			intervalId = setInterval(refresh(system), frequency.as('milliseconds'));
 		}, firstRefreshFromNow.as('milliseconds'));
 
 		console.debug(
@@ -73,6 +74,7 @@
 	});
 
 	onDestroy(() => {
+		clearInterval(intervalId);
 		clearTimeout(timeoutId);
 	});
 </script>
