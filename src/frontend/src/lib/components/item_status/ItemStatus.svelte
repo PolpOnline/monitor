@@ -50,13 +50,11 @@
 			setInterval(invalidateAll, frequency.as('milliseconds'));
 		}, firstRefreshFromNow.as('milliseconds'));
 
-		// console.log(
-		// 	'Scheduled refresh for',
-		// 	firstRefresh.toJSDate().toLocaleString(),
-		// 	', Later refreshes will be every',
-		// 	frequency.as('minutes'),
-		// 	'minutes'
-		// );
+		console.debug(
+			`%cScheduled refresh for "${system.name}": ${firstRefresh.toJSDate().toLocaleString()} \n` +
+				`Later refreshes will be every ${frequency.as('minutes')} minutes`,
+			'color: #00d5ff;'
+		);
 
 		return timeoutId;
 	}
