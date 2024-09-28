@@ -12,6 +12,7 @@
 	import LucideRefreshCw from '~icons/lucide/refresh-cw';
 	import { mode, toggleMode } from 'mode-watcher';
 	import LucideGithub from '~icons/lucide/github';
+	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
 	import type { LoginStatus } from '../../app';
@@ -21,11 +22,9 @@
 
 	$: loggedIn = loginStatus === 'logged_in';
 
-	async function refresh() {
-		await invalidateAll();
-	}
-
 	$: isPublicPage = $page.url.pathname.startsWith('/public');
+
+	let isRefreshing = false;
 </script>
 
 <nav class="flex h-20 flex-row items-center justify-between">
@@ -62,8 +61,18 @@
 						{/if}
 						<span>Toggle theme</span>
 					</DropdownMenu.Item>
-					<DropdownMenu.Item on:click={refresh}>
-						<LucideRefreshCw class="mr-2 h-4 w-4" />
+					<DropdownMenu.Item
+						on:click={async () => {
+							isRefreshing = true;
+							await invalidateAll();
+							isRefreshing = false;
+						}}
+					>
+						{#if !isRefreshing}
+							<LucideRefreshCw class="mr-2 h-4 w-4" />
+						{:else}
+							<LineMdLoadingLoop class="mr-2 h-4 w-4" />
+						{/if}
 						Refresh
 					</DropdownMenu.Item>
 					{#if loggedIn}
