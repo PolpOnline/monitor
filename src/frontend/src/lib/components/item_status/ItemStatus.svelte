@@ -7,6 +7,8 @@
 	import type { Instant, Status, SystemData } from '../../../../../backend/bindings';
 	import ItemStatusDropdown from './ItemStatusDropdown.svelte';
 	import { page } from '$app/stores';
+	import { slide } from 'svelte/transition';
+	import { cubicIn, cubicOut } from 'svelte/easing';
 
 	export let showDropdown: boolean = true;
 	export let data: SystemData;
@@ -69,6 +71,9 @@
 		Date.now() - new Date(data.instants[data.instants.length - 1].expected_timestamp).getTime(),
 		{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
 	);
+
+	let transitionIn = { easing: cubicOut, duration: 300 };
+	let transitionOut = { easing: cubicIn, duration: 300 };
 </script>
 
 <div class="relative my-3 rounded-lg border p-3">
@@ -83,7 +88,11 @@
 	</h1>
 
 	{#if pageNumber === 0}
-		<h2 class="text-lg {colorMapText[lastInstant.status]} my-1 flex items-center">
+		<h2
+			class="text-lg {colorMapText[lastInstant.status]} my-1 flex items-center"
+			in:slide={transitionIn}
+			out:slide={transitionOut}
+		>
 			{#if lastInstant.status === 'up'}
 				<HeroiconsCheck20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
 				Operational
