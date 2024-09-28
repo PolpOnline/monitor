@@ -9,6 +9,7 @@ use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::types::PgInterval, PgPool};
 use time::{Duration, OffsetDateTime, PrimitiveDateTime};
+use tracing::info;
 use ts_rs::TS;
 use uuid::Uuid;
 
@@ -158,15 +159,30 @@ impl SystemData {
         page: i64,
         db_system: SystemRecord,
     ) -> Result<Self, Response> {
+        let frequency = from_pg_interval_to_duration(db_system.frequency);
+
+        let now =
+            approx_expected_timestamp(primitive_datetime_now(), frequency, db_system.starts_at)
+                .unwrap();
+
+        let nearest_datetime = now - (frequency * (page * list_size) as i32);
+        let furthest_datetime = nearest_datetime - (frequency * list_size as i32);
+
+        let nearest_datetime_max_expected = nearest_datetime + frequency;
+        let furthest_datetime_min_expected = furthest_datetime + frequency;
+
         let db_instants = match sqlx::query_as!(
             PingRecord,
             // language=PostgreSQL
             r#"
-            SELECT * FROM ping WHERE system_id = $1 ORDER BY timestamp DESC LIMIT $2 OFFSET $3
+            SELECT * FROM ping WHERE system_id = $1
+                                AND timestamp < $2
+                                AND timestamp > $3
+                               ORDER BY timestamp DESC
             "#,
             db_system.id,
-            list_size,
-            page * list_size
+            nearest_datetime_max_expected,
+            furthest_datetime_min_expected,
         )
         .fetch_all(pg_pool)
         .await
@@ -175,14 +191,13 @@ impl SystemData {
             Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR.into_response()),
         };
 
-        let frequency = from_pg_interval_to_duration(db_system.frequency);
-
         let instants = Self::from_ping_records_to_instants(
             db_instants,
             frequency,
             db_system.starts_at,
+            nearest_datetime,
+            furthest_datetime,
             list_size,
-            page,
         )?;
 
         Ok(SystemData {
@@ -204,8 +219,9 @@ impl SystemData {
         ping_records: Vec<PingRecord>,
         frequency: Duration,
         starts_at: PrimitiveDateTime,
-        expected_how_many: i64,
-        page: i64,
+        mut nearest_datetime: PrimitiveDateTime,
+        furthest_datetime: PrimitiveDateTime,
+        list_size: i64,
     ) -> Result<Vec<Instant>, Response> {
         // Hashmap that contains the key as the expected timestamp and the value as the
         // actual timestamp
@@ -217,13 +233,7 @@ impl SystemData {
             acc
         });
 
-        let mut instants = Vec::with_capacity(expected_how_many as usize);
-
-        let now =
-            approx_expected_timestamp(primitive_datetime_now(), frequency, starts_at).unwrap();
-
-        let mut nearest_datetime = now - (frequency * (page * expected_how_many) as i32);
-        let furthest_datetime = nearest_datetime - (frequency * expected_how_many as i32);
+        let mut instants = Vec::with_capacity(list_size as usize);
 
         while nearest_datetime > furthest_datetime {
             let instant = match hashmap.get(&nearest_datetime) {
