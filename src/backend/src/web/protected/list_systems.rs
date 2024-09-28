@@ -177,8 +177,12 @@ impl SystemData {
 
         let frequency = from_pg_interval_to_duration(db_system.frequency);
 
-        let instants =
-            Self::from_ping_records_to_instants(db_instants, frequency, db_system.starts_at)?;
+        let instants = Self::from_ping_records_to_instants(
+            db_instants,
+            frequency,
+            db_system.starts_at,
+            list_size,
+        )?;
 
         Ok(SystemData {
             id: db_system.id,
@@ -199,6 +203,7 @@ impl SystemData {
         ping_records: Vec<PingRecord>,
         frequency: Duration,
         starts_at: PrimitiveDateTime,
+        expected_how_many: i64,
     ) -> Result<Vec<Instant>, Response> {
         // Hashmap that contains the key as the expected timestamp and the value as the
         // actual timestamp
@@ -219,7 +224,9 @@ impl SystemData {
 
         let mut nearest_datetime =
             approx_expected_timestamp(nearest_ping_record.timestamp, frequency, starts_at).unwrap();
-        let furthest_datetime = nearest_datetime - frequency * ping_records.len() as i32;
+        let furthest_datetime = nearest_datetime - frequency * expected_how_many as i32;
+
+        println!("a");
 
         while nearest_datetime > furthest_datetime {
             let instant = match hashmap.get(&nearest_datetime) {

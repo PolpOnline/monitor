@@ -2,10 +2,9 @@ import type { ListSystemsResponse, SystemData } from '../../../backend/bindings'
 import { API_URL, LIST_SIZE } from '$lib/api/api';
 import { formSchema } from '$lib/components/add_system/schema';
 import type { Actions, PageServerLoad } from './$types.js';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { redirect } from '@sveltejs/kit';
 
 // function generateRandomStatus(): Status {
 // 	const statuses: Status[] = ['up', 'down'];
@@ -69,7 +68,14 @@ async function getSystemsList(
 		}
 	}
 
-	return (await res.json()) as Promise<ListSystemsResponse>;
+	const resJson = (await res.json()) as ListSystemsResponse;
+	resJson.systems
+		.filter((system) => system.name.startsWith('751'))
+		.forEach((system) => {
+			console.log(system.instants);
+		});
+
+	return resJson;
 }
 
 // noinspection JSUnusedGlobalSymbols
