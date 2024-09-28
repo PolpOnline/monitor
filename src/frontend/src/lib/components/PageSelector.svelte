@@ -10,12 +10,24 @@
 </script>
 
 <div class="flex items-center justify-between">
-	<Button variant="outline" size="icon" href="?page={currentPage + 1}">
+	<Button
+		variant="outline"
+		size="icon"
+		href="?page={currentPage + 1}"
+		data-sveltekit-preload-data="hover"
+		data-sveltekit-preload-code="eager"
+	>
 		<LucideChevronLeft />
 	</Button>
 	<!-- We cannot set `disabled` on a button to which we passed a href, so we need to do this -->
 	{#if currentPage !== 0}
-		<Button variant="outline" size="icon" href={prevPageHref}>
+		<Button
+			variant="outline"
+			size="icon"
+			href={prevPageHref}
+			data-sveltekit-preload-data="hover"
+			data-sveltekit-preload-code="eager"
+		>
 			<LucideChevronRight />
 		</Button>
 	{:else}
