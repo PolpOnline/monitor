@@ -6,6 +6,7 @@
 	import ItemStatusGraph from '$components/item_status/ItemStatusGraph.svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { DateTime, Duration } from 'luxon';
+	import { onMount, onDestroy } from 'svelte';
 
 	export let showDropdown: boolean = true;
 	export let data: SystemData;
@@ -30,6 +31,8 @@
 		untracked: 'border-gray-700'
 	} as const;
 
+	let timeoutId: ReturnType<typeof setTimeout>;
+
 	function autoRefreshSystem(system: SystemData) {
 		const lastInstantRaw: Instant = system.instants[system.instants.length - 1];
 		// add 5 seconds to the last instant time to avoid refreshing too soon
@@ -42,7 +45,7 @@
 		const firstRefresh = lastInstant.plus(frequency);
 		const firstRefreshFromNow = firstRefresh.diffNow();
 
-		setTimeout(() => {
+		timeoutId = setTimeout(() => {
 			invalidateAll();
 			setInterval(invalidateAll, frequency.as('milliseconds'));
 		}, firstRefreshFromNow.as('milliseconds'));
@@ -54,9 +57,19 @@
 		// 	frequency.as('minutes'),
 		// 	'minutes'
 		// );
+
+		return timeoutId;
 	}
 
-	autoRefreshSystem(data);
+	onMount(() => {
+		if (currentPage === 0) {
+			autoRefreshSystem(data);
+		}
+	});
+
+	onDestroy(() => {
+		clearTimeout(timeoutId);
+	});
 </script>
 
 <div class="relative my-3 rounded-lg border p-3">
