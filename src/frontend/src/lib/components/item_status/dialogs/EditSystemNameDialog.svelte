@@ -13,6 +13,8 @@
 		isLoading = true;
 		const id = $targetSystemData?.id;
 
+		newSystemName = newSystemName.trim();
+
 		await fetch(`/api/edit_system_name`, {
 			method: 'PATCH',
 			headers: {
