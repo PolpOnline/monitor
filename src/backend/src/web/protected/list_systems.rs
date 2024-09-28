@@ -215,7 +215,7 @@ impl SystemData {
             acc
         });
 
-        let mut instants = Vec::with_capacity(ping_records.len());
+        let mut instants = Vec::with_capacity(expected_how_many as usize);
 
         let nearest_ping_record = match ping_records.first() {
             Some(x) => x,
@@ -225,8 +225,6 @@ impl SystemData {
         let mut nearest_datetime =
             approx_expected_timestamp(nearest_ping_record.timestamp, frequency, starts_at).unwrap();
         let furthest_datetime = nearest_datetime - frequency * expected_how_many as i32;
-
-        println!("a");
 
         while nearest_datetime > furthest_datetime {
             let instant = match hashmap.get(&nearest_datetime) {
