@@ -6,7 +6,7 @@
 	import ItemStatusGraph from '$components/item_status/ItemStatusGraph.svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { DateTime, Duration } from 'luxon';
-	import { onMount, onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	export let showDropdown: boolean = true;
 	export let data: SystemData;
@@ -33,6 +33,13 @@
 
 	let timeoutId: ReturnType<typeof setTimeout>;
 
+	function refresh(system: SystemData) {
+		return () => {
+			console.debug(`%cRefreshing "${system.name}"`, 'color: #00d5ff;');
+			invalidateAll();
+		};
+	}
+
 	function autoRefreshSystem(system: SystemData) {
 		const lastInstantRaw: Instant = system.instants[system.instants.length - 1];
 		// add 5 seconds to the last instant time to avoid refreshing too soon
@@ -46,8 +53,8 @@
 		const firstRefreshFromNow = firstRefresh.diffNow();
 
 		timeoutId = setTimeout(() => {
-			invalidateAll();
-			setInterval(invalidateAll, frequency.as('milliseconds'));
+			refresh(system)();
+			setInterval(refresh(system), frequency.as('milliseconds'));
 		}, firstRefreshFromNow.as('milliseconds'));
 
 		console.debug(
