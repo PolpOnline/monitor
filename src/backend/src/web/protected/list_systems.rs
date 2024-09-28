@@ -9,7 +9,6 @@ use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::types::PgInterval, PgPool};
 use time::{Duration, OffsetDateTime, PrimitiveDateTime};
-use tracing::info;
 use ts_rs::TS;
 use uuid::Uuid;
 
