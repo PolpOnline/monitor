@@ -2,7 +2,7 @@ import type { ListSystemsResponse, SystemData } from '../../../backend/bindings'
 import { API_URL, LIST_SIZE } from '$lib/api/api';
 import { formSchema } from '$lib/components/add_system/schema';
 import type { Actions, PageServerLoad } from './$types.js';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
@@ -53,29 +53,12 @@ async function getSystemsList(
 	fetch: WindowOrWorkerGlobalScope['fetch'],
 	page: number
 ): Promise<ListSystemsResponse> {
-	const res = await fetch(`${API_URL}/list_systems?list_size=${LIST_SIZE}&page=${page}`, {
+	return fetch(`${API_URL}/list_systems?list_size=${LIST_SIZE}&page=${page}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
 		}
-	});
-
-	if (!res.ok) {
-		const text = await res.text();
-
-		if (text.includes('Too early in time')) {
-			redirect(307, `?page=${page - 1}`);
-		}
-	}
-
-	const resJson = (await res.json()) as ListSystemsResponse;
-	resJson.systems
-		.filter((system) => system.name.startsWith('751'))
-		.forEach((system) => {
-			console.log(system.instants);
-		});
-
-	return resJson;
+	}).then((res) => res.json() as Promise<ListSystemsResponse>);
 }
 
 // noinspection JSUnusedGlobalSymbols

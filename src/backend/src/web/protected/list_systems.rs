@@ -15,7 +15,7 @@ use uuid::Uuid;
 use crate::{
     users::AuthSession,
     web::utils::{
-        time::approx_expected_timestamp,
+        time::{approx_expected_timestamp, primitive_datetime_now},
         time_conversions::{from_pg_interval_to_duration, primitive_to_offset_date_time},
     },
 };
@@ -182,6 +182,7 @@ impl SystemData {
             frequency,
             db_system.starts_at,
             list_size,
+            page,
         )?;
 
         Ok(SystemData {
@@ -204,6 +205,7 @@ impl SystemData {
         frequency: Duration,
         starts_at: PrimitiveDateTime,
         expected_how_many: i64,
+        page: i64,
     ) -> Result<Vec<Instant>, Response> {
         // Hashmap that contains the key as the expected timestamp and the value as the
         // actual timestamp
@@ -217,14 +219,11 @@ impl SystemData {
 
         let mut instants = Vec::with_capacity(expected_how_many as usize);
 
-        let nearest_ping_record = match ping_records.first() {
-            Some(x) => x,
-            None => return Err((StatusCode::NOT_FOUND, "Too early in time").into_response()),
-        };
+        let now =
+            approx_expected_timestamp(primitive_datetime_now(), frequency, starts_at).unwrap();
 
-        let mut nearest_datetime =
-            approx_expected_timestamp(nearest_ping_record.timestamp, frequency, starts_at).unwrap();
-        let furthest_datetime = nearest_datetime - frequency * expected_how_many as i32;
+        let mut nearest_datetime = now - (frequency * (page * expected_how_many) as i32);
+        let furthest_datetime = nearest_datetime - (frequency * expected_how_many as i32);
 
         while nearest_datetime > furthest_datetime {
             let instant = match hashmap.get(&nearest_datetime) {

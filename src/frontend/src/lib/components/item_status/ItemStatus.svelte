@@ -6,9 +6,11 @@
 	import * as Tooltip from '$components/ui/tooltip';
 	import type { Instant, Status, SystemData } from '../../../../../backend/bindings';
 	import ItemStatusDropdown from './ItemStatusDropdown.svelte';
+	import { page } from '$app/stores';
 
 	export let showDropdown: boolean = true;
 	export let data: SystemData;
+	$: pageNumber = Number($page.url.searchParams.get('page')) || 0;
 
 	const colorMap = {
 		up: 'bg-green-500',
@@ -36,10 +38,9 @@
 		tooltipOpens = tooltipOpens.map((_, i) => i === index);
 	}
 
-	$: uptime =
-		(data.instants.filter((instant) => instant.status === 'up').length /
-			data.instants.filter((instant) => instant.status !== 'untracked').length) *
-		100;
+	$: uptime = ((data.instants.filter((instant) => instant.status === 'up').length /
+		data.instants.filter((instant) => instant.status !== 'untracked').length) *
+		100) as number;
 
 	function calculateDownTime(instants: Instant[], level: Status) {
 		// back track from the most recent instant to find the first error
@@ -81,20 +82,22 @@
 		{data.name}
 	</h1>
 
-	<h2 class="text-lg {colorMapText[lastInstant.status]} my-1 flex items-center">
-		{#if lastInstant.status === 'up'}
-			<HeroiconsCheck20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
-			Operational
-		{:else if lastInstant.status === 'down'}
-			<HeroiconsXMark20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
-			Down
-			<br class="sm:hidden" />
-			{#if downTime}
-				(for
-				{downTime})
+	{#if pageNumber === 0}
+		<h2 class="text-lg {colorMapText[lastInstant.status]} my-1 flex items-center">
+			{#if lastInstant.status === 'up'}
+				<HeroiconsCheck20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
+				Operational
+			{:else if lastInstant.status === 'down'}
+				<HeroiconsXMark20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
+				Down
+				<br class="sm:hidden" />
+				{#if downTime}
+					(for
+					{downTime})
+				{/if}
 			{/if}
-		{/if}
-	</h2>
+		</h2>
+	{/if}
 
 	<p class="mt-1 text-sm text-gray-500">
 		Last check: {new Date(lastInstant.expected_timestamp).toLocaleString()} (checking every {humanizeDuration(
@@ -155,7 +158,7 @@
 			</div>
 
 			<div class="text-center">
-				{#if uptime}
+				{#if !isNaN(uptime)}
 					{uptime.toFixed(2)}%
 				{:else}
 					Unknown
