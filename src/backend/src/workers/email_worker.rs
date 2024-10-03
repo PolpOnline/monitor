@@ -10,7 +10,7 @@ use time::{Duration, PrimitiveDateTime};
 use tracing::{error, info};
 use uuid::Uuid;
 
-use crate::web::utils::time_conversions::from_pg_interval_to_duration;
+use crate::web::utils::time_conversions::pg_interval_to_duration;
 
 pub type SmtpClient = lettre::AsyncSmtpTransport<Tokio1Executor>;
 
@@ -60,28 +60,28 @@ impl Worker<()> for EmailWorker {
     }
 }
 
-fn compose_email(down_service: EmailData) -> GenericResult<Message> {
+fn compose_email(email_data: EmailData) -> GenericResult<Message> {
     info!(
-        "Scheduled task: Composing email for system {} (id {}, user email {})",
-        down_service.system_name, down_service.system_id, down_service.user_email
+        "Scheduled task: Composing email for system {} (id {}, user email {}, down since {})",
+        email_data.system_name, email_data.system_id, email_data.user_email, email_data.timestamp
     );
 
     let message = Message::builder()
         .from("Monitor Mailer <monitor@polp.online>".parse()?)
         .reply_to("Monitor Mailer <monitor@polp.online>".parse()?)
-        .to(format!("User <{}>", down_service.user_email)
+        .to(format!("User <{}>", email_data.user_email)
             .as_str()
             .parse()?)
-        .subject(format!("Service {} is down", down_service.system_name).as_str())
+        .subject(format!("Service {} is down", email_data.system_name).as_str())
         .header(ContentType::TEXT_PLAIN)
         .body(
             format!(
                 "Service {} (system id {}) is down since {} UTC. It was supposed to be up after \
                  {}.",
-                down_service.system_name,
-                down_service.system_id,
-                down_service.timestamp,
-                down_service.down_after
+                email_data.system_name,
+                email_data.system_id,
+                email_data.timestamp,
+                email_data.down_after
             )
             .as_bytes()
             .to_vec(),
@@ -134,7 +134,7 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
             WHERE system.id = rp.system_id
                 AND rp.rn = 1
                 AND system.deleted = FALSE
-            RETURNING rp.system_id, rp.timestamp, rp.down_after, rp.system_name, rp.user_email
+            RETURNING rp.system_id, rp.timestamp, rp.down_after, rp.system_name, rp.user_email, system.frequency
         )
         
         SELECT *
@@ -148,8 +148,8 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
         .into_iter()
         .map(|row| EmailData {
             system_id: row.system_id,
-            timestamp: row.timestamp,
-            down_after: from_pg_interval_to_duration(row.down_after),
+            timestamp: row.timestamp + pg_interval_to_duration(row.frequency),
+            down_after: pg_interval_to_duration(row.down_after),
             system_name: row.system_name,
             user_email: row.user_email,
         })

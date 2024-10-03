@@ -10,7 +10,7 @@ pub fn primitive_to_offset_date_time(primitive_date_time: PrimitiveDateTime) -> 
     OffsetDateTime::new_utc(primitive_date_time.date(), primitive_date_time.time())
 }
 
-pub fn from_pg_interval_to_duration(interval: sqlx::postgres::types::PgInterval) -> Duration {
+pub fn pg_interval_to_duration(interval: sqlx::postgres::types::PgInterval) -> Duration {
     let months = interval.months as i64;
     let days = interval.days as i64;
     let microseconds = interval.microseconds;

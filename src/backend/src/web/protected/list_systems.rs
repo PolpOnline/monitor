@@ -16,7 +16,7 @@ use crate::{
     users::AuthSession,
     web::utils::{
         time::{approx_expected_timestamp, primitive_datetime_now},
-        time_conversions::{from_pg_interval_to_duration, primitive_to_offset_date_time},
+        time_conversions::{pg_interval_to_duration, primitive_to_offset_date_time},
     },
 };
 
@@ -158,7 +158,7 @@ impl SystemData {
         page: i64,
         db_system: SystemRecord,
     ) -> Result<Self, Response> {
-        let frequency = from_pg_interval_to_duration(db_system.frequency);
+        let frequency = pg_interval_to_duration(db_system.frequency);
 
         let now =
             approx_expected_timestamp(primitive_datetime_now(), frequency, db_system.starts_at)
