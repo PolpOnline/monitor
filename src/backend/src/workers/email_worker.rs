@@ -74,10 +74,9 @@ fn compose_email(email_data: EmailData) -> GenericResult<Message> {
             .parse()?)
         .subject(format!("Service {} is down", email_data.system_name).as_str())
         .header(ContentType::TEXT_HTML)
-        .body(
-            format!(
-                // language=HTML
-                r#"
+        .body(format!(
+            // language=HTML
+            r#"
                 <p>
                   Service {} (system id {}) is down since
                   <time datetime="{}">
@@ -87,15 +86,12 @@ fn compose_email(email_data: EmailData) -> GenericResult<Message> {
                   It was supposed to be up after {}.
                 </p>
                 "#,
-                email_data.system_name,
-                email_data.system_id,
-                email_data.timestamp,
-                email_data.timestamp,
-                email_data.down_after
-            )
-            .as_bytes()
-            .to_vec(),
-        )?;
+            email_data.system_name,
+            email_data.system_id,
+            email_data.timestamp,
+            email_data.timestamp,
+            email_data.down_after
+        ))?;
 
     Ok(message)
 }
