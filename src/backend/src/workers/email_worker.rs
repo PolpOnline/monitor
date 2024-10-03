@@ -77,16 +77,16 @@ fn compose_email(email_data: EmailData) -> GenericResult<Message> {
         .body(
             format!(
                 // language=HTML
-                "
+                r#"
                 <p>
                   Service {} (system id {}) is down since
                   <time datetime="{}">
                   {} UTC
                   </time>.
-                 <br>
+                  <br />
                   It was supposed to be up after {}.
                 </p>
-                ",
+                "#,
                 email_data.system_name,
                 email_data.system_id,
                 email_data.timestamp,
