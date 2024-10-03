@@ -73,13 +73,23 @@ fn compose_email(email_data: EmailData) -> GenericResult<Message> {
             .as_str()
             .parse()?)
         .subject(format!("Service {} is down", email_data.system_name).as_str())
-        .header(ContentType::TEXT_PLAIN)
+        .header(ContentType::TEXT_HTML)
         .body(
             format!(
-                "Service {} (system id {}) is down since {} UTC. It was supposed to be up after \
-                 {}.",
+                // language=HTML
+                "
+                <p>
+                  Service {} (system id {}) is down since
+                  <time datetime="{}">
+                  {} UTC
+                  </time>.
+                 <br>
+                  It was supposed to be up after {}.
+                </p>
+                ",
                 email_data.system_name,
                 email_data.system_id,
+                email_data.timestamp,
                 email_data.timestamp,
                 email_data.down_after
             )
