@@ -48,7 +48,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// Set the login status in the "locals" object, so we can access it in the page component
 	event.locals.loginStatus = status;
 
-	if (event.locals.loginStatus === 'logged_in' && event.locals.email === undefined) {
+	if (event.locals.loginStatus === 'logged_in') {
 		event.locals.email = await getEmail(event.fetch);
 	}
 
