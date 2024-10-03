@@ -27,7 +27,7 @@
 	let isRefreshing = false;
 </script>
 
-<nav class="flex h-20 flex-row items-center justify-between">
+<nav class="relative flex h-20 flex-row items-center justify-between">
 	<a class="ml-3 justify-self-start text-3xl" href={loggedIn ? '/' : undefined}>
 		<PhHeartbeat />
 	</a>
