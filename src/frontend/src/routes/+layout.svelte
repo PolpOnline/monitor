@@ -12,7 +12,6 @@
 
 	import { title } from '$components/stores/title.store';
 	import Loader from '$components/Loader.svelte';
-	import { ScrollArea } from '$components/ui/scroll-area';
 
 	export let data: LayoutData;
 
@@ -36,7 +35,7 @@
 	<title>{$title}</title>
 </svelte:head>
 
-<ScrollArea orientation="both" class="h-screen min-h-screen w-full">
+<div>
 	<Navbar loginStatus={data.loginStatus} loggedInEmail={data.loggedInEmail} />
 
 	<ModeWatcher defaultMode={'dark'} />
@@ -50,4 +49,4 @@
 			<slot />
 		</div>
 	{/key}
-</ScrollArea>
+</div>
