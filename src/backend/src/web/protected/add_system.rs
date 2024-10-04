@@ -1,17 +1,12 @@
 use axum::{response::IntoResponse, Json};
+use chrono::{DateTime, Duration, Utc};
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::types::PgInterval;
-use time::{Duration, OffsetDateTime};
 use ts_rs::TS;
 use uuid::Uuid;
 
-use crate::{
-    users::AuthSession,
-    web::{
-        protected::list_systems::Visibility, utils::time_conversions::offset_to_primitive_date_time,
-    },
-};
+use crate::{users::AuthSession, web::protected::list_systems::Visibility};
 
 #[derive(Debug, Deserialize, Clone, TS)]
 #[ts(export)]
@@ -19,9 +14,8 @@ pub struct AddSystemRequest {
     name: String,
     /// Frequency in minutes
     frequency: i64,
-    #[serde(with = "time::serde::iso8601")]
     #[ts(type = "string")]
-    starts_at: OffsetDateTime,
+    starts_at: DateTime<Utc>,
     /// Time in minutes after which the user will get emailed
     down_after: i64,
     visibility: Visibility,
@@ -47,7 +41,7 @@ pub async fn add_system(
         Err(_) => return StatusCode::BAD_REQUEST.into_response(),
     };
 
-    let starts_at = offset_to_primitive_date_time(request.starts_at);
+    let starts_at = request.starts_at.naive_utc();
 
     let id = Uuid::new_v4();
 

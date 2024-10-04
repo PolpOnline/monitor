@@ -27,7 +27,7 @@ pub async fn set_user_info(request: Request, next: Next) -> Response {
 
         response.headers_mut().append(
             header::SET_COOKIE,
-            HeaderValue::from_str(&*cookie.to_string()).unwrap(),
+            HeaderValue::from_str(&cookie.to_string()).unwrap(),
         );
     }
 

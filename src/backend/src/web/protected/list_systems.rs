@@ -5,18 +5,18 @@ use axum::{
     response::{IntoResponse, Response},
     Json,
 };
+use chrono::{DateTime, Duration, NaiveDateTime, Utc};
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::types::PgInterval, PgPool};
-use time::{Duration, OffsetDateTime, PrimitiveDateTime};
 use ts_rs::TS;
 use uuid::Uuid;
 
 use crate::{
     users::AuthSession,
     web::utils::{
-        time::{approx_expected_timestamp, primitive_datetime_now},
-        time_conversions::{pg_interval_to_duration, primitive_to_offset_date_time},
+        time::{approx_expected_timestamp, naive_datetime_now},
+        time_conversions::pg_interval_to_duration,
     },
 };
 
@@ -34,9 +34,8 @@ pub struct SystemData {
     instants: Vec<Instant>,
     /// Frequency in minutes
     frequency: u32,
-    #[serde(with = "time::serde::iso8601")]
     #[ts(type = "string")]
-    starts_at: OffsetDateTime,
+    starts_at: DateTime<Utc>,
     visibility: Visibility,
 }
 
@@ -44,12 +43,10 @@ pub struct SystemData {
 #[ts(export)]
 pub struct Instant {
     status: Status,
-    #[serde(with = "time::serde::iso8601::option")]
     #[ts(type = "string | null")]
-    timestamp: Option<OffsetDateTime>,
-    #[serde(with = "time::serde::iso8601")]
+    timestamp: Option<DateTime<Utc>>,
     #[ts(type = "string")]
-    expected_timestamp: OffsetDateTime,
+    expected_timestamp: DateTime<Utc>,
 }
 
 #[derive(Debug, Serialize, Clone, TS)]
@@ -79,7 +76,7 @@ pub struct SystemRecord {
     pub name: String,
     pub user_id: i32,
     pub frequency: PgInterval,
-    pub starts_at: PrimitiveDateTime,
+    pub starts_at: NaiveDateTime,
     pub deleted: bool,
     pub down_after: PgInterval,
     pub down_sent_email: bool,
@@ -92,7 +89,7 @@ pub struct PingRecord {
     id: i32,
     #[allow(dead_code)]
     system_id: String,
-    timestamp: PrimitiveDateTime,
+    timestamp: NaiveDateTime,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -160,9 +157,8 @@ impl SystemData {
     ) -> Result<Self, Response> {
         let frequency = pg_interval_to_duration(db_system.frequency);
 
-        let now =
-            approx_expected_timestamp(primitive_datetime_now(), frequency, db_system.starts_at)
-                .unwrap();
+        let now = approx_expected_timestamp(naive_datetime_now(), frequency, db_system.starts_at)
+            .unwrap();
 
         let nearest_datetime = now - (frequency * (page * list_size) as i32);
         let furthest_datetime = nearest_datetime - (frequency * list_size as i32);
@@ -203,8 +199,8 @@ impl SystemData {
             id: db_system.id,
             name: db_system.name,
             instants,
-            frequency: (frequency.as_seconds_f64().round() as u32) / 60,
-            starts_at: primitive_to_offset_date_time(db_system.starts_at),
+            frequency: frequency.num_seconds() as u32 / 60,
+            starts_at: db_system.starts_at.and_utc(),
             visibility: db_system.visibility,
         })
     }
@@ -217,9 +213,9 @@ impl SystemData {
     fn from_ping_records_to_instants(
         ping_records: Vec<PingRecord>,
         frequency: Duration,
-        starts_at: PrimitiveDateTime,
-        mut nearest_datetime: PrimitiveDateTime,
-        furthest_datetime: PrimitiveDateTime,
+        starts_at: NaiveDateTime,
+        mut nearest_datetime: NaiveDateTime,
+        furthest_datetime: NaiveDateTime,
         list_size: i64,
     ) -> Result<Vec<Instant>, Response> {
         // Hashmap that contains the key as the expected timestamp and the value as the
@@ -238,8 +234,8 @@ impl SystemData {
             let instant = match hashmap.get(&nearest_datetime) {
                 Some(status) => Instant {
                     status: Status::Up,
-                    timestamp: Some(primitive_to_offset_date_time(*status)),
-                    expected_timestamp: primitive_to_offset_date_time(nearest_datetime),
+                    timestamp: Some(status.and_utc()),
+                    expected_timestamp: nearest_datetime.and_utc(),
                 },
                 None => {
                     let status = if nearest_datetime > starts_at {
@@ -251,7 +247,7 @@ impl SystemData {
                     Instant {
                         status,
                         timestamp: None,
-                        expected_timestamp: primitive_to_offset_date_time(nearest_datetime),
+                        expected_timestamp: nearest_datetime.and_utc(),
                     }
                 }
             };

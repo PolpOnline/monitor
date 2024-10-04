@@ -8,7 +8,6 @@ use axum_login::{
 use http::StatusCode;
 use sidekiq::{periodic, Processor, RedisConnectionManager};
 use sqlx::{postgres::PgPoolOptions, PgPool};
-use time::Duration;
 use tokio::{signal, task::AbortHandle};
 use tower_http::{
     compression::CompressionLayer, decompression::DecompressionLayer, trace::TraceLayer,
@@ -74,7 +73,9 @@ impl App {
 
         let session_layer = SessionManagerLayer::new(session_store)
             .with_secure(true)
-            .with_expiry(Expiry::OnInactivity(Duration::days(7)))
+            .with_expiry(Expiry::OnInactivity(
+                tower_sessions::cookie::time::Duration::days(7),
+            ))
             .with_signed(key);
 
         // Auth service.

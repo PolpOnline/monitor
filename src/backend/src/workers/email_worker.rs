@@ -1,4 +1,5 @@
 use async_trait::async_trait;
+use chrono::{Duration, NaiveDateTime};
 use color_eyre::Result;
 use lettre::{
     message::header::ContentType, transport::smtp::authentication::Credentials, AsyncTransport,
@@ -6,7 +7,6 @@ use lettre::{
 };
 use sidekiq::Worker;
 use sqlx::PgPool;
-use time::{Duration, PrimitiveDateTime};
 use tracing::{error, info};
 use uuid::Uuid;
 
@@ -99,7 +99,7 @@ fn compose_email(email_data: EmailData) -> GenericResult<Message> {
 #[derive(Debug)]
 pub struct EmailData {
     pub system_id: Uuid,
-    pub timestamp: PrimitiveDateTime,
+    pub timestamp: NaiveDateTime,
     pub down_after: Duration,
     pub system_name: String,
     pub user_email: String,
