@@ -36,6 +36,7 @@ futures = "0.3.30"
 lettre = { version = "0.11.8", features = ["tokio1-native-tls", "tokio1"] }
 once_cell = "1.19.0"
 tower-sessions-redis-store = { version = "0.14.0", features = ["enable-native-tls"] }
+chrono-tz = "0.10.0"
 
 [profile.dev.package.backtrace]
 opt-level = 3

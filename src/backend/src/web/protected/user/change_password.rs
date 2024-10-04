@@ -30,6 +30,9 @@ pub enum ChangePasswordError {
     #[error("Failed to authenticate with old password")]
     #[status(StatusCode::INTERNAL_SERVER_ERROR)]
     FailedToAuthenticateWithOldPassword,
+    #[error("Failed to update password")]
+    #[status(StatusCode::INTERNAL_SERVER_ERROR)]
+    FailedToUpdatePassword,
 }
 
 pub async fn change_password(
@@ -58,7 +61,7 @@ pub async fn change_password(
             Err(_) => return ChangePasswordError::FailedToGenerateHash.into_response(),
         };
 
-    sqlx::query!(
+    match sqlx::query!(
         // language=PostgreSQL
         r#"
         UPDATE "user" SET password = $1 WHERE id = $2
@@ -68,7 +71,10 @@ pub async fn change_password(
     )
     .execute(&auth_session.backend.db)
     .await
-    .unwrap();
+    {
+        Ok(_) => {}
+        Err(_) => return ChangePasswordError::FailedToUpdatePassword.into_response(),
+    }
 
     StatusCode::OK.into_response()
 }

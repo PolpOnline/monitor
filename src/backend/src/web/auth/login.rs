@@ -1,5 +1,6 @@
 use axum::{response::IntoResponse, Json};
 use axum_thiserror::ErrorStatus;
+use chrono_tz::Tz;
 use http::StatusCode;
 use password_auth::generate_hash;
 use serde::Serialize;
@@ -129,16 +130,19 @@ pub async fn sign_up(
         .await
         .map_err(|_| AuthError::FailedToGenerateHash)?;
 
+    let utc = Tz::UTC;
+
     let user = sqlx::query_as!(
         User,
         // language=PostgreSQL
         r#"
-        INSERT INTO "user" (email, password)
-        VALUES ($1, $2)
-        RETURNING id, email, password;
+        INSERT INTO "user" (email, password, timezone)
+        VALUES ($1, $2, $3)
+        RETURNING id, email, password, timezone;
         "#,
         credentials.email,
-        encrypted_password
+        encrypted_password,
+        utc.to_string()
     )
     .fetch_one(&auth_session.backend.db)
     .await?;
