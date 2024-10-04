@@ -22,7 +22,7 @@ use tracing::info;
 
 use crate::{
     custom_login_required,
-    middleware::set_cache_control::set_cache_control,
+    middleware::{set_cache_control::set_cache_control, set_user_info::set_user_info},
     users::LoginBackend,
     web::{auth, protected, public},
     workers::{
@@ -91,6 +91,7 @@ impl App {
             ))
             .merge(auth::router())
             .merge(public::router())
+            .layer(middleware::from_fn(set_user_info))
             .layer(auth_layer)
             .layer(middleware::from_fn(set_cache_control))
             .layer(TraceLayer::new_for_http())

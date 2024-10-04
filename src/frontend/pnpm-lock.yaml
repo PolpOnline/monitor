@@ -20,9 +20,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      cookie:
-        specifier: ^0.6.0
-        version: 0.6.0
       formsnap:
         specifier: ^1.0.1
         version: 1.0.1(svelte@4.2.19)(sveltekit-superforms@2.19.0(@sveltejs/kit@2.6.1(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.8(@types/node@22.7.4)))(svelte@4.2.19)(vite@5.4.8(@types/node@22.7.4)))(@types/json-schema@7.0.15)(svelte@4.2.19))
@@ -87,9 +84,6 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.15
         version: 0.5.15(tailwindcss@3.4.13)
-      '@types/cookie':
-        specifier: ^0.6.0
-        version: 0.6.0
       '@types/eslint':
         specifier: ^8.56.12
         version: 8.56.12
@@ -99,6 +93,9 @@ importers:
       '@types/luxon':
         specifier: ^3.4.2
         version: 3.4.2
+      '@types/set-cookie-parser':
+        specifier: ^2.4.10
+        version: 2.4.10
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
@@ -126,6 +123,9 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.8
         version: 0.6.8(prettier-plugin-svelte@3.2.7(prettier@3.3.3)(svelte@4.2.19))(prettier@3.3.3)
+      set-cookie-parser:
+        specifier: ^2.7.0
+        version: 2.7.0
       svelte:
         specifier: ^4.2.19
         version: 4.2.19
@@ -956,6 +956,9 @@ packages:
 
   '@types/pug@2.0.10':
     resolution: {integrity: sha512-Sk/uYFOBAB7mb74XcpizmH0KOR2Pv3D2Hmrh1Dmy5BmK3MpdSa5kqZcg6EKBdklU0bFXX9gCfzvpnyUehrPIuA==}
+
+  '@types/set-cookie-parser@2.4.10':
+    resolution: {integrity: sha512-GGmQVGpQWUe5qglJozEjZV/5dyxbOOZ0LHe/lqyWssB88Y4svNfst0uqBVscdDeIKl5Jy5+aPSvy7mI9tYRguw==}
 
   '@types/validator@13.12.2':
     resolution: {integrity: sha512-6SlHBzUW8Jhf3liqrGGXyTJSIFe4nqlJ5A5KaMZ2l/vbM3Wh3KSybots/wfWVzNLK4D1NZluDlSQIbIEPx6oyA==}
@@ -3119,6 +3122,10 @@ snapshots:
       undici-types: 6.19.8
 
   '@types/pug@2.0.10': {}
+
+  '@types/set-cookie-parser@2.4.10':
+    dependencies:
+      '@types/node': 22.7.4
 
   '@types/validator@13.12.2':
     optional: true
