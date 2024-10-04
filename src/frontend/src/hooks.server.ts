@@ -20,7 +20,7 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 	const res = await fetch(request);
 
 	// Check if the response contains a set-cookie header and set the cookie in to the client if it does
-	const setCookieHeader = res.headers.get('set-cookie');
+	const setCookieHeader = res.headers.getSetCookie();
 
 	if (!setCookieHeader) {
 		return res;
