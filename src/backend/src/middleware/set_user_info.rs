@@ -1,5 +1,6 @@
 use axum::{extract::Request, middleware::Next, response::Response};
 use http::{header, HeaderValue};
+use tower_sessions::cookie::CookieBuilder;
 
 use crate::users::AuthSession;
 
@@ -19,9 +20,14 @@ pub async fn set_user_info(request: Request, next: Next) -> Response {
     let mut response = next.run(request).await;
 
     if let Some(user_email) = user_email {
+        let cookie = CookieBuilder::new(USER_EMAIL_COOKIE, user_email)
+            .http_only(true)
+            .secure(true)
+            .build();
+
         response.headers_mut().append(
             header::SET_COOKIE,
-            HeaderValue::from_str(&format!("{USER_EMAIL_COOKIE}={user_email}")).unwrap(),
+            HeaderValue::from_str(&*cookie.to_string()).unwrap(),
         );
     }
 
