@@ -90,8 +90,6 @@
 							</Button>
 						</DropdownMenu.Trigger>
 						<DropdownMenu.Content class="w-56">
-							<DropdownMenu.Label>Panel Position</DropdownMenu.Label>
-							<DropdownMenu.Separator />
 							<DropdownMenu.RadioGroup bind:value={$formData.visibility}>
 								<DropdownMenu.RadioItem value="public">Public</DropdownMenu.RadioItem>
 								<DropdownMenu.RadioItem value="private">Private</DropdownMenu.RadioItem>
