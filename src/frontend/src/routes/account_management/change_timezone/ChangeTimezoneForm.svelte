@@ -1,15 +1,17 @@
 <script lang="ts">
 	// noinspection ES6UnusedImports
 	import * as Form from '$components/ui/form';
-	import { Input } from '$components/ui/input';
 	import { formSchema as changeTimezoneFormSchema, type FormSchema } from './schema';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
+	import TimezoneSelector from '$components/timezone_selector/TimezoneSelector.svelte';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
+	export let timezones: { value: string; label: string }[] = [];
 
 	const form = superForm(data, {
+		dataType: 'json',
 		validators: zodClient(changeTimezoneFormSchema)
 	});
 
@@ -20,7 +22,7 @@
 	<Form.Field {form} name="timezone">
 		<Form.Control let:attrs>
 			<Form.Label>Timezone</Form.Label>
-			<Input {...attrs} bind:value={$formData.timezone} />
+			<TimezoneSelector {...attrs} bind:value={$formData.timezone} {timezones} />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>

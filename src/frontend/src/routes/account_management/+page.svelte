@@ -38,7 +38,7 @@
 				<Card.Description>Select your preferred timezone.</Card.Description>
 			</Card.Header>
 			<Card.Content>
-				<ChangeTimezoneForm data={data.timezoneForm} />
+				<ChangeTimezoneForm data={data.timezoneForm} timezones={data.timezones} />
 			</Card.Content>
 		</Card.Root>
 	</div>
