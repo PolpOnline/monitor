@@ -4,6 +4,7 @@ use async_trait::async_trait;
 use chrono::{DateTime, Duration, Utc};
 use chrono_tz::Tz;
 use color_eyre::Result;
+use humanize_duration::{prelude::*, Truncate};
 use lettre::{
     message::header::ContentType, transport::smtp::authentication::Credentials, AsyncTransport,
     Message, Tokio1Executor,
@@ -73,6 +74,7 @@ fn compose_email(email_data: EmailData) -> GenericResult<Message> {
     );
 
     let local_timestamp = email_data.utc_timestamp.with_timezone(&email_data.timezone);
+    let down_after = email_data.down_after.human(Truncate::Minute);
 
     let message = Message::builder()
         .from("Monitor Mailer <monitor@polp.online>".parse()?)
@@ -99,7 +101,7 @@ fn compose_email(email_data: EmailData) -> GenericResult<Message> {
             email_data.utc_timestamp,
             local_timestamp,
             email_data.timezone,
-            email_data.down_after
+            down_after
         ))?;
 
     Ok(message)
