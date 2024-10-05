@@ -3,22 +3,43 @@
 	import ChangePasswordForm from './change_password/ChangePasswordForm.svelte';
 	import { title } from '$components/stores/title.store';
 	import ChangeTimezoneForm from './change_timezone/ChangeTimezoneForm.svelte';
-
+	// noinspection ES6UnusedImports
+	import * as Card from '$components/ui/card';
+	import LucideChevronLeft from '~icons/lucide/chevron-left';
+	import { Button } from '$components/ui/button';
 	title.set('Login');
 
 	export let data: PageData;
 </script>
 
-<div class="mx-auto mt-10">
-	<h1 class="mb-5 text-center text-3xl font-bold">Account management</h1>
+<div class="mx-3">
+	<div class="mb-5 mt-3 grid grid-cols-3">
+		<Button href="/" variant="outline" size="icon">
+			<LucideChevronLeft class="h-6 w-6" />
+		</Button>
+		<h1 class="text-center text-3xl font-bold">Account settings</h1>
+		<div />
+	</div>
 
-	<div class="mx-4">
-		<div class="mx-auto max-w-96">
-			<h2 class="mb-5 text-center text-xl font-bold">Change your password</h2>
-			<ChangePasswordForm data={data.passwordForm} />
+	<div class="grid gap-6 md:grid-cols-2">
+		<Card.Root>
+			<Card.Header>
+				<Card.Title>Change Password</Card.Title>
+				<Card.Description>Update your account password here.</Card.Description>
+			</Card.Header>
+			<Card.Content>
+				<ChangePasswordForm data={data.passwordForm} />
+			</Card.Content>
+		</Card.Root>
 
-			<h2 class="mb-5 mt-10 text-center text-xl font-bold">Change your timezone</h2>
-			<ChangeTimezoneForm data={data.timezoneForm} />
-		</div>
+		<Card.Root>
+			<Card.Header>
+				<Card.Title>Change Timezone</Card.Title>
+				<Card.Description>Select your preferred timezone.</Card.Description>
+			</Card.Header>
+			<Card.Content>
+				<ChangeTimezoneForm data={data.timezoneForm} />
+			</Card.Content>
+		</Card.Root>
 	</div>
 </div>

@@ -78,7 +78,7 @@
 					{#if loggedIn}
 						<DropdownMenu.Item href="/account_management">
 							<LucideSettings class="mr-2 h-4 w-4" />
-							Manage account
+							Account settings
 						</DropdownMenu.Item>
 						<DropdownMenu.Item
 							class="text-red-600"
