@@ -65,7 +65,7 @@ impl Worker<()> for EmailWorker {
 
 fn compose_email(email_data: EmailData) -> GenericResult<Message> {
     info!(
-        "Scheduled task: Composing email for system {} (id {}, user email {}, down since {})",
+        "Scheduled task: Composing email for the system {} (id {}, user email {}, down since {})",
         email_data.system_name,
         email_data.system_id,
         email_data.user_email,

@@ -39,8 +39,8 @@
 		{:else if lastInstant.status === 'down'}
 			<HeroiconsXMark20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
 			Down
-			<br class="sm:hidden" />
 			{#if downTime}
+				<br class="sm:hidden" />
 				(for
 				{downTime})
 			{/if}
