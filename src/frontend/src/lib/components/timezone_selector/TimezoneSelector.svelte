@@ -8,6 +8,7 @@
 	import * as Popover from '$components/ui/popover';
 	import { Button } from '$components/ui/button';
 	import { cn } from '$lib/utils.js';
+	import type { ClassValue } from 'clsx';
 
 	let open = false;
 	export let value = '';
@@ -28,6 +29,10 @@
 	function searchTimezoneFn(value: string, search: string): number {
 		return value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
 	}
+
+	let className: ClassValue;
+	// noinspection ReservedWordAsName
+	export { className as class };
 </script>
 
 <Popover.Root bind:open let:ids>
@@ -37,13 +42,13 @@
 			variant="outline"
 			role="combobox"
 			aria-expanded={open}
-			class="w-[300px] justify-between"
+			class={cn(className, 'justify-between')}
 		>
 			{selectedValue}
 			<ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
 		</Button>
 	</Popover.Trigger>
-	<Popover.Content class="w-[300px] p-0">
+	<Popover.Content class="w-[95%] p-0 md:w-1/2">
 		<Command.Root filter={searchTimezoneFn}>
 			<Command.Input placeholder="Search timezone..." />
 			<Command.List>

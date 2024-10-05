@@ -21,7 +21,7 @@
 <form action="?/change_timezone" method="POST" use:enhance>
 	<Form.Field {form} name="timezone">
 		<Form.Control>
-			<TimezoneSelector bind:value={$formData.timezone} {timezones} />
+			<TimezoneSelector bind:value={$formData.timezone} {timezones} class="w-full" />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
