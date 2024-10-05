@@ -27,14 +27,16 @@
 	let isRefreshing = false;
 </script>
 
-<nav class="relative flex h-20 flex-row items-center justify-between">
-	<a class="ml-3 justify-self-start text-3xl" href={loggedIn ? '/' : undefined}>
-		<PhHeartbeat />
-	</a>
-	<a class="absolute left-1/2 -translate-x-1/2 text-3xl" href={loggedIn ? '/' : undefined}>
-		Monitor
-	</a>
-	<span class="mr-3 flex items-center gap-1 justify-self-end">
+<nav class="grid h-20 grid-cols-3">
+	<div class="flex items-center">
+		<a class="ml-3 text-3xl" href={loggedIn ? '/' : undefined}>
+			<PhHeartbeat />
+		</a>
+	</div>
+	<div class="flex items-center justify-center">
+		<a href="/" class="text-3xl">Monitor</a>
+	</div>
+	<div class="mr-3 flex items-center gap-1 justify-self-end">
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
 				<Button size="icon">
@@ -97,5 +99,5 @@
 				</DropdownMenu.Item>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
-	</span>
+	</div>
 </nav>
