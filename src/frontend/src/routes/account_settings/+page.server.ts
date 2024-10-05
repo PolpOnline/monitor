@@ -95,6 +95,6 @@ export const actions: Actions = {
 			});
 		}
 
-		redirect(303, '/account_management');
+		redirect(303, '/account_settings');
 	}
 } satisfies Actions;

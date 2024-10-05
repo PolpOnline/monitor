@@ -9,7 +9,7 @@
 	import LucideRectangleEllipsis from '~icons/lucide/rectangle-ellipsis';
 	import LucideGlobe from '~icons/lucide/globe';
 	import { Button } from '$components/ui/button';
-	title.set('Login');
+	title.set('Account settings');
 
 	export let data: PageData;
 </script>

@@ -78,7 +78,7 @@
 						Refresh
 					</DropdownMenu.Item>
 					{#if loggedIn}
-						<DropdownMenu.Item href="/account_management">
+						<DropdownMenu.Item href="/account_settings">
 							<LucideSettings class="mr-2 h-4 w-4" />
 							Account settings
 						</DropdownMenu.Item>
