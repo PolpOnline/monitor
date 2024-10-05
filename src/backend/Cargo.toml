@@ -6,7 +6,7 @@ publish = false
 
 [dependencies]
 async-trait = "0.1.74"
-axum = "0.7.0"
+axum = { version = "0.7.0", features = ["http2"] }
 axum-login = "0.16.0"
 http = "1.0.0"
 hyper = "1.0.1"
