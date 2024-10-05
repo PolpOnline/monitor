@@ -20,21 +20,36 @@
 	<Form.Field {form} name="old_password">
 		<Form.Control let:attrs>
 			<Form.Label>Old Password</Form.Label>
-			<Input {...attrs} bind:value={$formData.old_password} type="password" />
+			<Input
+				{...attrs}
+				bind:value={$formData.old_password}
+				type="password"
+				autocomplete="current-password"
+			/>
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Field {form} name="new_password">
 		<Form.Control let:attrs>
 			<Form.Label>New password</Form.Label>
-			<Input {...attrs} bind:value={$formData.new_password} type="password" />
+			<Input
+				{...attrs}
+				bind:value={$formData.new_password}
+				type="password"
+				autocomplete="new-password"
+			/>
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Field {form} name="new_password_confirm">
 		<Form.Control let:attrs>
 			<Form.Label>Confirm new password</Form.Label>
-			<Input {...attrs} bind:value={$formData.new_password_confirm} type="password" />
+			<Input
+				{...attrs}
+				bind:value={$formData.new_password_confirm}
+				type="password"
+				autocomplete="new-password"
+			/>
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
