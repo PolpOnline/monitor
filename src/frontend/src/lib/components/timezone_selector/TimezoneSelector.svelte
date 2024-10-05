@@ -24,6 +24,10 @@
 			document.getElementById(triggerId)?.focus();
 		});
 	}
+
+	function searchTimezoneFn(value: string, search: string): number {
+		return value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
+	}
 </script>
 
 <Popover.Root bind:open let:ids>
@@ -40,7 +44,7 @@
 		</Button>
 	</Popover.Trigger>
 	<Popover.Content class="w-[300px] p-0">
-		<Command.Root>
+		<Command.Root filter={searchTimezoneFn}>
 			<Command.Input placeholder="Search timezone..." />
 			<Command.List>
 				<Command.Empty>No timezone found.</Command.Empty>
