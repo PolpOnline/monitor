@@ -31,7 +31,7 @@ pub fn approx_expected_timestamp(
 
 mod test {
     #[test]
-    fn test_approx_expected_timestamp() {
+    fn test_approx_expected_timestamp() -> Result<(), super::ApproxError> {
         use super::*;
 
         let start_at = naive_datetime_now();
@@ -40,7 +40,7 @@ mod test {
         // Timestamp is sufficiently near the expected timestamp
         let timestamp = start_at + Duration::minutes(2);
         assert_eq!(
-            approx_expected_timestamp(timestamp, frequency, start_at).unwrap(),
+            approx_expected_timestamp(timestamp, frequency, start_at)?,
             start_at
         );
 
@@ -48,28 +48,28 @@ mod test {
         // one
         let timestamp = start_at + Duration::minutes(32);
         assert_eq!(
-            approx_expected_timestamp(timestamp, frequency, start_at).unwrap(),
+            approx_expected_timestamp(timestamp, frequency, start_at)?,
             start_at + Duration::minutes(30)
         );
 
         // The function should only floor the timestamp
         let timestamp = start_at + Duration::minutes(59);
         assert_eq!(
-            approx_expected_timestamp(timestamp, frequency, start_at).unwrap(),
+            approx_expected_timestamp(timestamp, frequency, start_at)?,
             start_at + Duration::minutes(30)
         );
 
         // Another case where the function should only floor the timestamp
         let timestamp = start_at + Duration::minutes(60);
         assert_eq!(
-            approx_expected_timestamp(timestamp, frequency, start_at).unwrap(),
+            approx_expected_timestamp(timestamp, frequency, start_at)?,
             start_at + Duration::minutes(60)
         );
 
         // Another case where the function should only floor the timestamp
         let timestamp = start_at + Duration::minutes(61);
         assert_eq!(
-            approx_expected_timestamp(timestamp, frequency, start_at).unwrap(),
+            approx_expected_timestamp(timestamp, frequency, start_at)?,
             start_at + Duration::minutes(60)
         );
 

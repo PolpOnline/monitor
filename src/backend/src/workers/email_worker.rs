@@ -1,5 +1,8 @@
+use std::str::FromStr;
+
 use async_trait::async_trait;
-use chrono::{Duration, NaiveDateTime};
+use chrono::{DateTime, Duration, Utc};
+use chrono_tz::Tz;
 use color_eyre::Result;
 use lettre::{
     message::header::ContentType, transport::smtp::authentication::Credentials, AsyncTransport,
@@ -63,8 +66,13 @@ impl Worker<()> for EmailWorker {
 fn compose_email(email_data: EmailData) -> GenericResult<Message> {
     info!(
         "Scheduled task: Composing email for system {} (id {}, user email {}, down since {})",
-        email_data.system_name, email_data.system_id, email_data.user_email, email_data.timestamp
+        email_data.system_name,
+        email_data.system_id,
+        email_data.user_email,
+        email_data.utc_timestamp
     );
+
+    let local_timestamp = email_data.utc_timestamp.with_timezone(&email_data.timezone);
 
     let message = Message::builder()
         .from("Monitor Mailer <monitor@polp.online>".parse()?)
@@ -80,7 +88,7 @@ fn compose_email(email_data: EmailData) -> GenericResult<Message> {
                 <p>
                   Service {} (system id {}) is down since
                   <time datetime="{}">
-                  {} UTC
+                  {} ({} timezone)
                   </time>.
                   <br />
                   It was supposed to be up after {}.
@@ -88,8 +96,9 @@ fn compose_email(email_data: EmailData) -> GenericResult<Message> {
                 "#,
             email_data.system_name,
             email_data.system_id,
-            email_data.timestamp,
-            email_data.timestamp,
+            email_data.utc_timestamp,
+            local_timestamp,
+            email_data.timezone,
             email_data.down_after
         ))?;
 
@@ -99,10 +108,11 @@ fn compose_email(email_data: EmailData) -> GenericResult<Message> {
 #[derive(Debug)]
 pub struct EmailData {
     pub system_id: Uuid,
-    pub timestamp: NaiveDateTime,
+    pub utc_timestamp: DateTime<Utc>,
     pub down_after: Duration,
     pub system_name: String,
     pub user_email: String,
+    pub timezone: Tz,
 }
 
 async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
@@ -117,6 +127,7 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
                    s.down_sent_email,
                    s.name                                                                 AS system_name,
                    u.email                                                                AS user_email,
+                   u.timezone                                                             AS user_timezone,
                    ROW_NUMBER() OVER (PARTITION BY p.system_id ORDER BY p.timestamp DESC) AS rn
             FROM ping p
                      JOIN
@@ -140,7 +151,7 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
             WHERE system.id = rp.system_id
                 AND rp.rn = 1
                 AND system.deleted = FALSE
-            RETURNING rp.system_id, rp.timestamp, rp.down_after, rp.system_name, rp.user_email, system.frequency
+            RETURNING rp.system_id, rp.timestamp, rp.down_after, rp.system_name, rp.user_email, system.frequency, rp.user_timezone
         )
         
         SELECT *
@@ -152,12 +163,28 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
 
     let rows = rows
         .into_iter()
-        .map(|row| EmailData {
-            system_id: row.system_id,
-            timestamp: row.timestamp + pg_interval_to_duration(row.frequency),
-            down_after: pg_interval_to_duration(row.down_after),
-            system_name: row.system_name,
-            user_email: row.user_email,
+        .filter_map(|row| {
+            let user_timezone = match Tz::from_str(&row.user_timezone) {
+                Ok(tz) => tz,
+                Err(e) => {
+                    error!(
+                        "Scheduled task: Error parsing timezone: {}, user email is {}",
+                        e, row.user_email
+                    );
+                    return None;
+                }
+            };
+
+            let utc_timestamp = row.timestamp.and_utc();
+
+            Some(EmailData {
+                system_id: row.system_id,
+                utc_timestamp: utc_timestamp + pg_interval_to_duration(row.frequency),
+                down_after: pg_interval_to_duration(row.down_after),
+                system_name: row.system_name,
+                user_email: row.user_email,
+                timezone: user_timezone,
+            })
         })
         .collect();
 
