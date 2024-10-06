@@ -100,7 +100,7 @@ fn compose_email(email_data: EmailData) -> GenericResult<Message> {
                 "#,
             email_data.system_name,
             email_data.system_id,
-            email_data.utc_timestamp,
+            email_data.utc_timestamp.to_rfc3339(),
             local_timestamp,
             email_data.timezone,
             down_after
