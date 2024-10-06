@@ -1,11 +1,11 @@
 <script lang="ts">
 	// noinspection ES6UnusedImports
 	import * as Form from '$components/ui/form';
-	import { Input } from '$components/ui/input';
 	import { formSchema as changePasswordFormSchema, type FormSchema } from './schema';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
+	import PasswordInput from '$components/password_input/PasswordInput.svelte';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
@@ -20,10 +20,9 @@
 	<Form.Field {form} name="old_password">
 		<Form.Control let:attrs>
 			<Form.Label>Old Password</Form.Label>
-			<Input
+			<PasswordInput
 				{...attrs}
 				bind:value={$formData.old_password}
-				type="password"
 				autocomplete="current-password"
 			/>
 		</Form.Control>
@@ -32,22 +31,16 @@
 	<Form.Field {form} name="new_password">
 		<Form.Control let:attrs>
 			<Form.Label>New password</Form.Label>
-			<Input
-				{...attrs}
-				bind:value={$formData.new_password}
-				type="password"
-				autocomplete="new-password"
-			/>
+			<PasswordInput {...attrs} bind:value={$formData.new_password} autocomplete="new-password" />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Field {form} name="new_password_confirm">
 		<Form.Control let:attrs>
 			<Form.Label>Confirm new password</Form.Label>
-			<Input
+			<PasswordInput
 				{...attrs}
 				bind:value={$formData.new_password_confirm}
-				type="password"
 				autocomplete="new-password"
 			/>
 		</Form.Control>

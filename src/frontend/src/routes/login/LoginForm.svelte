@@ -6,6 +6,7 @@
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
+	import PasswordInput from '$components/password_input/PasswordInput.svelte';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
@@ -27,12 +28,7 @@
 	<Form.Field {form} name="password">
 		<Form.Control let:attrs>
 			<Form.Label>Password</Form.Label>
-			<Input
-				{...attrs}
-				bind:value={$formData.password}
-				type="password"
-				autocomplete="current-password"
-			/>
+			<PasswordInput {...attrs} bind:value={$formData.password} autocomplete="current-password" />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
