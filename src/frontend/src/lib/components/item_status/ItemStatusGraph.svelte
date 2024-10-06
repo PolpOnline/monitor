@@ -21,8 +21,8 @@
 		data.instants.filter((instant) => instant.status !== 'untracked').length) *
 		100) as number;
 
-	let firstInstantExpected = DateTime.fromISO(data.instants[0].expected_timestamp);
-	let lastInstantExpected = DateTime.fromISO(
+	$: firstInstantExpected = DateTime.fromISO(data.instants[0].expected_timestamp);
+	$: lastInstantExpected = DateTime.fromISO(
 		data.instants[data.instants.length - 1].expected_timestamp
 	);
 
