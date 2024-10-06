@@ -1,36 +1,41 @@
 <script lang="ts">
-	import type { Instant, Status, SystemData } from '../../../../../backend/bindings';
+	import type { SystemData } from '../../../../../backend/bindings';
 	import HeroiconsXMark20Solid from '~icons/heroicons/x-mark-20-solid';
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
-	import { slide } from 'svelte/transition';
+	import { slide, type SlideParams } from 'svelte/transition';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import humanizeDuration from 'humanize-duration';
+	import { DateTime } from 'luxon';
+	import { colorMapText } from './index';
 
-	export let colorMapText: Record<string, string>;
 	export let data: SystemData;
+	export let now: DateTime;
 
-	let transitionIn = { easing: cubicOut, duration: 300 };
-	let transitionOut = { easing: cubicIn, duration: 300 };
+	let transitionIn: SlideParams = { easing: cubicOut, duration: 300 };
+	let transitionOut: SlideParams = { easing: cubicIn, duration: 300 };
 
-	let frequencyMs = data.frequency * 60 * 1000;
-
-	function calculateDownTime(instants: Instant[], level: Status) {
-		// back track from the most recent instant to find the first error
-		for (const [index, instant] of instants.toReversed().entries()) {
-			if (instant.status === level) {
-				continue;
-			}
-			return humanizeDuration(
-				// Difference between now and the most recent instant
-				Date.now() -
-					new Date(instants[instants.length - index - 1].expected_timestamp).getTime() -
-					frequencyMs,
-				{ round: true, units: ['y', 'd', 'h', 'm'] }
-			);
+	$: downTime = (() => {
+		if (lastInstant.status !== 'down') {
+			return;
 		}
-	}
 
-	$: downTime = calculateDownTime(data.instants, 'down');
+		// back track from the most recent instant to find the first error
+		const mostRecentUp = data.instants.findLastIndex((instant) => instant.status === 'up');
+
+		if (!mostRecentUp) {
+			return;
+		}
+
+		const mostRecentDown = data.instants[mostRecentUp + 1];
+
+		const lastInstantTime = DateTime.fromISO(mostRecentDown.expected_timestamp);
+
+		return humanizeDuration(
+			// Difference between now and the most recent instant
+			now.diff(lastInstantTime).as('milliseconds'),
+			{ round: true, units: ['y', 'd', 'h', 'm'] }
+		);
+	})();
 
 	$: lastInstant = data.instants[data.instants.length - 1];
 </script>

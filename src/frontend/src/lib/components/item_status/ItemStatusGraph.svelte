@@ -5,11 +5,11 @@
 	import type { SystemData } from '../../../../../backend/bindings';
 	import HeroiconsXMark20Solid from '~icons/heroicons/x-mark-20-solid';
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
+	import { DateTime } from 'luxon';
+	import { colorMap, colorMapBorder, colorMapText } from './index';
 
 	export let data: SystemData;
-	export let colorMap: Record<string, string>;
-	export let colorMapText: Record<string, string>;
-	export let colorMapBorder: Record<string, string>;
+	export let now: DateTime;
 
 	let tooltipOpens: boolean[] = new Array(data.instants.length).fill(false);
 
@@ -21,16 +21,27 @@
 		data.instants.filter((instant) => instant.status !== 'untracked').length) *
 		100) as number;
 
+	let firstInstantExpected = DateTime.fromISO(data.instants[0].expected_timestamp);
+	let lastInstantExpected = DateTime.fromISO(
+		data.instants[data.instants.length - 1].expected_timestamp
+	);
+
+	const durationParams: humanizeDuration.Options = {
+		round: true,
+		units: ['y', 'd', 'h', 'm'],
+		largest: 2
+	};
+
 	$: firstTime = humanizeDuration(
 		// Difference between now and the least recent instant
-		Date.now() - new Date(data.instants[0].expected_timestamp).getTime(),
-		{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
+		now.diff(firstInstantExpected).as('milliseconds'),
+		durationParams
 	);
 
 	$: lastTime = humanizeDuration(
 		// Difference between now and the most recent instant
-		Date.now() - new Date(data.instants[data.instants.length - 1].expected_timestamp).getTime(),
-		{ round: true, units: ['y', 'd', 'h', 'm'], largest: 2 }
+		now.diff(lastInstantExpected).as('milliseconds'),
+		durationParams
 	);
 </script>
 

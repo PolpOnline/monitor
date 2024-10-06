@@ -13,24 +13,6 @@
 
 	$: currentPage = Number($page.url.searchParams.get('page')) || 0;
 
-	const colorMap = {
-		up: 'bg-green-500',
-		down: 'bg-red-500',
-		untracked: 'bg-gray-500'
-	} as const;
-
-	const colorMapText = {
-		up: 'text-green-500',
-		down: 'text-red-500',
-		untracked: 'text-gray-500'
-	} as const;
-
-	const colorMapBorder = {
-		up: 'border-green-700',
-		down: 'border-red-700',
-		untracked: 'border-gray-700'
-	} as const;
-
 	let timeoutId: ReturnType<typeof setTimeout>;
 	let intervalId: ReturnType<typeof setInterval>;
 
@@ -77,6 +59,14 @@
 		clearInterval(intervalId);
 		clearTimeout(timeoutId);
 	});
+
+	let now = DateTime.now();
+	onMount(() => {
+		const interval = setInterval(() => {
+			now = DateTime.now();
+		}, 1000);
+		return () => clearInterval(interval);
+	});
 </script>
 
 <div class="relative my-3 rounded-lg border p-3">
@@ -91,10 +81,10 @@
 	</h1>
 
 	{#if currentPage === 0}
-		<ItemStatusOperationalStatus {colorMapText} {data} />
+		<ItemStatusOperationalStatus {data} {now} />
 	{/if}
 
 	<div class="mx-auto my-3 max-w-[800px]">
-		<ItemStatusGraph {data} {colorMap} {colorMapText} {colorMapBorder} />
+		<ItemStatusGraph {data} {now} />
 	</div>
 </div>
