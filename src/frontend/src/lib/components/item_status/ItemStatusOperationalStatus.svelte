@@ -12,6 +12,8 @@
 	let transitionIn = { easing: cubicOut, duration: 300 };
 	let transitionOut = { easing: cubicIn, duration: 300 };
 
+	let frequencyMs = data.frequency * 60 * 1000;
+
 	function calculateDownTime(instants: Instant[], level: Status) {
 		// back track from the most recent instant to find the first error
 		for (const [index, instant] of instants.toReversed().entries()) {
@@ -20,7 +22,9 @@
 			}
 			return humanizeDuration(
 				// Difference between now and the most recent instant
-				Date.now() - new Date(instants[instants.length - index - 1].expected_timestamp).getTime(),
+				Date.now() -
+					new Date(instants[instants.length - index - 1].expected_timestamp).getTime() -
+					frequencyMs,
 				{ round: true, units: ['y', 'd', 'h', 'm'] }
 			);
 		}
