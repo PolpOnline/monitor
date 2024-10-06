@@ -14,7 +14,9 @@ use sqlx::PgPool;
 use tracing::{error, info};
 use uuid::Uuid;
 
-use crate::web::utils::time_conversions::pg_interval_to_duration;
+use crate::web::utils::{
+    time::approx_expected_timestamp, time_conversions::pg_interval_to_duration,
+};
 
 pub type SmtpClient = lettre::AsyncSmtpTransport<Tokio1Executor>;
 
@@ -128,6 +130,7 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
                    s.down_after,
                    s.down_sent_email,
                    s.name                                                                 AS system_name,
+                   s.starts_at                                                            AS system_starts_at,
                    u.email                                                                AS user_email,
                    u.timezone                                                             AS user_timezone,
                    ROW_NUMBER() OVER (PARTITION BY p.system_id ORDER BY p.timestamp DESC) AS rn
@@ -153,7 +156,7 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
             WHERE system.id = rp.system_id
                 AND rp.rn = 1
                 AND system.deleted = FALSE
-            RETURNING rp.system_id, rp.timestamp, rp.down_after, rp.system_name, rp.user_email, system.frequency, rp.user_timezone
+            RETURNING rp.system_id, rp.timestamp, rp.down_after, rp.system_name, rp.system_starts_at, rp.user_email, system.frequency, rp.user_timezone
         )
         
         SELECT *
@@ -177,11 +180,23 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
                 }
             };
 
-            let utc_timestamp = row.timestamp.and_utc();
+            let frequency = pg_interval_to_duration(row.frequency);
+
+            let precedent_timestamp =
+                approx_expected_timestamp(row.timestamp, frequency, row.system_starts_at)
+                    .map_err(|e| {
+                        error!(
+                            "Scheduled task: Error calculating precedent timestamp: {}",
+                            e
+                        );
+                    })
+                    .ok()?;
+
+            let utc_timestamp = precedent_timestamp.and_utc();
 
             Some(EmailData {
                 system_id: row.system_id,
-                utc_timestamp: utc_timestamp + pg_interval_to_duration(row.frequency),
+                utc_timestamp: utc_timestamp + frequency,
                 down_after: pg_interval_to_duration(row.down_after),
                 system_name: row.system_name,
                 user_email: row.user_email,
