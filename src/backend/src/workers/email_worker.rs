@@ -14,8 +14,9 @@ use sqlx::PgPool;
 use tracing::{error, info};
 use uuid::Uuid;
 
-use crate::web::utils::{
-    time::approx_expected_timestamp, time_conversions::pg_interval_to_duration,
+use crate::{
+    web::utils::{time::approx_expected_timestamp, time_conversions::pg_interval_to_duration},
+    SITE_URL,
 };
 
 pub type SmtpClient = lettre::AsyncSmtpTransport<Tokio1Executor>;
@@ -66,6 +67,7 @@ impl Worker<()> for EmailWorker {
     }
 }
 
+//noinspection HtmlUnknownTarget
 fn compose_email(email_data: EmailData) -> GenericResult<Message> {
     info!(
         "Scheduled task: Composing email for the system {} (id {}, user email {}, down since {})",
@@ -92,18 +94,22 @@ fn compose_email(email_data: EmailData) -> GenericResult<Message> {
                 <p>
                   Service {} (system id {}) is down since
                   <time datetime="{}">
-                  {} ({} timezone)
+                  {}
                   </time>.
                   <br />
                   It was supposed to be up after {}.
+                  <br />
+                  Check its status now at
+                  <a href="{}">{}</a>.
                 </p>
                 "#,
             email_data.system_name,
             email_data.system_id,
             email_data.utc_timestamp.to_rfc3339(),
             local_timestamp,
-            email_data.timezone,
-            down_after
+            down_after,
+            SITE_URL.as_str(),
+            SITE_URL.as_str()
         ))?;
 
     Ok(message)

@@ -18,6 +18,8 @@ pub mod web;
 pub mod workers;
 
 pub static PRODUCTION: Lazy<bool> = Lazy::new(|| std::env::var("PRODUCTION").is_ok());
+pub static SITE_URL: Lazy<String> =
+    Lazy::new(|| std::env::var("SITE_URL").unwrap_or_else(|_| "http://localhost:5173".into()));
 
 #[tokio::main]
 async fn main() -> Result<()> {
