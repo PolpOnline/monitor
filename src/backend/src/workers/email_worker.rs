@@ -43,10 +43,7 @@ impl Worker<()> for EmailWorker {
 
         let down_services = query_down_services(&self.db).await?;
 
-        let emails = down_services
-            .into_iter()
-            .map(compose_email)
-            .collect::<Vec<_>>();
+        let emails = down_services.iter().map(compose_email).collect::<Vec<_>>();
 
         let emails = emails.into_iter().filter_map(|email| match email {
             Ok(email) => Some(email),
@@ -63,6 +60,11 @@ impl Worker<()> for EmailWorker {
             })?;
         }
 
+        let down_ids = down_services
+            .iter()
+            .map(|email_data| email_data.system_id)
+            .collect::<Vec<_>>();
+
         // Finalize by setting the down_sent_email flag to true for all systems that
         // have been sent an email
         sqlx::query!(
@@ -72,19 +74,21 @@ impl Worker<()> for EmailWorker {
             SET down_sent_email = TRUE
             WHERE id = ANY($1)
             "#,
-            down_services
-                .iter()
-                .map(|email_data| email_data.system_id)
-                .collect::<Vec<_>>()
-                .as_slice()
-        );
+            down_ids.as_slice()
+        )
+        .execute(&self.db)
+        .await
+        .map_err(|e| {
+            error!("Scheduled task: Error updating down_sent_email flag: {}", e);
+            GenericError::from(e)
+        })?;
 
         Ok(())
     }
 }
 
 //noinspection HtmlUnknownTarget
-fn compose_email(email_data: EmailData) -> GenericResult<Message> {
+fn compose_email(email_data: &EmailData) -> GenericResult<Message> {
     info!(
         "Scheduled task: Composing email for the system {} (id {}, user email {}, down since {})",
         email_data.system_name,
