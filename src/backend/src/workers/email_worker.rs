@@ -63,6 +63,22 @@ impl Worker<()> for EmailWorker {
             })?;
         }
 
+        // Finalize by setting the down_sent_email flag to true for all systems that
+        // have been sent an email
+        sqlx::query!(
+            // language=PostgreSQL
+            r#"
+            UPDATE system
+            SET down_sent_email = TRUE
+            WHERE id = ANY($1)
+            "#,
+            down_services
+                .iter()
+                .map(|email_data| email_data.system_id)
+                .collect::<Vec<_>>()
+                .as_slice()
+        );
+
         Ok(())
     }
 }
@@ -126,47 +142,31 @@ pub struct EmailData {
 }
 
 async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
+    // Query all systems that are down for longer than the down_after interval for
+    // which an email has not been sent
     let rows = sqlx::query!(
         // language=PostgreSQL
         r#"
-        WITH ranked_pings AS (
-            SELECT p.id,
-                   p.system_id,
-                   p.timestamp,
-                   s.down_after,
-                   s.down_sent_email,
-                   s.name                                                                 AS system_name,
-                   s.starts_at                                                            AS system_starts_at,
-                   u.email                                                                AS user_email,
-                   u.timezone                                                             AS user_timezone,
-                   ROW_NUMBER() OVER (PARTITION BY p.system_id ORDER BY p.timestamp DESC) AS rn
+        SELECT s.id AS system_id,
+               s.name AS system_name,
+               s.starts_at AS system_starts_at,
+               s.down_after,
+               u.email AS user_email,
+               u.timezone AS user_timezone,
+               s.frequency,
+               latest_ping.timestamp
+        FROM system s
+            JOIN "user" u ON s.user_id = u.id
+        LEFT JOIN LATERAL (
+            SELECT p.timestamp
             FROM ping p
-                     JOIN
-                 system s ON p.system_id = s.id
-                     JOIN
-                 "user" u ON s.user_id = u.id
-            WHERE NOT EXISTS (
-                              SELECT 1
-                              FROM ping
-                              WHERE ping.system_id = s.id
-                                AND ping.timestamp >= NOW() - s.down_after
-                              )       
-              AND s.down_sent_email = FALSE
-              AND s.deleted = FALSE
-        ),
-        
-        updated_systems AS (
-            UPDATE system
-            SET down_sent_email = TRUE
-            FROM ranked_pings rp
-            WHERE system.id = rp.system_id
-                AND rp.rn = 1
-                AND system.deleted = FALSE
-            RETURNING rp.system_id, rp.timestamp, rp.down_after, rp.system_name, rp.system_starts_at, rp.user_email, system.frequency, rp.user_timezone
-        )
-        
-        SELECT *
-        FROM updated_systems;
+            WHERE p.system_id = s.id
+            ORDER BY p.timestamp DESC
+            LIMIT 1
+        ) latest_ping ON TRUE
+        WHERE (NOW() - latest_ping.timestamp) > s.down_after
+          AND s.deleted = FALSE
+          AND s.down_sent_email = FALSE;
         "#
     )
     .fetch_all(db)
