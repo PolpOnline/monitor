@@ -34,11 +34,7 @@
 				</Sheet.Description>
 			</Sheet.Header>
 
-			<AddSystemForm {data} typeOfWrapper="sheet">
-				<slot name="footer">
-					<Sheet.Footer />
-				</slot>
-			</AddSystemForm>
+			<AddSystemForm {data} typeOfWrapper="sheet" />
 		</Sheet.Content>
 	</Sheet.Root>
 {:else}
@@ -56,11 +52,7 @@
 				</Drawer.Description>
 			</Drawer.Header>
 
-			<AddSystemForm {data} class="mx-5" typeOfWrapper="drawer">
-				<slot name="footer">
-					<Drawer.Footer />
-				</slot>
-			</AddSystemForm>
+			<AddSystemForm {data} class="mx-5" typeOfWrapper="drawer" />
 		</Drawer.Content>
 	</Drawer.Root>
 {/if}

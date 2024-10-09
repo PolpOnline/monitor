@@ -12,9 +12,15 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { addSystemSheetOpen } from '$lib/components/stores/popovers.store';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
+	import LucidePencil from '~icons/lucide/pencil';
+	import LucideClock from '~icons/lucide/clock';
+	import LucidePlay from '~icons/lucide/play';
+	import LucideMail from '~icons/lucide/mail';
+	import LucideEye from '~icons/lucide/eye';
 	// noinspection ES6UnusedImports
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import DurationPicker from '$components/duration_picker/DurationPicker.svelte';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
@@ -41,46 +47,61 @@
 </script>
 
 <form action="?/add_system" class={className} method="POST" use:enhance>
-	<div class="p-4">
+	<div class="space-y-9 p-4">
 		<Form.Field {form} name="name">
 			<Form.Control let:attrs>
-				<Form.Label>Name</Form.Label>
+				<Form.Label class="font-bold">
+					<LucidePencil class="inline h-4 w-4" />
+					Name
+				</Form.Label>
 				<Input {...attrs} bind:value={$formData.name} />
 			</Form.Control>
-			<Form.Description>Name of the system</Form.Description>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="frequency">
-			<Form.Control let:attrs>
-				<Form.Label>Check frequency (in minutes)</Form.Label>
-				<Input {...attrs} bind:value={$formData.frequency} type="number" />
+			<Form.Control>
+				<Form.Label>
+					<LucideClock class="inline h-4 w-4" />
+					Check frequency
+				</Form.Label>
+				<DurationPicker bind:value={$formData.frequency} defaultValue={{ hours: 0, minutes: 30 }} />
 			</Form.Control>
-			<Form.Description>How often the system should be checked</Form.Description>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="starts_at">
 			<Form.Control let:attrs>
-				<Form.Label>Starting date and time</Form.Label>
+				<Form.Label>
+					<LucidePlay class="inline h-4 w-4" />
+					Starting date and time
+				</Form.Label>
 				<DateTimePicker {...attrs} bind:value={$formData.starts_at} />
 			</Form.Control>
-			<Form.Description>When the system should start being monitored</Form.Description>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="down_after">
 			<Form.Control let:attrs>
-				<Form.Label>Down after (in minutes)</Form.Label>
-				<Input {...attrs} bind:value={$formData.down_after} type="number" />
+				<Form.Label>
+					<LucideMail class="inline h-4 w-4" />
+					Send email after
+				</Form.Label>
+				<DurationPicker
+					{...attrs}
+					bind:value={$formData.down_after}
+					defaultValue={{ hours: 4, minutes: 0 }}
+				/>
 			</Form.Control>
-			<Form.Description>How long the system can be down before an email is sent</Form.Description>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="visibility">
 			<Form.Control let:attrs>
-				<Form.Label>Visibility</Form.Label>
+				<Form.Label>
+					<LucideEye class="inline h-4 w-4" />
+					Visibility
+				</Form.Label>
 
 				<div {...attrs}>
 					<DropdownMenu.Root>
@@ -98,7 +119,6 @@
 					</DropdownMenu.Root>
 				</div>
 			</Form.Control>
-			<Form.Description>Select if the system should be public or private</Form.Description>
 			<Form.FieldErrors />
 		</Form.Field>
 	</div>
