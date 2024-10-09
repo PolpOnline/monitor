@@ -90,7 +90,7 @@
 				<DurationPicker
 					{...attrs}
 					bind:value={$formData.down_after}
-					defaultValue={{ hours: 4, minutes: 0 }}
+					defaultValue={{ hours: 2, minutes: 0 }}
 				/>
 			</Form.Control>
 			<Form.FieldErrors />
