@@ -102,7 +102,6 @@ fn compose_email(email_data: &EmailData) -> GenericResult<Message> {
 
     let message = Message::builder()
         .from("Monitor Mailer <monitor@polp.online>".parse()?)
-        .reply_to("Monitor Mailer <monitor@polp.online>".parse()?)
         .to(format!("User <{}>", email_data.user_email)
             .as_str()
             .parse()?)
