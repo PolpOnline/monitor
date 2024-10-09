@@ -52,20 +52,20 @@
 			bind:open={tooltipOpens[i]}
 			onOpenChange={() => clearTooltipsExcept(i)}
 		>
-			<Tooltip.Trigger
-				class="mx-0.25 h-full rounded {colorMap[instant.status]} max-w-3"
+			<div
+				class="mx-0.25 h-full rounded {colorMap[instant.status]} max-w-3 cursor-default"
 				style="width: calc((100% / {data.instants.length}) - 2px)"
+				on:mouseenter={() => {
+					clearTooltipsExcept(i);
+				}}
+				on:mouseleave={() => {
+					tooltipOpens[i] = false;
+				}}
+				role="button"
+				tabindex={-1}
 			>
-				<button
-					class="h-full w-full cursor-default"
-					on:mouseenter={() => {
-						clearTooltipsExcept(i);
-					}}
-					on:mouseleave={() => {
-						tooltipOpens[i] = false;
-					}}
-				/>
-			</Tooltip.Trigger>
+				<Tooltip.Trigger class="h-full w-full cursor-default" />
+			</div>
 			<Tooltip.Content class="{colorMap[instant.status]} {colorMapBorder[instant.status]}">
 				<Tooltip.Arrow class="{colorMapText[instant.status]} rounded-[2px]" />
 				<div class="flex items-center">
