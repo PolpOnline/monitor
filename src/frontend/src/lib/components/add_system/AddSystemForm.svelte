@@ -106,11 +106,11 @@
 				<div {...attrs}>
 					<DropdownMenu.Root>
 						<DropdownMenu.Trigger asChild let:builder>
-							<Button variant="outline" builders={[builder]}>
+							<Button variant="outline" builders={[builder]} class="w-full">
 								{$formData.visibility === 'public' ? 'Public' : 'Private'}
 							</Button>
 						</DropdownMenu.Trigger>
-						<DropdownMenu.Content class="w-56">
+						<DropdownMenu.Content class="w-[95%]">
 							<DropdownMenu.RadioGroup bind:value={$formData.visibility}>
 								<DropdownMenu.RadioItem value="public">Public</DropdownMenu.RadioItem>
 								<DropdownMenu.RadioItem value="private">Private</DropdownMenu.RadioItem>

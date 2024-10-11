@@ -51,7 +51,7 @@ mode=https http-method=post output=none"`
 
 			<div class="!mt-4">
 				<Select.Root bind:selected={chosenPreset} portal={null}>
-					<Select.Trigger class="w-[180px]">
+					<Select.Trigger class="w-full">
 						<Select.Value placeholder="Select a preset" />
 					</Select.Trigger>
 					<Select.Content>
