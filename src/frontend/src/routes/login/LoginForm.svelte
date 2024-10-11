@@ -7,11 +7,17 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import PasswordInput from '$components/password_input/PasswordInput.svelte';
+	import { toast } from 'svelte-sonner';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
 	const form = superForm(data, {
-		validators: zodClient(formSchema)
+		validators: zodClient(formSchema),
+		onUpdated: ({ form: f }) => {
+			if (f.valid) {
+				toast.success('Login successful.');
+			}
+		}
 	});
 
 	const { form: formData, enhance, message, delayed } = form;

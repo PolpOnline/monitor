@@ -3,7 +3,10 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { Button } from '$components/ui/button';
 	import LucideClipboardCopy from '~icons/lucide/clipboard-copy';
-	import LucideCheck from '~icons/lucide/check';
+	import LineMdConfirm from '~icons/line-md/confirm';
+	import { toast } from 'svelte-sonner';
+	import { fly, type FlyParams } from 'svelte/transition';
+	import { cubicIn } from 'svelte/easing';
 
 	let className = '';
 	// noinspection ReservedWordAsName
@@ -15,20 +18,34 @@
 
 	function copyValue() {
 		navigator.clipboard.writeText(value);
+
+		toast.success('Copied to clipboard');
+
 		displayCheckMark = true;
 		setTimeout(() => {
 			displayCheckMark = false;
-		}, 1000);
+		}, 3000);
 	}
+
+	const flyInOptions: FlyParams = {
+		delay: 0,
+		duration: 300,
+		easing: cubicIn,
+		x: '-25%'
+	};
 </script>
 
 <div class="relative my-3">
 	<Textarea bind:value class={className} readonly />
 	<Button class="absolute bottom-2 right-2" on:click={copyValue} variant="secondary">
 		{#if !displayCheckMark}
-			<LucideClipboardCopy class="h-6 w-6" />
+			<div in:fly={flyInOptions} class="h-6 w-6">
+				<LucideClipboardCopy class="h-full w-full" />
+			</div>
 		{:else}
-			<LucideCheck class="h-6 w-6" />
+			<div in:fly={flyInOptions} class="h-6 w-6">
+				<LineMdConfirm class="h-full w-full" />
+			</div>
 		{/if}
 	</Button>
 </div>

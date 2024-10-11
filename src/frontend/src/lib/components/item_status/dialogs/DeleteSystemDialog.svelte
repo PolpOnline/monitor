@@ -5,18 +5,25 @@
 	import { deleteSystemDialogOpen, targetSystemData } from '$components/stores/popovers.store';
 	import { invalidateAll } from '$app/navigation';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
+	import { toast } from 'svelte-sonner';
 
 	async function deleteSystem() {
 		isLoading = true;
 		const id = $targetSystemData?.id;
 
-		await fetch(`/api/delete_system`, {
+		const res = await fetch(`/api/delete_system`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({ id })
 		});
+
+		if (res.ok) {
+			toast.success('System deleted successfully');
+		} else {
+			toast.error('Failed to delete the system: ' + (await res.text()));
+		}
 
 		invalidateAll();
 

@@ -12,5 +12,5 @@ export async function DELETE({ request, fetch }) {
 		body: JSON.stringify({ id } as DeleteSystemRequest)
 	});
 
-	return new Response(null, { status: res.status });
+	return new Response(await res.text(), { status: res.status });
 }

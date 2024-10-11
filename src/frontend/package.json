@@ -60,6 +60,7 @@
 		"luxon": "^3.5.0",
 		"mode-watcher": "^0.4.1",
 		"svelte-device-info": "^1.0.6",
+		"svelte-sonner": "^0.3.28",
 		"sveltekit-superforms": "^2.19.1",
 		"tailwind-merge": "^2.5.3",
 		"tailwind-variants": "^0.2.1",

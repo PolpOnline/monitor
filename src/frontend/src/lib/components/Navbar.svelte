@@ -16,6 +16,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
 	import type { LoginStatus } from '../../app';
+	import { toast } from 'svelte-sonner';
 
 	export let loginStatus: LoginStatus;
 	export let loggedInEmail: string | undefined;
@@ -23,8 +24,6 @@
 	$: loggedIn = loginStatus === 'logged_in';
 
 	$: isPublicPage = $page.url.pathname.startsWith('/public');
-
-	let isRefreshing = false;
 </script>
 
 <nav class="grid h-20 grid-cols-3">
@@ -65,16 +64,12 @@
 					</DropdownMenu.Item>
 					<DropdownMenu.Item
 						on:click={async () => {
-							isRefreshing = true;
+							toast('Refreshing', { icon: LineMdLoadingLoop });
 							await invalidateAll();
-							isRefreshing = false;
+							toast.success('Refreshed');
 						}}
 					>
-						{#if !isRefreshing}
-							<LucideRefreshCw class="mr-2 h-4 w-4" />
-						{:else}
-							<LineMdLoadingLoop class="mr-2 h-4 w-4" />
-						{/if}
+						<LucideRefreshCw class="mr-2 h-4 w-4" />
 						Refresh
 					</DropdownMenu.Item>
 					{#if loggedIn}

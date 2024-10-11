@@ -6,6 +6,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { Input } from '$components/ui/input';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
+	import { toast } from 'svelte-sonner';
 
 	let newSystemName = '';
 
@@ -15,13 +16,19 @@
 
 		newSystemName = newSystemName.trim();
 
-		await fetch(`/api/edit_system_name`, {
+		const res = await fetch(`/api/edit_system_name`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({ id, name: newSystemName })
 		});
+
+		if (res.ok) {
+			toast.success('System name modified successfully');
+		} else {
+			toast.error('Failed to modify the name of the system: ' + (await res.text()));
+		}
 
 		invalidateAll();
 

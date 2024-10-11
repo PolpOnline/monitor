@@ -21,6 +21,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import DurationPicker from '$components/duration_picker/DurationPicker.svelte';
+	import { toast } from 'svelte-sonner';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
@@ -28,8 +29,11 @@
 	const form = superForm(data, {
 		validators: zodClient(formSchema),
 		dataType: 'json',
-		onUpdated: () => {
-			$addSystemSheetOpen = false;
+		onUpdated: ({ form: f }) => {
+			if (f.valid) {
+				$addSystemSheetOpen = false;
+				toast.success('System added successfully');
+			}
 		},
 		invalidateAll: true
 	});

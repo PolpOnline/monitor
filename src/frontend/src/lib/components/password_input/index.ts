@@ -1,4 +1,4 @@
-import Root from './password-input.svelte';
+import Root from './PasswordInput.svelte';
 
 export type FormInputEvent<T extends Event = Event> = T & {
 	currentTarget: EventTarget & HTMLInputElement;

@@ -6,11 +6,17 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import PasswordInput from '$components/password_input/PasswordInput.svelte';
+	import { toast } from 'svelte-sonner';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
 	const form = superForm(data, {
-		validators: zodClient(changePasswordFormSchema)
+		validators: zodClient(changePasswordFormSchema),
+		onUpdated: ({ form: f }) => {
+			if (!f.valid) {
+				toast.error('Please fix the errors in the form.');
+			}
+		}
 	});
 
 	const { form: formData, enhance, message, delayed } = form;

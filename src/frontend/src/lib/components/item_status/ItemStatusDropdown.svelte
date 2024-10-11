@@ -24,6 +24,7 @@
 		type Visibility
 	} from '../../../../../backend/bindings';
 	import { page } from '$app/stores';
+	import { toast } from 'svelte-sonner';
 
 	let className = '';
 
@@ -40,13 +41,19 @@
 		isVisibilityChanging = true;
 		const request = { id, visibility: newVisibility } as ChangeVisibilityRequest;
 
-		await fetch(`/api/change_visibility`, {
+		const res = await fetch(`/api/change_visibility`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(request)
 		});
+
+		if (res.ok) {
+			toast.success('Successfully changed visibility to ' + newVisibility);
+		} else {
+			toast.error('Failed to change visibility: ' + (await res.text()));
+		}
 
 		invalidateAll();
 
@@ -65,6 +72,8 @@
 					if (!$targetSystemData) return;
 
 					navigator.clipboard.writeText(`${API_URL}/ping_status/${$targetSystemData.id}`);
+
+					toast.success('Copied endpoint URL');
 				}}
 			>
 				<LucideClipboardCopy class="mr-2 h-4 w-4" />

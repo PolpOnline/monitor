@@ -3,8 +3,9 @@
 	import 'unfonts.css';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import favicon from '$lib/images/favicon.svg';
-	import { ModeWatcher } from 'mode-watcher';
+	import { mode, ModeWatcher } from 'mode-watcher';
 	import type { LayoutData } from './$types';
+	import { Toaster } from '$lib/components/ui/sonner';
 
 	import { fly } from 'svelte/transition';
 	import { cubicIn, cubicOut } from 'svelte/easing';
@@ -36,6 +37,8 @@
 </svelte:head>
 
 <div>
+	<Toaster richColors theme={$mode} />
+
 	<Navbar loginStatus={data.loginStatus} loggedInEmail={data.loggedInEmail} />
 
 	<ModeWatcher defaultMode={'dark'} />

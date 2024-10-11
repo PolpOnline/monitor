@@ -44,6 +44,9 @@ importers:
       svelte-device-info:
         specifier: ^1.0.6
         version: 1.0.6
+      svelte-sonner:
+        specifier: ^0.3.28
+        version: 0.3.28(svelte@4.2.19)
       sveltekit-superforms:
         specifier: ^2.19.1
         version: 2.19.1(@sveltejs/kit@2.6.4(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.8(@types/node@22.7.5)))(svelte@4.2.19)(vite@5.4.8(@types/node@22.7.5)))(@types/json-schema@7.0.15)(svelte@4.2.19)
@@ -2232,6 +2235,11 @@ packages:
       typescript:
         optional: true
 
+  svelte-sonner@0.3.28:
+    resolution: {integrity: sha512-K3AmlySeFifF/cKgsYNv5uXqMVNln0NBAacOYgmkQStLa/UoU0LhfAACU6Gr+YYC8bOCHdVmFNoKuDbMEsppJg==}
+    peerDependencies:
+      svelte: ^3.0.0 || ^4.0.0 || ^5.0.0-next.1
+
   svelte@4.2.19:
     resolution: {integrity: sha512-IY1rnGr6izd10B0A8LqsBfmlT5OILVuZ7XsI0vdGPEvuonFV7NYEUK4dAkm9Zg2q0Um92kYjTpS1CAP3Nh/KWw==}
     engines: {node: '>=16'}
@@ -4407,6 +4415,10 @@ snapshots:
       postcss: 8.4.47
       postcss-load-config: 4.0.2(postcss@8.4.47)
       typescript: 5.6.3
+
+  svelte-sonner@0.3.28(svelte@4.2.19):
+    dependencies:
+      svelte: 4.2.19
 
   svelte@4.2.19:
     dependencies:

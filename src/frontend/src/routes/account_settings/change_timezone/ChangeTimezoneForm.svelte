@@ -6,13 +6,23 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import TimezoneSelector from '$components/timezone_selector/TimezoneSelector.svelte';
+	import { toast } from 'svelte-sonner';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 	export let timezones: { value: string; label: string }[] = [];
 
 	const form = superForm(data, {
 		dataType: 'json',
-		validators: zodClient(changeTimezoneFormSchema)
+		validators: zodClient(changeTimezoneFormSchema),
+		onUpdated: ({ form: f }) => {
+			console.log(f.valid);
+
+			if (f.valid) {
+				toast.success('Timezone changed successfully.');
+			} else {
+				toast.error('Please fix the errors in the form.');
+			}
+		}
 	});
 
 	const { form: formData, enhance, message, delayed } = form;

@@ -12,5 +12,5 @@ export async function PATCH({ request, fetch }) {
 		body: JSON.stringify({ id, visibility } as ChangeVisibilityRequest)
 	});
 
-	return new Response(null, { status: res.status });
+	return new Response(await res.text(), { status: res.status });
 }
