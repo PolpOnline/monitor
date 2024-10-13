@@ -36,10 +36,17 @@ impl EmailWorker {
 type GenericError = Box<dyn std::error::Error + Send + Sync>;
 type GenericResult<T> = Result<T, GenericError>;
 
+const WAIT_DURATION: Duration = Duration::minutes(2);
+
 #[async_trait]
 impl Worker<()> for EmailWorker {
     async fn perform(&self, _args: ()) -> sidekiq::Result<()> {
-        info!("Scheduled task: checking and sending emails for down services");
+        info!(
+            "Scheduled task: Email started, waiting for {} before sending emails",
+            WAIT_DURATION.human(Truncate::Minute)
+        );
+        tokio::time::sleep(WAIT_DURATION.to_std()?).await;
+        info!("Scheduled task: Checking and sending emails for down services");
 
         let down_services = query_down_services(&self.db).await?;
 
