@@ -197,6 +197,7 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
             };
 
             let frequency = pg_interval_to_duration(row.frequency);
+            let down_after = pg_interval_to_duration(row.down_after);
 
             let precedent_timestamp =
                 approx_expected_timestamp(row.timestamp, frequency, row.system_starts_at)
@@ -212,8 +213,8 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
 
             Some(EmailData {
                 system_id: row.system_id,
-                utc_timestamp: utc_timestamp + frequency,
-                down_after: pg_interval_to_duration(row.down_after),
+                utc_timestamp: utc_timestamp + down_after,
+                down_after,
                 system_name: row.system_name,
                 user_email: row.user_email,
                 timezone: user_timezone,
