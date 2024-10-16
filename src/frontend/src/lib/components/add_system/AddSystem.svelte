@@ -10,10 +10,15 @@
 	import Device from 'svelte-device-info';
 	// noinspection ES6UnusedImports
 	import * as Drawer from '$lib/components/ui/drawer';
+	import { browser } from '$app/environment';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
-	const isMobile = Device.isMobile;
+	let isMobile = false;
+
+	if (browser) {
+		isMobile = Device.isMobile;
+	}
 
 	const title = 'Add a system';
 	const description = 'Add a new system to the monitor by filling out the form below.';
