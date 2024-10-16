@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SystemData } from '../../../../../backend/bindings';
+	import type { SystemData } from '$lib/bindings';
 	import HeroiconsXMark20Solid from '~icons/heroicons/x-mark-20-solid';
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
 	import { slide, type SlideParams } from 'svelte/transition';

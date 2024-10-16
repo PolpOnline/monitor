@@ -1,5 +1,5 @@
 import { writable, type Writable } from 'svelte/store';
-import type { SystemData } from '../../../../../backend/bindings';
+import type { SystemData } from '$lib/bindings';
 
 export const addSystemSheetOpen = writable(false);
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Instant, SystemData } from '../../../../../backend/bindings';
+	import type { Instant, SystemData } from '$lib/bindings';
 	import ItemStatusDropdown from './ItemStatusDropdown.svelte';
 	import { page } from '$app/stores';
 	import ItemStatusOperationalStatus from '$components/item_status/ItemStatusOperationalStatus.svelte';

@@ -1,5 +1,5 @@
 import { API_URL } from '$lib/api/api';
-import type { DeleteSystemRequest } from '../../../../../backend/bindings';
+import type { DeleteSystemRequest } from '$lib/bindings';
 
 export async function DELETE({ request, fetch }) {
 	const { id } = (await request.json()) as DeleteSystemRequest;

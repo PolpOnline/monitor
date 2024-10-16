@@ -2,7 +2,7 @@
 	import humanizeDuration from 'humanize-duration';
 	// noinspection ES6UnusedImports
 	import * as Tooltip from '$components/ui/tooltip';
-	import type { SystemData } from '../../../../../backend/bindings';
+	import type { SystemData } from '$lib/bindings';
 	import HeroiconsXMark20Solid from '~icons/heroicons/x-mark-20-solid';
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
 	import { DateTime } from 'luxon';

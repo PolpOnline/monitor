@@ -76,5 +76,7 @@ mod test {
         // Negative case: frequency is zero
         let timestamp = start_at + Duration::minutes(15);
         assert!(approx_expected_timestamp(timestamp, Duration::seconds(0), start_at).is_err());
+
+        Ok(())
     }
 }

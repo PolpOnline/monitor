@@ -1,4 +1,3 @@
-export * from "./GetPublicRequest"
 export * from "./AddSystemRequest"
 export * from "./GetCurrentSettingsResponse"
 export * from "./ChangePasswordRequest"

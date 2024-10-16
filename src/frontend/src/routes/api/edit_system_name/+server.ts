@@ -1,5 +1,5 @@
 import { API_URL } from '$lib/api/api';
-import type { EditSystemNameRequest } from '../../../../../backend/bindings';
+import type { EditSystemNameRequest } from '$lib/bindings';
 
 export async function PATCH({ request, fetch }) {
 	const { id, name } = (await request.json()) as EditSystemNameRequest;

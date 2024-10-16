@@ -1,4 +1,4 @@
-import type { ListSystemsResponse, SystemData } from '../../../backend/bindings';
+import type { ListSystemsResponse, SystemData } from '$lib/bindings';
 import { API_URL, LIST_SIZE } from '$lib/api/api';
 import { formSchema } from '$lib/components/add_system/schema';
 import type { Actions, PageServerLoad } from './$types.js';

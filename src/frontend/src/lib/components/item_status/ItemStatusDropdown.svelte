@@ -18,11 +18,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import LucideLink from '~icons/lucide/link';
-	import {
-		type ChangeVisibilityRequest,
-		type SystemData,
-		type Visibility
-	} from '../../../../../backend/bindings';
+	import { type ChangeVisibilityRequest, type SystemData, type Visibility } from '$lib/bindings';
 	import { page } from '$app/stores';
 	import { toast } from 'svelte-sonner';
 

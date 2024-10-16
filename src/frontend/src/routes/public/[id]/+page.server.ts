@@ -1,6 +1,6 @@
 import { API_URL, LIST_SIZE } from '$lib/api/api';
 import type { PageServerLoad } from './$types';
-import type { GetPublicResponse } from '../../../../../backend/bindings';
+import type { GetPublicResponse } from '$lib/bindings';
 
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	const page = Number(url.searchParams.get('page')) || 0;
