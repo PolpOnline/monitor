@@ -16,6 +16,7 @@
 		href="?page={currentPage + 1}"
 		data-sveltekit-preload-data="hover"
 		data-sveltekit-preload-code="eager"
+                data-sveltekit-replacestate
 	>
 		<LucideChevronLeft />
 	</Button>
@@ -27,6 +28,7 @@
 			href={prevPageHref}
 			data-sveltekit-preload-data="hover"
 			data-sveltekit-preload-code="eager"
+                        data-sveltekit-replacestate
 		>
 			<LucideChevronRight />
 		</Button>
