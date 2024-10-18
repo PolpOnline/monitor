@@ -16,7 +16,8 @@
 		href="?page={currentPage + 1}"
 		data-sveltekit-preload-data="hover"
 		data-sveltekit-preload-code="eager"
-                data-sveltekit-replacestate
+		data-sveltekit-replacestate
+		aria-label="Go back in time"
 	>
 		<LucideChevronLeft />
 	</Button>
@@ -28,7 +29,8 @@
 			href={prevPageHref}
 			data-sveltekit-preload-data="hover"
 			data-sveltekit-preload-code="eager"
-                        data-sveltekit-replacestate
+			data-sveltekit-replacestate
+			aria-label="Go forward in time"
 		>
 			<LucideChevronRight />
 		</Button>

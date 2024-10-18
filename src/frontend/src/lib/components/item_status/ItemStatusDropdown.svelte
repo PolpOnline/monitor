@@ -58,7 +58,7 @@
 </script>
 
 <DropdownMenu.Root onOpenChange={() => targetSystemData.set(data)}>
-	<DropdownMenu.Trigger class={className}>
+	<DropdownMenu.Trigger class={className} aria-label={`Options for ${data.name}`}>
 		<LucideEllipsis class="h-6 w-6" />
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>

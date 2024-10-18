@@ -28,7 +28,7 @@
 
 <nav class="grid h-20 grid-cols-3">
 	<div class="flex items-center">
-		<a class="ml-3 text-3xl" href={loggedIn ? '/' : undefined}>
+		<a class="ml-3 text-3xl" href={loggedIn ? '/' : undefined} aria-label="Go to home">
 			<PhHeartbeat />
 		</a>
 	</div>
@@ -38,7 +38,7 @@
 	<div class="mr-3 flex items-center gap-1 justify-self-end">
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
-				<Button size="icon">
+				<Button size="icon" aria-label="Navbar Menu">
 					<LucideUser />
 				</Button>
 			</DropdownMenu.Trigger>

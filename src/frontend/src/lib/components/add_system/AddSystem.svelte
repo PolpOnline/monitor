@@ -27,7 +27,7 @@
 {#if !isMobile}
 	<Sheet.Root bind:open={$addSystemSheetOpen}>
 		<Sheet.Trigger asChild let:builder>
-			<Button builders={[builder]} class="fixed bottom-5 right-5 h-12 w-12">
+			<Button builders={[builder]} class="fixed bottom-5 right-5 h-12 w-12" aria-label="Add device">
 				<HeroiconsPlus20Solid class="h-6 w-6" />
 			</Button>
 		</Sheet.Trigger>
