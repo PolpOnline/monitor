@@ -35,7 +35,7 @@
 			<LucideChevronRight />
 		</Button>
 	{:else}
-		<Button variant="outline" size="icon" disabled>
+		<Button variant="outline" size="icon" disabled aria-label="Go forward in time">
 			<LucideChevronRight />
 		</Button>
 	{/if}
