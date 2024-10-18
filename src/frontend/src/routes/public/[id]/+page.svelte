@@ -8,7 +8,7 @@
 
 	export let data: PageData;
 
-	title.set(data.system.name);
+	title.set(data.system.name + ' status');
 </script>
 
 <div class="mx-4">
