@@ -17,9 +17,14 @@
 		tooltipOpens = tooltipOpens.map((_, i) => i === index);
 	}
 
-	$: uptime = ((data.instants.filter((instant) => instant.status === 'up').length /
-		data.instants.filter((instant) => instant.status !== 'untracked').length) *
-		100) as number;
+	function calculateUptime(): number {
+		const upInstants = data.instants.filter((instant) => instant.status === 'up').length;
+		const validInstants = data.instants.filter((instant) => instant.status !== 'untracked').length;
+
+		return (upInstants / validInstants) * 100;
+	}
+
+	$: uptime = calculateUptime();
 
 	$: firstInstantExpected = DateTime.fromISO(data.instants[0].expected_timestamp);
 	$: lastInstantExpected = DateTime.fromISO(
