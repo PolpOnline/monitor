@@ -7,7 +7,7 @@
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import TimezoneSelector from '$components/timezone_selector/TimezoneSelector.svelte';
 	import { toast } from 'svelte-sonner';
-	import { getTranslate } from '@tolgee/svelte';
+	import { getTranslate, T } from '@tolgee/svelte';
 
 	const { t } = getTranslate();
 
@@ -43,7 +43,7 @@
 	{/if}
 	<Form.Button class="mt-8 w-full">
 		{#if !$delayed}
-			Change timezone
+			<T keyName="account_settings.change_timezone_submit" />
 		{:else}
 			<LineMdLoadingLoop class="h-6 w-6" />
 		{/if}

@@ -67,7 +67,7 @@
 	{/if}
 	<Form.Button class="mt-8 w-full">
 		{#if !$delayed}
-			<T keyName="account_settings.change_password" />
+			<T keyName="account_settings.change_password_submit" />
 		{:else}
 			<LineMdLoadingLoop class="h-6 w-6" />
 		{/if}
