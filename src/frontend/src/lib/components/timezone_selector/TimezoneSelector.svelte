@@ -53,7 +53,7 @@
 	</Popover.Trigger>
 	<Popover.Content class="w-[95%] p-0 md:w-1/2">
 		<Command.Root filter={searchTimezoneFn}>
-			<Command.Input placeholder="{$t('timezone_selector.search_timezone')}}" />
+			<Command.Input placeholder={$t('timezone_selector.search_timezone')} />
 			<Command.List>
 				<Command.Empty>No timezone found.</Command.Empty>
 				<Command.Group>
