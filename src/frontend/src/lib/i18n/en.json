@@ -32,7 +32,7 @@
   },
   "checking_every": "(Checking every {frequency})",
   "close": "Close",
-  "configuration_presets": "Configuration Presets",
+  "configuration_presets": "Configuration presets",
   "copied_endpoint_url": "Copied endpoint URL",
   "copied_to_clipboard": "Copied to clipboard!",
   "copy_endpoint_url": "Copy endpoint url",
@@ -56,7 +56,7 @@
     "hours": "Hours",
     "minutes": "Minutes"
   },
-  "edit_name": "Edit Name",
+  "edit_name": "Edit name",
   "edit_system_name_dialog": {
     "fail": "Failed to modify the name of the system: {error}",
     "new_system_name": "New System Name",
