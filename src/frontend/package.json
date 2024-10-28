@@ -50,6 +50,7 @@
 		"@fontsource-variable/jetbrains-mono": "^5.1.1",
 		"@internationalized/date": "^3.5.6",
 		"@sveltejs/adapter-node": "^5.2.9",
+		"@tolgee/svelte": "^5.29.5",
 		"@vvo/tzdb": "^6.148.0",
 		"bits-ui": "^0.21.16",
 		"clsx": "^2.1.1",

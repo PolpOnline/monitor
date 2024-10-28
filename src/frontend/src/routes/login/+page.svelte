@@ -2,15 +2,20 @@
 	import type { PageData } from './$types.js';
 	import LoginForm from './LoginForm.svelte';
 	import { title } from '$components/stores/title.store';
+	import { getTranslate, T } from '@tolgee/svelte';
 
-	title.set('Login');
+	const { t } = getTranslate();
+
+	title.set($t('login.login_or_signup'));
 
 	export let data: PageData;
 </script>
 
 <div class="h-screen-not-navbar flex flex-col items-center justify-center">
 	<div class="max-w-96">
-		<h1 class="mb-5 text-center text-3xl font-bold">Login or Sign up</h1>
+		<h1 class="mb-5 text-center text-3xl font-bold">
+			<T keyName="login.login_or_signup" />
+		</h1>
 		<div class="w-11/12 min-w-96">
 			<LoginForm data={data.form} />
 		</div>

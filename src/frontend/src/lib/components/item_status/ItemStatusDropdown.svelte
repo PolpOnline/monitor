@@ -21,6 +21,9 @@
 	import { type ChangeVisibilityRequest, type SystemData, type Visibility } from '$lib/bindings';
 	import { page } from '$app/stores';
 	import { toast } from 'svelte-sonner';
+	import { getTranslate, T } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
 
 	let className = '';
 
@@ -46,9 +49,9 @@
 		});
 
 		if (res.ok) {
-			toast.success('Successfully changed visibility to ' + newVisibility);
+			toast.success($t('change_visibility.success', { visibility: newVisibility }));
 		} else {
-			toast.error('Failed to change visibility: ' + (await res.text()));
+			toast.error($t('change_visibility.failed', { error: await res.text() }));
 		}
 
 		invalidateAll();
@@ -58,7 +61,10 @@
 </script>
 
 <DropdownMenu.Root onOpenChange={() => targetSystemData.set(data)}>
-	<DropdownMenu.Trigger class={className} aria-label={`Options for ${data.name}`}>
+	<DropdownMenu.Trigger
+		class={className}
+		aria-label={$t('item_status.options_for', { name: data.name })}
+	>
 		<LucideEllipsis class="h-6 w-6" />
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
@@ -69,11 +75,11 @@
 
 					navigator.clipboard.writeText(`${API_URL}/ping_status/${$targetSystemData.id}`);
 
-					toast.success('Copied endpoint URL');
+					toast.success($t('copied_endpoint_url'));
 				}}
 			>
 				<LucideClipboardCopy class="mr-2 h-4 w-4" />
-				Copy endpoint URL
+				<T keyName="copy_endpoint_url" />
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				on:click={async () => {
@@ -88,13 +94,13 @@
 			>
 				{#if isVisibilityChanging}
 					<LineMdLoadingLoop class="mr-2 h-4 w-4" />
-					Changing visibility...
+					<T keyName="change_visibility.changing" />
 				{:else if isPublic}
 					<LucideLock class="mr-2 h-4 w-4" />
-					Make Private
+					<T keyName="change_visibility.make_private" />
 				{:else}
 					<LucideEarth class="mr-2 h-4 w-4" />
-					Make Public
+					<T keyName="change_visibility.make_public" />
 				{/if}
 			</DropdownMenu.Item>
 			{#if isPublic}
@@ -106,7 +112,7 @@
 					}}
 				>
 					<LucideLink class="mr-2 h-4 w-4" />
-					Copy public link
+					<T keyName="copy_public_link" />
 				</DropdownMenu.Item>
 			{/if}
 			<DropdownMenu.Item
@@ -115,7 +121,7 @@
 				}}
 			>
 				<LucideSettings class="mr-2 h-4 w-4" />
-				Configuration presets
+				<T keyName="configuration_presets" />
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				on:click={() => {
@@ -123,7 +129,7 @@
 				}}
 			>
 				<LucidePencilLine class="mr-2 h-4 w-4" />
-				Edit name
+				<T keyName="edit_name" />
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				class="text-red-600"
@@ -133,7 +139,7 @@
 				}}
 			>
 				<LucideTrash2 class="mr-2 h-4 w-4" />
-				Delete
+				<T keyName="delete" />
 			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>

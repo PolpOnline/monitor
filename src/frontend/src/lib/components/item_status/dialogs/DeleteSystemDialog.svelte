@@ -6,6 +6,9 @@
 	import { invalidateAll } from '$app/navigation';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import { toast } from 'svelte-sonner';
+	import { getTranslate, T } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
 
 	async function deleteSystem() {
 		isLoading = true;
@@ -20,9 +23,9 @@
 		});
 
 		if (res.ok) {
-			toast.success('System deleted successfully');
+			toast.success($t('delete_system_dialog.success'));
 		} else {
-			toast.error('Failed to delete the system: ' + (await res.text()));
+			toast.error($t('delete_system_dialog.fail', { error: await res.text() }));
 		}
 
 		invalidateAll();
@@ -40,9 +43,11 @@
 	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
-			<Dialog.Title>Are you absolutely sure?</Dialog.Title>
+			<Dialog.Title>
+				<T keyName="delete_system_dialog.title" />
+			</Dialog.Title>
 			<Dialog.Description>
-				This action cannot be undone. This will permanently delete the system and all of its data.
+				<T keyName="delete_system_dialog.description" />
 			</Dialog.Description>
 
 			<Dialog.Footer>
@@ -51,11 +56,11 @@
 					on:click={() => ($deleteSystemDialogOpen = false)}
 					variant="secondary"
 				>
-					Cancel
+					<T keyName="cancel" />
 				</Button>
 				<Button class="mt-5 sm:mt-0" on:click={() => deleteSystem()} variant="destructive">
 					{#if !isLoading}
-						Delete
+						<T keyName="delete" />
 					{:else}
 						<LineMdLoadingLoop class="h-6 w-6" />
 					{/if}

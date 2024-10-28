@@ -7,6 +7,9 @@
 	import { Input } from '$components/ui/input';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import { toast } from 'svelte-sonner';
+	import { getTranslate, T } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
 
 	let newSystemName = '';
 
@@ -25,9 +28,9 @@
 		});
 
 		if (res.ok) {
-			toast.success('System name modified successfully');
+			toast.success($t('edit_system_name_dialog.success'));
 		} else {
-			toast.error('Failed to modify the name of the system: ' + (await res.text()));
+			toast.error($t('edit_system_name_dialog.fail', { error: await res.text() }));
 		}
 
 		invalidateAll();
@@ -45,14 +48,20 @@
 	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
-			<Dialog.Title>Edit system name of {$targetSystemData?.name}</Dialog.Title>
+			<Dialog.Title>
+				<T keyName="edit_system_name_dialog.title" params={{ name: $targetSystemData?.name }} />
+			</Dialog.Title>
 
-			<Input bind:value={newSystemName} class="!my-3" placeholder="New system name" />
+			<Input
+				bind:value={newSystemName}
+				class="!my-3"
+				placeholder={$t('edit_system_name_dialog.new_system_name')}
+			/>
 
 			<Dialog.Footer>
 				<Button on:click={() => editSystemName()}>
 					{#if !isLoading}
-						Save
+						<T keyName="save" />
 					{:else}
 						<LineMdLoadingLoop class="h-6 w-6" />
 					{/if}

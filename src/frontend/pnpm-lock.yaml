@@ -17,6 +17,9 @@ importers:
       '@sveltejs/adapter-node':
         specifier: ^5.2.9
         version: 5.2.9(@sveltejs/kit@2.7.3(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.10(@types/node@22.8.1)))(svelte@4.2.19)(vite@5.4.10(@types/node@22.8.1)))
+      '@tolgee/svelte':
+        specifier: ^5.29.5
+        version: 5.29.5(svelte@4.2.19)
       '@vvo/tzdb':
         specifier: ^6.148.0
         version: 6.148.0
@@ -799,6 +802,17 @@ packages:
     resolution: {integrity: sha512-AqhlCXl+8grUz8uqExv5OTtgpjuVIwFTSXTrh8y9/pw6q2ek7fJ+Y8ZEVw7EB2DCcuCOtEjf9w3+J3rzts01uA==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20'
+
+  '@tolgee/core@5.29.5':
+    resolution: {integrity: sha512-M5BgaKsfnO1IA6CHa+ETvAm5kLMtwLl/y4ETXQvhT9XZ/DaTbt01MsyBuGQdq2PUEdAHqtWm8uJkUZUvFKpc8w==}
+
+  '@tolgee/svelte@5.29.5':
+    resolution: {integrity: sha512-vEUp2ieZNLHzgwJCmrYvBdJ6s4cw47hfLJcubTwMsQuGCnfF/1eKLm33pxcgTctDxZjHz0kelusphTwFULA6jA==}
+    peerDependencies:
+      svelte: ^4.0.0
+
+  '@tolgee/web@5.29.5':
+    resolution: {integrity: sha512-CP6ijaxFR4srTcADgD/P2+8UxyvXUeJ5xueEkTjKyu82Kg4B0rj3cWLyAEC/bihJeWweGFJL5VZzcDmqAdzBaw==}
 
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
@@ -2806,6 +2820,17 @@ snapshots:
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.14
+
+  '@tolgee/core@5.29.5': {}
+
+  '@tolgee/svelte@5.29.5(svelte@4.2.19)':
+    dependencies:
+      '@tolgee/web': 5.29.5
+      svelte: 4.2.19
+
+  '@tolgee/web@5.29.5':
+    dependencies:
+      '@tolgee/core': 5.29.5
 
   '@types/cookie@0.6.0': {}
 

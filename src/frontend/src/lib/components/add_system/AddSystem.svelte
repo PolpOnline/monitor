@@ -11,6 +11,9 @@
 	// noinspection ES6UnusedImports
 	import * as Drawer from '$lib/components/ui/drawer';
 	import { browser } from '$app/environment';
+	import { getTranslate } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
@@ -20,8 +23,8 @@
 		isMobile = Device.isMobile;
 	}
 
-	const title = 'Add a system';
-	const description = 'Add a new system to the monitor by filling out the form below.';
+	const title = $t('add_system.add_system');
+	const description = $t('add_system.add_system_description');
 </script>
 
 {#if !isMobile}

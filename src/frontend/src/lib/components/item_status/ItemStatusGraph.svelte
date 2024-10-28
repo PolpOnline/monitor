@@ -7,6 +7,10 @@
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
 	import { DateTime } from 'luxon';
 	import { colorMap, colorMapBorder, colorMapText } from './index';
+	import { getTranslate, T } from '@tolgee/svelte';
+	import { language } from '$lib/components/stores/language.store';
+
+	const { t } = getTranslate();
 
 	export let data: SystemData;
 	export let now: DateTime;
@@ -17,14 +21,12 @@
 		tooltipOpens = tooltipOpens.map((_, i) => i === index);
 	}
 
-	function calculateUptime(): number {
+	$: uptime = (() => {
 		const upInstants = data.instants.filter((instant) => instant.status === 'up').length;
 		const validInstants = data.instants.filter((instant) => instant.status !== 'untracked').length;
 
 		return (upInstants / validInstants) * 100;
-	}
-
-	$: uptime = calculateUptime();
+	})();
 
 	$: firstInstantExpected = DateTime.fromISO(data.instants[0].expected_timestamp);
 	$: lastInstantExpected = DateTime.fromISO(
@@ -34,7 +36,8 @@
 	const durationParams: humanizeDuration.Options = {
 		round: true,
 		units: ['y', 'd', 'h', 'm'],
-		largest: 2
+		largest: 2,
+		language: $language
 	};
 
 	$: firstTime = humanizeDuration(
@@ -81,14 +84,22 @@
 							<HeroiconsXMark20Solid class="mr-2 inline-block h-6" />
 						{/if}
 
-						Expected: {new Date(instant.expected_timestamp).toLocaleString()}
+						<T
+							keyName="item_status_graph.expected"
+							params={{ time: new Date(instant.expected_timestamp).toLocaleString() }}
+						/>
 
 						{#if instant.timestamp}
 							<br />
-							Actual: {new Date(instant.timestamp).toLocaleString()}
+							<T
+								keyName="item_status_graph.actual"
+								params={{ time: new Date(instant.timestamp).toLocaleString() }}
+							/>
 						{/if}
 					{:else}
-						<span>Untracked</span>
+						<span>
+							<T keyName="item_status_graph.untracked" />
+						</span>
 					{/if}
 				</div>
 			</Tooltip.Content>
@@ -98,19 +109,18 @@
 
 <div class="mt-1 grid grid-flow-col grid-cols-3 text-gray-500">
 	<div class="text-left">
-		{firstTime} ago
+		<T keyName="item_status_graph.first_check" params={{ time: firstTime }} />
 	</div>
 
 	<div class="text-center">
 		{#if !isNaN(uptime)}
-			{uptime.toFixed(2)}%
+			<T keyName="item_status_graph.uptime" params={{ uptime: uptime.toFixed(2) + '%' }} />
 		{:else}
-			Unknown
+			<T keyName="item_status_graph.unknown_uptime" />
 		{/if}
-		uptime
 	</div>
 
 	<div class="text-right">
-		{lastTime} ago
+		<T keyName="item_status_graph.last_check" params={{ time: lastTime }} />
 	</div>
 </div>

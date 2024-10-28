@@ -8,6 +8,7 @@
 		Time,
 		toCalendarDateTime
 	} from '@internationalized/date';
+	import { T } from '@tolgee/svelte';
 
 	export let value: string | undefined;
 
@@ -31,19 +32,25 @@
 	{#if date}
 		<div class="mt-2 flex w-full content-center items-center gap-2">
 			<div class="w-1/3">
-				<Label for="hours">HH (0-24)</Label>
+				<Label for="hours">
+					<T keyName="date_time_picker.hours" />
+				</Label>
 				<div class="flex w-full items-center gap-2">
 					<Input bind:value={hours} type="number" placeholder="HH" min="0" max="24" /> :
 				</div>
 			</div>
 			<div class="w-1/3">
-				<Label for="minutes">MM (0-59)</Label>
+				<Label for="minutes">
+					<T keyName="date_time_picker.minutes" />
+				</Label>
 				<div class="flex w-full items-center gap-2">
 					<Input bind:value={minutes} type="number" placeholder="MM" min="0" max="59" /> :
 				</div>
 			</div>
 			<div class="w-1/3">
-				<Label for="seconds">SS (0-59)</Label>
+				<Label for="seconds">
+					<T keyName="date_time_picker.seconds" />
+				</Label>
 				<Input bind:value={seconds} type="number" placeholder="SS" min="0" max="59" />
 			</div>
 		</div>

@@ -22,6 +22,9 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import DurationPicker from '$components/duration_picker/DurationPicker.svelte';
 	import { toast } from 'svelte-sonner';
+	import { getTranslate, T } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
@@ -32,7 +35,7 @@
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {
 				$addSystemSheetOpen = false;
-				toast.success('System added successfully');
+				toast.success($t('add_system.system_added_successfully'));
 			}
 		},
 		invalidateAll: true
@@ -56,7 +59,7 @@
 			<Form.Control let:attrs>
 				<Form.Label class="font-bold">
 					<LucidePencil class="inline h-4 w-4" />
-					Name
+					<T keyName="add_system.name" />
 				</Form.Label>
 				<Input {...attrs} bind:value={$formData.name} />
 			</Form.Control>
@@ -67,7 +70,7 @@
 			<Form.Control>
 				<Form.Label>
 					<LucideClock class="inline h-4 w-4" />
-					Check frequency
+					<T keyName="add_system.check_frequency" />
 				</Form.Label>
 				<DurationPicker bind:value={$formData.frequency} defaultValue={{ hours: 0, minutes: 30 }} />
 			</Form.Control>
@@ -78,7 +81,7 @@
 			<Form.Control let:attrs>
 				<Form.Label>
 					<LucidePlay class="inline h-4 w-4" />
-					Starting date and time
+					<T keyName="add_system.starting_date_and_time" />
 				</Form.Label>
 				<DateTimePicker {...attrs} bind:value={$formData.starts_at} />
 			</Form.Control>
@@ -89,7 +92,7 @@
 			<Form.Control let:attrs>
 				<Form.Label>
 					<LucideMail class="inline h-4 w-4" />
-					Send email after
+					<T keyName="add_system.send_email_after" />
 				</Form.Label>
 				<DurationPicker
 					{...attrs}
@@ -104,20 +107,26 @@
 			<Form.Control let:attrs>
 				<Form.Label>
 					<LucideEye class="inline h-4 w-4" />
-					Visibility
+					<T keyName="add_system.visibility" />
 				</Form.Label>
 
 				<div {...attrs}>
 					<DropdownMenu.Root>
 						<DropdownMenu.Trigger asChild let:builder>
 							<Button variant="outline" builders={[builder]} class="w-full">
-								{$formData.visibility === 'public' ? 'Public' : 'Private'}
+								{$formData.visibility === 'public'
+									? $t('add_system.public')
+									: $t('add_system.private')}
 							</Button>
 						</DropdownMenu.Trigger>
 						<DropdownMenu.Content class="w-[95%]">
 							<DropdownMenu.RadioGroup bind:value={$formData.visibility}>
-								<DropdownMenu.RadioItem value="public">Public</DropdownMenu.RadioItem>
-								<DropdownMenu.RadioItem value="private">Private</DropdownMenu.RadioItem>
+								<DropdownMenu.RadioItem value="public">
+									<T keyName="add_system.public" />
+								</DropdownMenu.RadioItem>
+								<DropdownMenu.RadioItem value="private">
+									<T keyName="add_system.private" />
+								</DropdownMenu.RadioItem>
 							</DropdownMenu.RadioGroup>
 						</DropdownMenu.Content>
 					</DropdownMenu.Root>
@@ -131,7 +140,7 @@
 		<Sheet.Footer>
 			<Form.Button>
 				{#if !$delayed}
-					Add System
+					<T keyName="add_system.add_system_submit" />
 				{:else}
 					<LineMdLoadingLoop class="h-6 w-6" />
 				{/if}
@@ -141,7 +150,7 @@
 		<Drawer.Footer>
 			<Form.Button>
 				{#if !$delayed}
-					Add System
+					<T keyName="add_system.add_system_submit" />
 				{:else}
 					<LineMdLoadingLoop class="h-6 w-6" />
 				{/if}

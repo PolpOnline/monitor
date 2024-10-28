@@ -7,6 +7,9 @@
 	import { toast } from 'svelte-sonner';
 	import { fly, type FlyParams } from 'svelte/transition';
 	import { cubicIn } from 'svelte/easing';
+	import { getTranslate } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
 
 	let className = '';
 	// noinspection ReservedWordAsName
@@ -19,7 +22,7 @@
 	function copyValue() {
 		navigator.clipboard.writeText(value);
 
-		toast.success('Copied to clipboard');
+		toast.success($t('copied_to_clipboard'));
 
 		displayCheckMark = true;
 		setTimeout(() => {

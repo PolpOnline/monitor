@@ -3,8 +3,10 @@
 	import HeroiconsXMark20Solid from '~icons/heroicons/x-mark-20-solid';
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
 	import { slide, type SlideParams } from 'svelte/transition';
+	import { T } from '@tolgee/svelte';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import humanizeDuration from 'humanize-duration';
+	import { language } from '$lib/components/stores/language.store';
 	import { DateTime } from 'luxon';
 	import { colorMapText } from './index';
 
@@ -33,7 +35,7 @@
 		return humanizeDuration(
 			// Difference between now and the most recent instant
 			now.diff(lastInstantTime).as('milliseconds'),
-			{ round: true, units: ['y', 'd', 'h', 'm'] }
+			{ round: true, units: ['y', 'd', 'h', 'm'], language: $language }
 		);
 	})();
 
@@ -44,21 +46,28 @@
 	<h2 class="text-lg {colorMapText[lastInstant.status]} my-1 flex items-center">
 		{#if lastInstant.status === 'up'}
 			<HeroiconsCheck20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
-			Operational
+			<T keyName="operational" />
 		{:else if lastInstant.status === 'down'}
 			<HeroiconsXMark20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
-			Down
+
+			<T keyName="down" />
+
 			{#if downTime}
 				<br class="sm:hidden" />
-				(for
-				{downTime})
+				<T keyName="down_for" params={{ time: downTime }} />
 			{/if}
 		{/if}
 	</h2>
 
 	<p class="mt-1 text-sm text-gray-500">
-		Last check: {new Date(lastInstant.expected_timestamp).toLocaleString()} (checking every {humanizeDuration(
-			data.frequency * 1000 * 60
-		)})
+		<T
+			keyName="last_check"
+			params={{ time: new Date(lastInstant.expected_timestamp).toLocaleString() }}
+		/>
+
+		<T
+			keyName="checking_every"
+			params={{ frequency: humanizeDuration(data.frequency * 1000 * 60, { language: $language }) }}
+		/>
 	</p>
 </div>

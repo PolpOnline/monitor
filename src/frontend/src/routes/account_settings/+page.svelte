@@ -9,17 +9,25 @@
 	import LucideRectangleEllipsis from '~icons/lucide/rectangle-ellipsis';
 	import LucideGlobe from '~icons/lucide/globe';
 	import { Button } from '$components/ui/button';
-	title.set('Account settings');
+	import { getTranslate, T } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
+
+	$title = $t('account_settings.account_settings');
 
 	export let data: PageData;
 </script>
 
 <div class="mx-3 mb-16">
 	<div class="mb-5 mt-3 grid grid-cols-3">
-		<Button href="/" variant="outline" size="icon">
-			<LucideChevronLeft class="h-6 w-6" />
-		</Button>
-		<h1 class="text-center text-3xl font-bold">Account settings</h1>
+		<div class="flex items-center">
+			<Button href="/" variant="outline" size="icon">
+				<LucideChevronLeft class="h-6 w-6" />
+			</Button>
+		</div>
+		<h1 class="text-center text-3xl font-bold">
+			<T keyName="account_settings.account_settings" />
+		</h1>
 		<div />
 	</div>
 
@@ -27,7 +35,8 @@
 		<Card.Root>
 			<Card.Header>
 				<Card.Title>
-					<LucideRectangleEllipsis class="mb-5 h-10 w-10" /> Change Password
+					<LucideRectangleEllipsis class="mb-5 h-10 w-10" />
+					<T keyName="account_settings.change_password" />
 				</Card.Title>
 			</Card.Header>
 			<Card.Content>
@@ -39,9 +48,11 @@
 			<Card.Header>
 				<Card.Title>
 					<LucideGlobe class="mb-5 h-10 w-10" />
-					Change Timezone
+					<T keyName="account_settings.change_timezone" />
 				</Card.Title>
-				<Card.Description>Time in emails will be displayed using this.</Card.Description>
+				<Card.Description>
+					<T keyName="account_settings.change_timezone_description" />
+				</Card.Description>
 			</Card.Header>
 			<Card.Content>
 				<ChangeTimezoneForm data={data.timezoneForm} timezones={data.timezones} />

@@ -17,6 +17,9 @@
 	import { page } from '$app/stores';
 	import type { LoginStatus } from '../../app';
 	import { toast } from 'svelte-sonner';
+	import { T, getTranslate } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
 
 	export let loginStatus: LoginStatus;
 	export let loggedInEmail: string | undefined;
@@ -51,7 +54,7 @@
 					{#if isPublicPage && !loggedIn}
 						<DropdownMenu.Item href="/login">
 							<LucideLogIn class="mr-2 h-4 w-4" />
-							Login
+							<T keyName="login" />
 						</DropdownMenu.Item>
 					{/if}
 					<DropdownMenu.Item on:click={toggleMode}>
@@ -60,22 +63,24 @@
 						{:else}
 							<LucideMoon class="mr-2 h-4 w-4" />
 						{/if}
-						<span>Toggle theme</span>
+						<span>
+							<T keyName="toggle_theme" />
+						</span>
 					</DropdownMenu.Item>
 					<DropdownMenu.Item
 						on:click={async () => {
-							toast('Refreshing', { icon: LineMdLoadingLoop });
+							toast($t('refreshing'), { icon: LineMdLoadingLoop });
 							await invalidateAll();
-							toast.success('Refreshed');
+							toast.success($t('refreshed'));
 						}}
 					>
 						<LucideRefreshCw class="mr-2 h-4 w-4" />
-						Refresh
+						<T keyName="refresh" />
 					</DropdownMenu.Item>
 					{#if loggedIn}
 						<DropdownMenu.Item href="/account_settings">
 							<LucideSettings class="mr-2 h-4 w-4" />
-							Account settings
+							<T keyName="account_settings" />
 						</DropdownMenu.Item>
 						<DropdownMenu.Item
 							class="text-red-600"
@@ -83,14 +88,14 @@
 							data-sveltekit-preload-data="off"
 						>
 							<LucideLogOut class="mr-2 h-4 w-4" />
-							Logout
+							<T keyName="logout" />
 						</DropdownMenu.Item>
 					{/if}
 				</DropdownMenu.Group>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item href="https://github.com/PolpOnline/monitor" target="_blank">
 					<LucideGithub class="mr-2 h-4 w-4" />
-					View on GitHub
+					<T keyName="view_on_github" />
 				</DropdownMenu.Item>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>

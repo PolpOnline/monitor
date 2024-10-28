@@ -8,6 +8,9 @@
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import PasswordInput from '$components/password_input/PasswordInput.svelte';
 	import { toast } from 'svelte-sonner';
+	import { getTranslate, T } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
@@ -15,7 +18,7 @@
 		validators: zodClient(formSchema),
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {
-				toast.success('Login successful.');
+				toast.success($t('login.login_successful'));
 			}
 		}
 	});
@@ -26,14 +29,18 @@
 <form method="POST" use:enhance>
 	<Form.Field {form} name="email">
 		<Form.Control let:attrs>
-			<Form.Label>Email</Form.Label>
+			<Form.Label>
+				<T keyName="login.email" />
+			</Form.Label>
 			<Input {...attrs} bind:value={$formData.email} type="email" autocomplete="username" />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Field {form} name="password">
 		<Form.Control let:attrs>
-			<Form.Label>Password</Form.Label>
+			<Form.Label>
+				<T keyName="login.password" />
+			</Form.Label>
 			<PasswordInput {...attrs} bind:value={$formData.password} autocomplete="current-password" />
 		</Form.Control>
 		<Form.FieldErrors />
@@ -43,7 +50,7 @@
 	{/if}
 	<Form.Button class="mt-8 w-full">
 		{#if !$delayed}
-			Submit
+			<T keyName="login.login" />
 		{:else}
 			<LineMdLoadingLoop class="h-6 w-6" />
 		{/if}

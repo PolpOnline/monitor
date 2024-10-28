@@ -7,6 +7,9 @@
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import TimezoneSelector from '$components/timezone_selector/TimezoneSelector.svelte';
 	import { toast } from 'svelte-sonner';
+	import { getTranslate } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 	export let timezones: { value: string; label: string }[] = [];
@@ -18,9 +21,9 @@
 			console.log(f.valid);
 
 			if (f.valid) {
-				toast.success('Timezone changed successfully.');
+				toast.success($t('account_settings.timezone_changed_successfully'));
 			} else {
-				toast.error('Please fix the errors in the form.');
+				toast.error($t('account_settings.fix_errors'));
 			}
 		}
 	});

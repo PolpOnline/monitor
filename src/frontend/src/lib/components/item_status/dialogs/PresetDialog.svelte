@@ -7,6 +7,9 @@
 	import { presetDialogOpen, targetSystemData } from '$components/stores/popovers.store';
 	import CopyableTextarea from '$components/CopyableTextarea.svelte';
 	import { API_URL } from '$lib/api/api';
+	import { getTranslate, T } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
 
 	const presets = [
 		{
@@ -47,12 +50,14 @@ mode=https http-method=post output=none"`
 	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
-			<Dialog.Title>Presets</Dialog.Title>
+			<Dialog.Title>
+				<T keyName="preset_dialog.title" />
+			</Dialog.Title>
 
 			<div class="!mt-4">
 				<Select.Root bind:selected={chosenPreset} portal={null}>
 					<Select.Trigger class="w-full">
-						<Select.Value placeholder="Select a preset" />
+						<Select.Value placeholder={$t('preset_dialog.select_a_preset')} />
 					</Select.Trigger>
 					<Select.Content>
 						<Select.Group>
@@ -71,7 +76,9 @@ mode=https http-method=post output=none"`
 			{/if}
 
 			<Dialog.Footer>
-				<Button on:click={() => ($presetDialogOpen = false)}>Close</Button>
+				<Button on:click={() => ($presetDialogOpen = false)} class="w-full">
+					<T keyName="close" />
+				</Button>
 			</Dialog.Footer>
 		</Dialog.Header>
 	</Dialog.Content>

@@ -7,6 +7,9 @@
 	// noinspection ES6UnusedImports
 	import * as Popover from '$lib/components/ui/popover/index.js';
 	import { type ClassValue } from 'clsx';
+	import { getTranslate } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
 
 	const df = new DateFormatter('en-US', {
 		dateStyle: 'long'
@@ -31,7 +34,7 @@
 			variant="outline"
 		>
 			<CalendarIcon class="mr-2 h-4 w-4" />
-			{value ? df.format(value.toDate(getLocalTimeZone())) : 'Pick a date'}
+			{value ? df.format(value.toDate(getLocalTimeZone())) : $t('date_time_picker.pick_a_date')}
 		</Button>
 	</Popover.Trigger>
 	<Popover.Content class="w-auto p-0">

@@ -7,6 +7,10 @@
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import PasswordInput from '$components/password_input/PasswordInput.svelte';
 	import { toast } from 'svelte-sonner';
+	import { T } from '@tolgee/svelte';
+	import { getTranslate } from '@tolgee/svelte';
+
+	const { t } = getTranslate();
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 
@@ -14,7 +18,7 @@
 		validators: zodClient(changePasswordFormSchema),
 		onUpdated: ({ form: f }) => {
 			if (!f.valid) {
-				toast.error('Please fix the errors in the form.');
+				toast.error($t('account_settings.fix_errors'));
 			}
 		}
 	});
@@ -25,7 +29,9 @@
 <form action="?/change_password" method="POST" use:enhance>
 	<Form.Field {form} name="old_password">
 		<Form.Control let:attrs>
-			<Form.Label>Old Password</Form.Label>
+			<Form.Label>
+				<T keyName="account_settings.old_password" />
+			</Form.Label>
 			<PasswordInput
 				{...attrs}
 				bind:value={$formData.old_password}
@@ -36,14 +42,18 @@
 	</Form.Field>
 	<Form.Field {form} name="new_password">
 		<Form.Control let:attrs>
-			<Form.Label>New password</Form.Label>
+			<Form.Label>
+				<T keyName="account_settings.new_password" />
+			</Form.Label>
 			<PasswordInput {...attrs} bind:value={$formData.new_password} autocomplete="new-password" />
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Field {form} name="new_password_confirm">
 		<Form.Control let:attrs>
-			<Form.Label>Confirm new password</Form.Label>
+			<Form.Label>
+				<T keyName="account_settings.new_password_confirm" />
+			</Form.Label>
 			<PasswordInput
 				{...attrs}
 				bind:value={$formData.new_password_confirm}
@@ -57,7 +67,7 @@
 	{/if}
 	<Form.Button class="mt-8 w-full">
 		{#if !$delayed}
-			Change password
+			<T keyName="account_settings.change_password" />
 		{:else}
 			<LineMdLoadingLoop class="h-6 w-6" />
 		{/if}
