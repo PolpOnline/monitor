@@ -20,7 +20,7 @@
 	$: selectedValue = timezones.find((f) => f.value === value)?.label ?? 'Select a timezone...';
 
 	// We want to refocus the trigger button when the user selects
-	// an item from the list so users can continue navigating the
+	// an item from the list, so users can continue navigating the
 	// rest of the form with the keyboard.
 	function closeAndFocusTrigger(triggerId: string) {
 		open = false;

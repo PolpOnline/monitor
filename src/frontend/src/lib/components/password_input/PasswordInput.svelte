@@ -6,10 +6,12 @@
 	import LucideEyeOff from '~icons/lucide/eye-off';
 
 	type $$Props = HTMLInputAttributes;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	type $$Events = InputEvents;
 
 	let className: $$Props['class'] = undefined;
 	export let value: $$Props['value'] = undefined;
+	// noinspection ReservedWordAsName
 	export { className as class };
 
 	// Workaround for https://github.com/sveltejs/svelte/issues/9305

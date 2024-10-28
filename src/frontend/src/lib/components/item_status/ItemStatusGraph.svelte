@@ -7,10 +7,8 @@
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
 	import { DateTime } from 'luxon';
 	import { colorMap, colorMapBorder, colorMapText } from './index';
-	import { getTranslate, T } from '@tolgee/svelte';
+	import { T } from '@tolgee/svelte';
 	import { language } from '$lib/components/stores/language.store';
-
-	const { t } = getTranslate();
 
 	export let data: SystemData;
 	export let now: DateTime;
