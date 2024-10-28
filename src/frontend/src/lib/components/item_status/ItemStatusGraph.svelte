@@ -12,6 +12,7 @@
 
 	export let data: SystemData;
 	export let now: DateTime;
+	export let currentPage: number;
 
 	let tooltipOpens: boolean[] = new Array(data.instants.length).fill(false);
 
@@ -111,7 +112,9 @@
 	</div>
 
 	<div class="text-center">
-		{#if !isNaN(uptime)}
+		{#if currentPage !== 0}
+			<div />
+		{:else if !isNaN(uptime)}
 			<T keyName="item_status_graph.uptime" params={{ uptime: uptime.toFixed(2) + '%' }} />
 		{:else}
 			<T keyName="item_status_graph.unknown_uptime" />

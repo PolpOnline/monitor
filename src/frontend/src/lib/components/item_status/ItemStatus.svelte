@@ -85,6 +85,6 @@
 	{/if}
 
 	<div class="mx-auto my-3 max-w-[800px]">
-		<ItemStatusGraph {data} {now} />
+		<ItemStatusGraph {data} {now} {currentPage} />
 	</div>
 </div>
