@@ -3,17 +3,36 @@
 	import { page } from '$app/stores';
 	import LucideChevronLeft from '~icons/lucide/chevron-left';
 	import LucideChevronRight from '~icons/lucide/chevron-right';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	$: currentPage = Number($page.url.searchParams.get('page')) || 0;
 
 	$: prevPageHref = currentPage > 1 ? `?page=${currentPage - 1}` : `?`;
+	$: nextPageHref = `?page=${currentPage + 1}`;
+
+	onMount(() => {
+		document.addEventListener('keydown', keyHandler);
+		return () => {
+			document.removeEventListener('keydown', keyHandler);
+		};
+	});
+
+	function keyHandler(event: KeyboardEvent) {
+		if (event.key === 'ArrowRight' && currentPage > 0) {
+			goto(prevPageHref);
+		}
+		if (event.key === 'ArrowLeft') {
+			goto(nextPageHref);
+		}
+	}
 </script>
 
 <div class="flex items-center justify-between">
 	<Button
 		variant="outline"
 		size="icon"
-		href="?page={currentPage + 1}"
+		href={nextPageHref}
 		data-sveltekit-preload-data="hover"
 		data-sveltekit-preload-code="eager"
 		data-sveltekit-replacestate
