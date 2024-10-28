@@ -16,15 +16,23 @@
 	let transitionIn: SlideParams = { easing: cubicOut, duration: 300 };
 	let transitionOut: SlideParams = { easing: cubicIn, duration: 300 };
 
+	$: firstInstant = data.instants[0];
+	$: lastInstant = data.instants[data.instants.length - 1];
+
 	$: downTime = (() => {
 		if (lastInstant.status !== 'down') {
+			return;
+		}
+
+		// If the first instant is down, we cannot assume that the system was down
+		if (firstInstant.status === 'down') {
 			return;
 		}
 
 		// back track from the most recent instant to find the first error
 		const mostRecentUp = data.instants.findLastIndex((instant) => instant.status === 'up');
 
-		if (!mostRecentUp) {
+		if (mostRecentUp === -1) {
 			return;
 		}
 
@@ -38,8 +46,6 @@
 			{ round: true, units: ['y', 'd', 'h', 'm'], language: $language }
 		);
 	})();
-
-	$: lastInstant = data.instants[data.instants.length - 1];
 </script>
 
 <div in:slide={transitionIn} out:slide={transitionOut}>
