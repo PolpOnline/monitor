@@ -1,5 +1,5 @@
 import { API_URL } from '$lib/api/api';
-import type { Handle, HandleFetch } from '@sveltejs/kit';
+import type { Handle, HandleFetch, ResolveOptions } from '@sveltejs/kit';
 import type { LoginStatus } from './app';
 import { default as setCookieParser } from 'set-cookie-parser';
 
@@ -50,13 +50,18 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 	return res;
 };
 
+// noinspection JSUnusedGlobalSymbols
+const resolveOptions: ResolveOptions = {
+	preload: ({ type }) => type === 'font' || type === 'js' || type === 'css' || type === 'asset'
+};
+
 export const handle: Handle = async ({ event, resolve }) => {
 	const requestedPath = event.url.pathname;
 	// Auth check
 	event.locals.loginStatus = event.cookies.get('id') ? 'logged_in' : ('logged_out' as LoginStatus);
 
 	if (requestedPath === '/login' || requestedPath.startsWith('/public/')) {
-		return await resolve(event);
+		return await resolve(event, resolveOptions);
 	}
 
 	if (event.locals.loginStatus === 'logged_out') {
@@ -69,5 +74,5 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// Set the login status in the "locals" object, so we can access it in the page component
 	event.locals.email = event.cookies.get('user_email');
 
-	return await resolve(event);
+	return await resolve(event, resolveOptions);
 };
