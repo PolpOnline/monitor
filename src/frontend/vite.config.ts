@@ -1,7 +1,8 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
-import Icons from 'unplugin-icons/vite';
+import type { FontsourceFontFamily } from 'unplugin-fonts/types';
 import Unfonts from 'unplugin-fonts/vite';
+import Icons from 'unplugin-icons/vite';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [
@@ -19,8 +20,10 @@ export default defineConfig({
 				 * Fonts families lists
 				 */
 				families: [
-					// families can be either strings (load default font set)
-					'JetBrains Mono Variable'
+					{
+						name: 'JetBrains Mono Variable',
+						subset: 'latin-ext'
+					} as FontsourceFontFamily
 				]
 			}
 		})
