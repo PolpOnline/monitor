@@ -23,7 +23,7 @@ fn gen_binding_index() {
     let path = Path::new(TS_RS_EXPORT_DIR);
 
     if let Ok(exports) = fs::read_dir(path) {
-        let exports: Vec<_> = exports
+        let mut exports: Vec<String> = exports
             .filter_map(Result::ok)
             .filter_map(|p| {
                 p.path()
@@ -32,8 +32,14 @@ fn gen_binding_index() {
                     .map(str::to_owned)
             })
             .filter(|f| f != "index")
-            .map(|f| format!("export * from \"./{}\"", f))
             .collect();
+
+        exports.sort();
+
+        let exports = exports
+            .iter()
+            .map(|f| format!("export * from \"./{}\"", f))
+            .collect::<Vec<_>>();
 
         let mut file = File::create(path.join("index.ts")).unwrap();
         file.write_all(exports.join("\n").as_bytes()).unwrap();
