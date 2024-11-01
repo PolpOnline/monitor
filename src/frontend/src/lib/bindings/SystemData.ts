@@ -2,14 +2,8 @@
 import type { Instant } from "./Instant";
 import type { Visibility } from "./Visibility";
 
-export type SystemData = {
-  id: string;
-  name: string;
-  instants: Array<Instant>;
-  /**
-   * Frequency in minutes
-   */
-  frequency: number;
-  starts_at: string;
-  visibility: Visibility;
-};
+export type SystemData = { id: string, name: string, instants: Array<Instant>, 
+/**
+ * Frequency in minutes
+ */
+frequency: number, starts_at: string, visibility: Visibility, };

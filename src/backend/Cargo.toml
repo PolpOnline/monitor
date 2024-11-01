@@ -23,7 +23,7 @@ dotenvy = "0.15.7"
 color-eyre = "0.6.3"
 tracing = "0.1.40"
 uuid = { version = "1.10.0", features = ["v4", "serde"] }
-ts-rs = { version = "10.0.0", features = ["serde-json-impl", "uuid-impl", "format"] }
+ts-rs = { version = "10.0.0", features = ["serde-json-impl", "uuid-impl"] }
 axum_thiserror = "0.1.0"
 tower-http = { version = "0.6.1", features = ["trace", "compression-full", "decompression-full"] }
 bb8 = "0.8.5"
