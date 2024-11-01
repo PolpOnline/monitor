@@ -26,13 +26,15 @@
 
 <main>
 	<div class="mx-4" data-vaul-drawer-wrapper>
-		<PageSelector />
+		<PageSelector class="mb-3" />
 
-		{#each data.systems as system (system.name)}
-			<div in:fly={inParams} out:fly={outParams} animate:flip={animateParams}>
-				<ItemStatus data={system} />
-			</div>
-		{/each}
+		<div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+			{#each data.systems as system (system.name)}
+				<div in:fly={inParams} out:fly={outParams} animate:flip={animateParams}>
+					<ItemStatus data={system} />
+				</div>
+			{/each}
+		</div>
 	</div>
 
 	<AddSystem data={data.form} />

@@ -5,6 +5,8 @@
 	import LucideChevronRight from '~icons/lucide/chevron-right';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { cn } from '$lib/utils';
+	import { type ClassValue } from 'clsx';
 
 	$: currentPage = Number($page.url.searchParams.get('page')) || 0;
 
@@ -26,9 +28,13 @@
 			goto(nextPageHref);
 		}
 	}
+
+	let className: ClassValue;
+	// noinspection ReservedWordAsName
+	export { className as class };
 </script>
 
-<div class="flex items-center justify-between">
+<div class={cn(className, 'flex items-center justify-between')}>
 	<Button
 		variant="outline"
 		size="icon"
