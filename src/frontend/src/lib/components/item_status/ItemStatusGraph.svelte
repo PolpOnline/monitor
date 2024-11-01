@@ -60,7 +60,10 @@
 			onOpenChange={() => clearTooltipsExcept(i)}
 		>
 			<div
-				class="mx-0.25 h-full rounded {colorMap[instant.status]} max-w-3 cursor-default"
+				class="mx-0.25 h-full rounded {colorMap[
+					instant.status
+				]} custom-transition-transform max-w-3 cursor-default"
+				class:custom-scale={tooltipOpens[i]}
 				style="width: calc((100% / {data.instants.length}) - 2px)"
 				on:mouseenter={() => {
 					clearTooltipsExcept(i);
@@ -125,3 +128,13 @@
 		<T keyName="item_status_graph.last_check" params={{ time: lastTime }} />
 	</div>
 </div>
+
+<style>
+	.custom-transition-transform {
+		transition: transform 0.2s;
+	}
+
+	.custom-scale {
+		transform: scale(1.1);
+	}
+</style>
