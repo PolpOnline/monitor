@@ -51,7 +51,7 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 };
 
 // noinspection JSUnusedGlobalSymbols
-const resolveOptions: ResolveOptions = {
+export const resolveOptions: ResolveOptions = {
 	preload: ({ type }) => type === 'font' || type === 'js' || type === 'css' || type === 'asset'
 };
 
