@@ -68,7 +68,8 @@
   "email": {
     "check_its_status_now_at": "Controlla il suo stato qua:",
     "it_was_supposed_to_be_up_after": "Doveva essere di nuovo online dopo {down_after}",
-    "service_is_down_since": "Il servizio {service_name} è down dalle"
+    "service_is_down_since": "Il servizio {service_name} è down dalle",
+    "subject": "Il servizio {service_name} è down"
   },
   "item_status": {
     "options_for": "Opzioni per {name}"

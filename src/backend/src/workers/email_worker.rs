@@ -115,7 +115,11 @@ fn compose_email(email_data: &EmailData) -> GenericResult<Message> {
         .to(format!("User <{}>", email_data.user_email)
             .as_str()
             .parse()?)
-        .subject(format!("Service {} is down", email_data.system_name).as_str())
+        .subject(t!(
+            "email.subject",
+            locale = user_locale,
+            service_name = email_data.system_name
+        ))
         .header(ContentType::TEXT_HTML)
         .body(format!(
             // language=HTML

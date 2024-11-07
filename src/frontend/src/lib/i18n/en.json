@@ -68,7 +68,8 @@
   "email": {
     "check_its_status_now_at": "Check its status now at",
     "it_was_supposed_to_be_up_after": "It was supposed to be up after {down_after} ",
-    "service_is_down_since": "Service {service_name} is down since"
+    "service_is_down_since": "Service {service_name} is down since",
+    "subject": "Service {service_name} is down"
   },
   "item_status": {
     "options_for": "Options for {name}"
