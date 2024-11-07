@@ -7,6 +7,7 @@
 use color_eyre::Result;
 use dotenvy::dotenv;
 use once_cell::sync::Lazy;
+use rust_i18n::i18n;
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 use web::App;
@@ -20,6 +21,8 @@ pub mod workers;
 pub static PRODUCTION: Lazy<bool> = Lazy::new(|| std::env::var("PRODUCTION").is_ok());
 pub static SITE_URL: Lazy<String> =
     Lazy::new(|| std::env::var("SITE_URL").unwrap_or_else(|_| "http://localhost:5173".into()));
+
+i18n!("./i18n/", fallback = ["en", "it"], minify_key = true);
 
 #[tokio::main]
 async fn main() -> Result<()> {

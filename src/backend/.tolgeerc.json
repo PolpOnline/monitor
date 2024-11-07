@@ -1,0 +1,10 @@
+{
+  "$schema": "https://tolgee.io/cli-schema.json",
+  "projectId": 34,
+  "apiUrl": "https://tolgee.polp.online",
+  "format": "JSON_ICU",
+  "patterns": ["./src/**/*.ts?(x)"],
+  "pull": {
+    "path": "./i18n/"
+  }
+}

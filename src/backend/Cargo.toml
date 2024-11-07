@@ -37,6 +37,7 @@ tower-sessions-redis-store = { version = "0.14.0", features = ["enable-native-tl
 chrono-tz = "0.10.0"
 humanize-duration = { version = "0.0.6", features = ["chrono"] }
 sysinfo = { version = "0.32.0", features = ["serde", "system"] }
+rust-i18n = "3.1.2"
 
 [profile.dev.package.backtrace]
 opt-level = 3
