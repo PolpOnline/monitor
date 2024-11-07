@@ -9,6 +9,7 @@ use lettre::{
     message::header::ContentType, transport::smtp::authentication::Credentials, AsyncTransport,
     Message, Tokio1Executor,
 };
+use rust_i18n::t;
 use sidekiq::Worker;
 use sqlx::PgPool;
 use tracing::{error, info};
@@ -107,6 +108,8 @@ fn compose_email(email_data: &EmailData) -> GenericResult<Message> {
     let local_timestamp = email_data.utc_timestamp.with_timezone(&email_data.timezone);
     let down_after = email_data.down_after.human(Truncate::Minute);
 
+    let user_locale = "en";
+
     let message = Message::builder()
         .from("Monitor Mailer <monitor@polp.online>".parse()?)
         .to(format!("User <{}>", email_data.user_email)
@@ -118,22 +121,30 @@ fn compose_email(email_data: &EmailData) -> GenericResult<Message> {
             // language=HTML
             r#"
                 <p>
-                  Service {} (system id {}) is down since
+                  {}
                   <time datetime="{}">
                   {}
                   </time>.
                   <br />
                   It was supposed to be up after {}.
                   <br />
-                  Check its status now at
+                  {}
                   <a href="{}">{}</a>.
                 </p>
-                "#,
-            email_data.system_name,
-            email_data.system_id,
+            "#,
+            t!(
+                "email.service_is_down_since",
+                locale = user_locale,
+                service_name = email_data.system_name
+            ),
             email_data.utc_timestamp.to_rfc3339(),
             local_timestamp,
-            down_after,
+            t!(
+                "email.it_was_supposed_to_be_up_after",
+                locale = user_locale,
+                down_after = down_after
+            ),
+            t!("email.check_its_status_now_at", locale = user_locale),
             SITE_URL.as_str(),
             SITE_URL.as_str()
         ))?;
