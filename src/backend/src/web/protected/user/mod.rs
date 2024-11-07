@@ -1,3 +1,4 @@
+mod change_language;
 mod change_password;
 mod change_timezone;
 mod get_current_settings;
@@ -20,5 +21,9 @@ pub fn router() -> Router<()> {
         .route(
             "/user/get_current_settings",
             get(get_current_settings::get_current_settings),
+        )
+        .route(
+            "/user/change_language",
+            patch(change_language::change_language),
         )
 }

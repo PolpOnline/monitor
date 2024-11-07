@@ -132,17 +132,20 @@ pub async fn sign_up(
 
     let utc = Tz::UTC;
 
+    let language = "en";
+
     let user = sqlx::query_as!(
         User,
         // language=PostgreSQL
         r#"
-        INSERT INTO "user" (email, password, timezone)
-        VALUES ($1, $2, $3)
-        RETURNING id, email, password, timezone;
+        INSERT INTO "user" (email, password, timezone, language)
+        VALUES ($1, $2, $3, $4)
+        RETURNING id, email, password, timezone, language;
         "#,
         credentials.email,
         encrypted_password,
-        utc.to_string()
+        utc.to_string(),
+        language
     )
     .fetch_one(&auth_session.backend.db)
     .await?;

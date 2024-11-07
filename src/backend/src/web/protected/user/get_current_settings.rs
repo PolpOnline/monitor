@@ -9,6 +9,7 @@ use crate::users::AuthSession;
 #[ts(export)]
 pub struct GetCurrentSettingsResponse {
     pub timezone: String,
+    pub language: String,
 }
 
 pub async fn get_current_settings(auth_session: AuthSession) -> impl IntoResponse {
@@ -17,23 +18,24 @@ pub async fn get_current_settings(auth_session: AuthSession) -> impl IntoRespons
         None => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    let timezone = match sqlx::query!(
+    let current_settings = match sqlx::query!(
         // language=PostgreSQL
         r#"
-        SELECT timezone FROM "user" WHERE id = $1
+        SELECT timezone, language FROM "user" WHERE id = $1
         "#,
         current_user.id
     )
     .fetch_one(&auth_session.backend.db)
     .await
     {
-        Ok(tz) => tz,
+        Ok(settings) => settings,
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    let timezone = timezone.timezone;
-
-    let response = GetCurrentSettingsResponse { timezone };
+    let response = GetCurrentSettingsResponse {
+        timezone: current_settings.timezone,
+        language: current_settings.language,
+    };
 
     Json(response).into_response()
 }

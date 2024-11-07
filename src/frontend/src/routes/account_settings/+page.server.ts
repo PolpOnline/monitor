@@ -3,6 +3,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { formSchema as changePasswordFormSchema } from './change_password/schema';
 import { formSchema as changeTimezoneFormSchema } from './change_timezone/schema';
+import { formSchema as changeLanguageFormSchema } from './change_language/schema';
 import { zod } from 'sveltekit-superforms/adapters';
 import { API_URL } from '$lib/api/api';
 import type { GetCurrentSettingsResponse } from '$lib/bindings';
@@ -21,6 +22,11 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		timezoneForm: await superValidate(zod(changeTimezoneFormSchema), {
 			defaults: {
 				timezone: currentSettings.timezone
+			}
+		}),
+		languageForm: await superValidate(zod(changeLanguageFormSchema), {
+			defaults: {
+				language: currentSettings.language
 			}
 		}),
 		timezones
@@ -78,6 +84,37 @@ export const actions: Actions = {
 		}
 
 		const res = await event.fetch(`${API_URL}/user/change_timezone`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(form.data)
+		});
+
+		const messageToSend = await res.text();
+
+		// If the request was not successful, return the status code and the form
+		if (!res.ok) {
+			return message(form, messageToSend, {
+				// @ts-expect-error - assume res has a valid status code
+				status: res.status
+			});
+		}
+
+		return { form };
+	},
+
+	change_language: async (event) => {
+		const form = await superValidate(event, zod(changeLanguageFormSchema));
+
+		// If the form is not valid, return a 400 error
+		if (!form.valid) {
+			return fail(400, {
+				languageForm: form
+			});
+		}
+
+		const res = await event.fetch(`${API_URL}/user/change_language`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json'

@@ -1,5 +1,6 @@
 export * from "./AddSystemRequest"
 export * from "./AddSystemResponse"
+export * from "./ChangeLanguageRequest"
 export * from "./ChangePasswordRequest"
 export * from "./ChangeTimezoneRequest"
 export * from "./ChangeVisibilityRequest"

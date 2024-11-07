@@ -108,7 +108,7 @@ fn compose_email(email_data: &EmailData) -> GenericResult<Message> {
     let local_timestamp = email_data.utc_timestamp.with_timezone(&email_data.timezone);
     let down_after = email_data.down_after.human(Truncate::Minute);
 
-    let user_locale = "en";
+    let user_locale = email_data.language.as_str();
 
     let message = Message::builder()
         .from("Monitor Mailer <monitor@polp.online>".parse()?)
@@ -164,6 +164,7 @@ pub struct EmailData {
     pub system_name: String,
     pub user_email: String,
     pub timezone: Tz,
+    pub language: String,
 }
 
 async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
@@ -178,6 +179,7 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
                s.down_after,
                u.email AS user_email,
                u.timezone AS user_timezone,
+               u.language AS user_language,
                s.frequency,
                latest_ping.timestamp
         FROM system s
@@ -233,6 +235,7 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
                 system_name: row.system_name,
                 user_email: row.user_email,
                 timezone: user_timezone,
+                language: row.user_language,
             })
         })
         .collect();

@@ -3,10 +3,12 @@
 	import ChangePasswordForm from './change_password/ChangePasswordForm.svelte';
 	import { title } from '$components/stores/title.store';
 	import ChangeTimezoneForm from './change_timezone/ChangeTimezoneForm.svelte';
+	import ChangeLanguageForm from './change_language/ChangeLanguageForm.svelte';
 	// noinspection ES6UnusedImports
 	import * as Card from '$components/ui/card';
 	import LucideChevronLeft from '~icons/lucide/chevron-left';
 	import LucideRectangleEllipsis from '~icons/lucide/rectangle-ellipsis';
+	import LucideLanguages from '~icons/lucide/languages';
 	import LucideGlobe from '~icons/lucide/globe';
 	import { Button } from '$components/ui/button';
 	import { getTranslate, T } from '@tolgee/svelte';
@@ -32,18 +34,23 @@
 	</div>
 
 	<div class="grid gap-6 md:grid-cols-2">
+		<!-- Change language -->
 		<Card.Root>
 			<Card.Header>
 				<Card.Title>
-					<LucideRectangleEllipsis class="mb-5 h-10 w-10" />
-					<T keyName="account_settings.change_password" />
+					<LucideLanguages class="mb-5 h-10 w-10" />
+					<T keyName="account_settings.change_language" />
 				</Card.Title>
+				<Card.Description>
+					<T keyName="account_settings.change_language_description" />
+				</Card.Description>
 			</Card.Header>
 			<Card.Content>
-				<ChangePasswordForm data={data.passwordForm} />
+				<ChangeLanguageForm data={data.languageForm} />
 			</Card.Content>
 		</Card.Root>
 
+		<!-- Change timezone -->
 		<Card.Root>
 			<Card.Header>
 				<Card.Title>
@@ -58,5 +65,20 @@
 				<ChangeTimezoneForm data={data.timezoneForm} timezones={data.timezones} />
 			</Card.Content>
 		</Card.Root>
+
+		<div class="col-span-2 flex justify-center">
+			<!-- Change password -->
+			<Card.Root class="w-1/2">
+				<Card.Header>
+					<Card.Title>
+						<LucideRectangleEllipsis class="mb-5 h-10 w-10" />
+						<T keyName="account_settings.change_password" />
+					</Card.Title>
+				</Card.Header>
+				<Card.Content>
+					<ChangePasswordForm data={data.passwordForm} />
+				</Card.Content>
+			</Card.Root>
+		</div>
 	</div>
 </div>

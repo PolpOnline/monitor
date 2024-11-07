@@ -15,10 +15,10 @@
 
 	let open = false;
 	export let value = '';
-	export let timezones: { value: string; label: string }[] = [];
+	export let languages: { value: string; label: string }[] = [];
 
 	$: selectedValue =
-		timezones.find((f) => f.value === value)?.label ?? $t('timezone_selector.select_a_timezone');
+		languages.find((f) => f.value === value)?.label ?? $t('language_selector.select_a_language');
 
 	// We want to refocus the trigger button when the user selects
 	// an item from the list, so users can continue navigating the
@@ -30,7 +30,7 @@
 		});
 	}
 
-	function searchTimezoneFn(value: string, search: string): number {
+	function searchLanguageFn(value: string, search: string): number {
 		return value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
 	}
 
@@ -53,23 +53,23 @@
 		</Button>
 	</Popover.Trigger>
 	<Popover.Content class="w-[95%] p-0 md:w-1/2">
-		<Command.Root filter={searchTimezoneFn}>
-			<Command.Input placeholder={$t('timezone_selector.search_timezone')} />
+		<Command.Root filter={searchLanguageFn}>
+			<Command.Input placeholder={$t('language_selector.search_language')} />
 			<Command.List>
 				<Command.Empty>
-					<T keyName="timezone_selector.no_timezone_found" />
+					<T keyName="language_selector.no_language_found" />
 				</Command.Empty>
 				<Command.Group>
-					{#each timezones as timezone}
+					{#each languages as language}
 						<Command.Item
-							value={timezone.value}
+							value={language.value}
 							onSelect={(currentValue) => {
 								value = currentValue;
 								closeAndFocusTrigger(ids.trigger);
 							}}
 						>
-							<Check class={cn('mr-2 h-4 w-4', value !== timezone.value && 'text-transparent')} />
-							{timezone.label}
+							<Check class={cn('mr-2 h-4 w-4', value !== language.value && 'text-transparent')} />
+							{language.label}
 						</Command.Item>
 					{/each}
 				</Command.Group>

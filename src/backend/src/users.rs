@@ -11,6 +11,7 @@ pub struct User {
     pub email: String,
     pub password: String,
     pub timezone: String,
+    pub language: String,
 }
 
 // Here we've implemented `Debug` manually to avoid accidentally logging the
