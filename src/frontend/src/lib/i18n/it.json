@@ -56,7 +56,7 @@
     "success": "Sistema eliminato con successo",
     "title": "Sei sicuro?"
   },
-  "down": "Down",
+  "down": "Non funziona correttamente",
   "down_for": "(da {time})",
   "duration_picker": {
     "hours": "Ore",

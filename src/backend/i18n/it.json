@@ -48,7 +48,7 @@
   "delete_system_dialog.fail": "Impossibile eliminare il sistema: %{error}",
   "delete_system_dialog.success": "Sistema eliminato con successo",
   "delete_system_dialog.title": "Sei sicuro?",
-  "down": "Down",
+  "down": "Non funziona correttamente",
   "down_for": "(da %{time})",
   "duration_picker.hours": "Ore",
   "duration_picker.minutes": "Minuti",
