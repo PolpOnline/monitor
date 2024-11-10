@@ -17,6 +17,7 @@
 	const form = superForm(data, {
 		dataType: 'json',
 		validators: zodClient(changeTimezoneFormSchema),
+		resetForm: false,
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {
 				toast.success($t('account_settings.timezone_changed_successfully'));

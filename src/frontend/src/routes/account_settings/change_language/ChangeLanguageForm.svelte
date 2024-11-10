@@ -20,6 +20,7 @@
 	const form = superForm(data, {
 		dataType: 'json',
 		validators: zodClient(changeLanguageFormSchema),
+		resetForm: false,
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {
 				toast.success($t('account_settings.language_changed_successfully'));
