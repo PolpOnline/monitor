@@ -1684,7 +1684,6 @@ dependencies = [
  "lettre",
  "once_cell",
  "password-auth",
- "redis 0.27.5",
  "rust-i18n",
  "rusty-sidekiq",
  "serde",
@@ -1756,16 +1755,6 @@ checksum = "77a8165726e8236064dbb45459242600304b42a5ea24ee2948e18e023bf7ba84"
 dependencies = [
  "overload",
  "winapi",
-]
-
-[[package]]
-name = "num-bigint"
-version = "0.4.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9"
-dependencies = [
- "num-integer",
- "num-traits",
 ]
 
 [[package]]
@@ -2180,31 +2169,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "redis"
-version = "0.27.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "81cccf17a692ce51b86564334614d72dcae1def0fd5ecebc9f02956da74352b5"
-dependencies = [
- "arc-swap",
- "async-trait",
- "bytes",
- "combine",
- "futures-util",
- "itoa",
- "native-tls",
- "num-bigint",
- "percent-encoding",
- "pin-project-lite",
- "ryu",
- "sha1_smol",
- "socket2",
- "tokio",
- "tokio-native-tls",
- "tokio-util",
- "url",
-]
-
-[[package]]
 name = "redis-protocol"
 version = "5.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2418,7 +2382,7 @@ dependencies = [
  "hex",
  "num_cpus",
  "rand",
- "redis 0.22.3",
+ "redis",
  "serde",
  "serde_json",
  "serial_test",
