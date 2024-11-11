@@ -20,12 +20,8 @@
 	$: lastInstant = data.instants[data.instants.length - 1];
 
 	$: downTime = (() => {
+		// System is up, no need to calculate the downtime
 		if (lastInstant.status !== 'down') {
-			return;
-		}
-
-		// If the first instant is down, we cannot assume that the system was down
-		if (firstInstant.status === 'down') {
 			return;
 		}
 
