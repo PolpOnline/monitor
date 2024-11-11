@@ -15,7 +15,7 @@
 		"@eslint/js": "^9.14.0",
 		"@iconify-json/heroicons": "^1.2.1",
 		"@iconify-json/line-md": "^1.2.2",
-		"@iconify-json/lucide": "^1.2.12",
+		"@iconify-json/lucide": "^1.2.13",
 		"@iconify-json/material-symbols": "^1.2.6",
 		"@iconify-json/ph": "^1.2.1",
 		"@sveltejs/kit": "^2.8.0",
@@ -31,7 +31,7 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.46.0",
 		"globals": "^15.12.0",
-		"postcss": "^8.4.47",
+		"postcss": "^8.4.48",
 		"prettier": "^3.3.3",
 		"prettier-plugin-svelte": "^3.2.7",
 		"prettier-plugin-tailwindcss": "^0.6.8",
@@ -44,7 +44,7 @@
 		"typescript-eslint": "^8.13.0",
 		"unplugin-fonts": "^1.1.1",
 		"unplugin-icons": "^0.19.3",
-		"vite": "^5.4.10"
+		"vite": "^5.4.11"
 	},
 	"type": "module",
 	"dependencies": {
