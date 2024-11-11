@@ -9,14 +9,27 @@ Simple cronjob monitoring tool for your servers
 Use [Nixpacks](https://nixpacks.com/docs/getting-started)
 to build the frontend and backend images and run them with Docker
 
-Note that they require some configuration in `.env` files,
+Note that the project requires configuration in `.env` files,
 see the example files in the `src/backend` and `src/frontend` directories.
-More specifically, the backend requires both a redis and a postgres database 
-and API keys for some SMTP Server.
+
+### Frontend
+The frontend optionally requires the following environment variables to be set:
+- `VITE_TOLGEE_API_URL` - the URL of the Tolgee API
+- `VITE_TOLGEE_API_KEY` - the API key for the Tolgee API
+
+These two are only required if you want to do development.
+
+### Backend
+The backend requires the following environment variables to be set: 
+- `DATABASE_URL` - a Postgres database URL
+- `REDIS_URL` - a Redis database URL
+- `EMAIL_*` - SMTP server configuration to send email notifications when a system is down
+- `COOKIE_KEY` - a 64-byte key to encrypt cookies (see below for instructions on how to generate one)
+- `SITE_URL` - the URL of the frontend site
 
 Note that the backend requires the `PRODUCTION` environment variable to be set to true to send emails.
 
-### Generate a cookie key
+#### Generate a cookie key
 To generate a cookie key,
 you need to spin up a new Rust project with `cargo new your_project_name`
 and paste the following code:
@@ -50,14 +63,18 @@ fn main() {
 
 Then run the project with cargo run and copy the cookie key to the .env file in the backend directory.
 
+
+Cd into the both frontend and back end directories and run the following commands:
 ```bash
 cd src/frontend
 nixpacks build .
 cd ../backend
 nixpacks build .
 ```
-and then run the command provided by Nixpacks to run the images.
-Remember to set the environment variables as `.env` won't be copied to the Docker container.
+Then run the command provided by Nixpacks to run the images.
+
+Remember to set the environment variables
+while deploying to prod as `.env` won't be copied over to the Docker container.
 
 ## Development
 
