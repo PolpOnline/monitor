@@ -7,7 +7,6 @@ import { formSchema as changeLanguageFormSchema } from './change_language/schema
 import { zod } from 'sveltekit-superforms/adapters';
 import { API_URL } from '$lib/api/api';
 import type { GetCurrentSettingsResponse } from '$lib/bindings';
-import { timezones } from '$lib/server/timezones/timezones';
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	const currentSettings = await fetch(`${API_URL}/user/get_current_settings`, {
@@ -28,8 +27,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 			defaults: {
 				language: currentSettings.language
 			}
-		}),
-		timezones
+		})
 	};
 };
 

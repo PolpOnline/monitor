@@ -62,7 +62,7 @@
 				</Card.Description>
 			</Card.Header>
 			<Card.Content>
-				<ChangeTimezoneForm data={data.timezoneForm} timezones={data.timezones} />
+				<ChangeTimezoneForm data={data.timezoneForm} />
 			</Card.Content>
 		</Card.Root>
 

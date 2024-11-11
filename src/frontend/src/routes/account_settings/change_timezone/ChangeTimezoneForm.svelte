@@ -8,11 +8,11 @@
 	import TimezoneSelector from '$components/timezone_selector/TimezoneSelector.svelte';
 	import { toast } from 'svelte-sonner';
 	import { getTranslate, T } from '@tolgee/svelte';
+	import { timezones } from '$lib/static_data/timezones';
 
 	const { t } = getTranslate();
 
 	export let data: SuperValidated<Infer<FormSchema>>;
-	export let timezones: { value: string; label: string }[] = [];
 
 	const form = superForm(data, {
 		dataType: 'json',
