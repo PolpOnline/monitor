@@ -19,7 +19,7 @@ pub enum ChangeLanguageError {
     #[error("User not logged in")]
     #[status(StatusCode::UNAUTHORIZED)]
     UserNotLoggedIn,
-    #[error("Language not valid")]
+    #[error("Language isn't valid")]
     #[status(StatusCode::BAD_REQUEST)]
     LanguageNotValid,
     #[error("Failed to update language")]

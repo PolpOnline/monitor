@@ -54,7 +54,7 @@
     "description": "This action cannot be undone. This will permanently delete the system and all of its data.",
     "fail": "Failed to delete the system: {error}",
     "success": "System deleted successfully",
-    "title": "Are you absolutely sure?"
+    "title": "Are you sure?"
   },
   "down": "Down",
   "down_for": "(for {time})",
@@ -71,7 +71,7 @@
   },
   "email": {
     "check_its_status_now_at": "Check its status now at",
-    "it_was_supposed_to_be_up_after": "It was supposed to be up after {down_after} ",
+    "it_was_supposed_to_be_up_after": "It was supposed to be up after {down_after}.",
     "service_is_down_since": "Service {service_name} is down since",
     "subject": "Service {service_name} is down"
   },

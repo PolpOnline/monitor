@@ -130,7 +130,7 @@ fn compose_email(email_data: &EmailData) -> GenericResult<Message> {
                   {}
                   </time>.
                   <br />
-                  It was supposed to be up after {}.
+                  {}
                   <br />
                   {}
                   <a href="{}">{}</a>.
