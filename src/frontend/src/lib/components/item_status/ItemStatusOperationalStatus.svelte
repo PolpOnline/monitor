@@ -16,7 +16,6 @@
 	let transitionIn: SlideParams = { easing: cubicOut, duration: 300 };
 	let transitionOut: SlideParams = { easing: cubicIn, duration: 300 };
 
-	$: firstInstant = data.instants[0];
 	$: lastInstant = data.instants[data.instants.length - 1];
 
 	$: downTime = (() => {
