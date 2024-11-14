@@ -1,5 +1,4 @@
-use std::collections::HashMap;
-
+use ahash::AHashMap;
 use axum::{
     extract::Query,
     response::{IntoResponse, Response},
@@ -220,7 +219,7 @@ impl SystemData {
     ) -> Result<Vec<Instant>, Response> {
         // Hashmap that contains the key as the expected timestamp and the value as the
         // actual timestamp
-        let hashmap = ping_records.iter().fold(HashMap::new(), |mut acc, t| {
+        let hashmap = ping_records.iter().fold(AHashMap::new(), |mut acc, t| {
             acc.insert(
                 approx_expected_timestamp(t.timestamp, frequency, starts_at).unwrap(),
                 t.timestamp,
