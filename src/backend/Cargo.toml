@@ -5,39 +5,37 @@ edition = "2021"
 publish = false
 
 [dependencies]
-async-trait = "0.1.74"
-axum = { version = "0.7.0", features = ["http2"] }
-axum-login = "0.16.0"
-http = "1.0.0"
-hyper = "1.0.1"
-password-auth = "1.0.0"
+async-trait = "0.1"
+axum = { version = "0.7", features = ["http2"] }
+axum-login = "0.16"
+http = "1.0"
+hyper = "1.0"
+password-auth = "1.0"
 serde = "1"
-sqlx = { version = "0.8.1", features = ["postgres", "runtime-tokio-native-tls", "uuid", "chrono"] }
-chrono = { version = "0.4.38", features = ["serde"] }
-tokio = { version = "1.34.0", features = ["full"] }
-tower = "0.5.0"
-tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
-tower-sessions = { version = "0.13.0", default-features = false, features = ["signed"] }
-thiserror = "2.0.0"
-dotenvy = "0.15.7"
-color-eyre = "0.6.3"
-tracing = "0.1.40"
-uuid = { version = "1.10.0", features = ["v4", "serde"] }
-ts-rs = { version = "10.0.0", features = ["serde-json-impl", "uuid-impl"] }
-axum_thiserror = "0.1.0"
-tower-http = { version = "0.6.1", features = ["trace", "compression-full", "decompression-full"] }
-bb8 = "0.8.5"
-#redis = { version = "0.27.0", features = ["aio", "default", "tokio-native-tls-comp"] }
-serde_json = "1.0.128"
-rusty-sidekiq = { version = "0.11.0", default-features = false }
-futures = "0.3.30"
-lettre = { version = "0.11.8", features = ["tokio1-native-tls", "tokio1"] }
-once_cell = "1.19.0"
-tower-sessions-redis-store = { version = "0.14.0", features = ["enable-native-tls"] }
-chrono-tz = "0.10.0"
-humanize-duration = { version = "0.0.6", features = ["chrono"] }
-sysinfo = { version = "0.32.0", features = ["serde", "system"] }
-rust-i18n = "3.1.2"
+sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-native-tls", "uuid", "chrono"] }
+chrono = { version = "0.4", features = ["serde"] }
+tokio = { version = "1.34", features = ["full"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tower-sessions = { version = "0.13", default-features = false, features = ["signed"] }
+thiserror = "2.0"
+dotenvy = "0.15"
+color-eyre = "0.6"
+tracing = "0.1"
+uuid = { version = "1.10", features = ["v4", "serde"] }
+ts-rs = { version = "10.0", features = ["serde-json-impl", "uuid-impl"] }
+axum_thiserror = "0.1"
+tower-http = { version = "0.6", features = ["trace", "compression-full", "decompression-full"] }
+bb8 = "0.8"
+#serde_json = "1.0.132"
+rusty-sidekiq = { version = "0.11", default-features = false }
+futures = "0.3"
+lettre = { version = "0.11", features = ["tokio1-native-tls", "tokio1"] }
+once_cell = "1.19"
+tower-sessions-redis-store = { version = "0.14", features = ["enable-native-tls"] }
+chrono-tz = "0.10"
+humanize-duration = { version = "0.0", features = ["chrono"] }
+sysinfo = { version = "0.32", features = ["serde", "system"] }
+rust-i18n = "3.1"
 
 [profile.dev.package.backtrace]
 opt-level = 3
