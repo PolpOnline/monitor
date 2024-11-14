@@ -91,6 +91,7 @@
   "timezone_selector.search_timezone": "Search timezone...",
   "timezone_selector.select_a_timezone": "Select a timezone...",
   "toggle_theme": "Toggle theme",
+  "unknown": "Unknown",
   "view_on_github": "View on GitHub",
   "_version": 1
 }

@@ -29,8 +29,14 @@
 		<PageSelector class="mb-3" />
 
 		<div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
-			{#each data.systems as system (system.name)}
-				<div in:fly={inParams} out:fly={outParams} animate:flip={animateParams}>
+			{#each data.systems as system (system.id)}
+				<div
+					in:fly={inParams}
+					out:fly={outParams}
+					animate:flip={animateParams}
+					class:custom-col-width={data.systems.length % 2 === 1}
+					class="h-full"
+				>
 					<ItemStatus data={system} />
 				</div>
 			{/each}
@@ -45,3 +51,9 @@
 
 	<PresetDialog />
 </main>
+
+<style lang="postcss">
+	.custom-col-width:last-of-type {
+		@apply lg:col-span-2;
+	}
+</style>

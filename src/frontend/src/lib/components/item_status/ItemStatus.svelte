@@ -69,7 +69,7 @@
 	});
 </script>
 
-<div class="relative rounded-lg border p-3">
+<div class="relative h-full rounded-lg border p-3">
 	{#if showDropdown}
 		<div class="absolute right-3 top-3 mr-2 mt-2">
 			<ItemStatusDropdown {data} />

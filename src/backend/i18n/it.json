@@ -91,6 +91,7 @@
   "timezone_selector.search_timezone": "Cerca fuso orario...",
   "timezone_selector.select_a_timezone": "Seleziona un fuso orario",
   "toggle_theme": "Cambia tema",
+  "unknown": "Sconosciuto",
   "view_on_github": "Apri su GitHub",
   "_version": 1
 }

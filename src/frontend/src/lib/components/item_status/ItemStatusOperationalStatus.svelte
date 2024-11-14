@@ -57,6 +57,8 @@
 				<br class="sm:hidden" />
 				<T keyName="down_for" params={{ time: downTime }} />
 			{/if}
+		{:else}
+			<T keyName="unknown" />
 		{/if}
 	</h2>
 
