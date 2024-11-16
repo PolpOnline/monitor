@@ -10,15 +10,14 @@
 	import { DateTime } from 'luxon';
 	import { colorMapText } from './index';
 
-	export let data: SystemData;
-	export let now: DateTime;
+	const { data, now }: { data: SystemData; now: DateTime } = $props();
 
-	let transitionIn: SlideParams = { easing: cubicOut, duration: 300 };
-	let transitionOut: SlideParams = { easing: cubicIn, duration: 300 };
+	const transitionIn: SlideParams = { easing: cubicOut, duration: 300 };
+	const transitionOut: SlideParams = { easing: cubicIn, duration: 300 };
 
-	$: lastInstant = data.instants[data.instants.length - 1];
+	const lastInstant = data.instants[data.instants.length - 1];
 
-	$: downTime = (() => {
+	const downTime: () => string | undefined = $derived(() => {
 		// System is up, no need to calculate the downtime
 		if (lastInstant.status !== 'down') {
 			return;
@@ -40,7 +39,7 @@
 			now.diff(lastInstantTime).as('milliseconds'),
 			{ round: true, units: ['y', 'd', 'h', 'm'], language: $language }
 		);
-	})();
+	});
 </script>
 
 <div in:slide={transitionIn} out:slide={transitionOut}>
@@ -53,9 +52,9 @@
 
 			<T keyName="down" />
 
-			{#if downTime}
+			{#if downTime()}
 				<br class="sm:hidden" />
-				<T keyName="down_for" params={{ time: downTime }} />
+				<T keyName="down_for" params={{ time: downTime() }} />
 			{/if}
 		{:else}
 			<T keyName="unknown" />

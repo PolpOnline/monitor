@@ -25,16 +25,18 @@
 
 	const { t } = getTranslate();
 
-	let className = '';
+	const className = $state('');
 
 	// noinspection ReservedWordAsName
 	export { className as class };
 
-	export let data: SystemData;
+	const { data }: { data: SystemData } = $props();
 
-	$: isPublic = $targetSystemData ? $targetSystemData.visibility === 'public' : undefined;
+	const isPublic = $derived(() =>
+		$targetSystemData ? $targetSystemData.visibility === 'public' : undefined
+	);
 
-	let isVisibilityChanging = false;
+	let isVisibilityChanging = $state(false);
 
 	async function changeVisibility(newVisibility: Visibility, id: string) {
 		isVisibilityChanging = true;
@@ -70,7 +72,7 @@
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
 			<DropdownMenu.Item
-				on:click={() => {
+				onclick={() => {
 					if (!$targetSystemData) return;
 
 					navigator.clipboard.writeText(`${API_URL}/ping_status/${$targetSystemData.id}`);
@@ -82,10 +84,10 @@
 				<T keyName="copy_endpoint_url" />
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
-				on:click={async () => {
+				onclick={async () => {
 					if (!$targetSystemData) return;
 
-					const newVisibility = isPublic ? 'private' : 'public';
+					const newVisibility = isPublic() ? 'private' : 'public';
 
 					$targetSystemData.visibility = newVisibility;
 
@@ -95,7 +97,7 @@
 				{#if isVisibilityChanging}
 					<LineMdLoadingLoop class="mr-2 h-4 w-4" />
 					<T keyName="change_visibility.changing" />
-				{:else if isPublic}
+				{:else if isPublic()}
 					<LucideLock class="mr-2 h-4 w-4" />
 					<T keyName="change_visibility.make_private" />
 				{:else}
@@ -103,9 +105,9 @@
 					<T keyName="change_visibility.make_public" />
 				{/if}
 			</DropdownMenu.Item>
-			{#if isPublic}
+			{#if isPublic()}
 				<DropdownMenu.Item
-					on:click={() => {
+					onclick={() => {
 						if (!$targetSystemData) return;
 
 						navigator.clipboard.writeText(`${$page.url.origin}/public/${$targetSystemData.id}`);
@@ -116,7 +118,7 @@
 				</DropdownMenu.Item>
 			{/if}
 			<DropdownMenu.Item
-				on:click={() => {
+				onclick={() => {
 					$presetDialogOpen = true;
 				}}
 			>
@@ -124,7 +126,7 @@
 				<T keyName="configuration_presets" />
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
-				on:click={() => {
+				onclick={() => {
 					$editSystemNameDialogOpen = true;
 				}}
 			>
@@ -134,7 +136,7 @@
 			<DropdownMenu.Item
 				class="text-red-600"
 				data-sveltekit-preload-data="off"
-				on:click={() => {
+				onclick={() => {
 					$deleteSystemDialogOpen = true;
 				}}
 			>

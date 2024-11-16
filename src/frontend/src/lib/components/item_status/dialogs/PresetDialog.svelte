@@ -18,36 +18,59 @@
 		}
 	];
 
-	$: startsAtDateTime = $targetSystemData ? new Date($targetSystemData.starts_at) : undefined;
+	const startsAtDateTime = $derived(() =>
+		$targetSystemData ? new Date($targetSystemData.starts_at) : undefined
+	);
 
-	$: startsAtDate = startsAtDateTime
-		? startsAtDateTime
-				.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' })
-				.replace(',', '')
-				.replaceAll(' ', '/')
-				.toLowerCase()
-		: undefined; // Format: mmm/dd/yyyy (e.g. jan/01/2022)
+	const startsAtDate = $derived(() => {
+		const startsAtDateTimeCalled = startsAtDateTime();
 
-	$: startsAtTime = startsAtDateTime
-		? startsAtDateTime.toLocaleTimeString('en-GB', { hour12: false })
-		: undefined; // Format: 00:00:00
+		if (!startsAtDateTimeCalled) {
+			return undefined;
+		}
 
-	$: frequencyHours = $targetSystemData ? Math.floor($targetSystemData.frequency / 60) : undefined;
-	$: frequencyMinutes = $targetSystemData ? $targetSystemData.frequency % 60 : undefined;
+		return startsAtDateTimeCalled
+			.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' })
+			.replace(',', '')
+			.replaceAll(' ', '/')
+			.toLowerCase();
+	}); // Format: mmm/dd/yyyy (e.g. jan/01/2022)
 
-	$: presetMap = {
-		mikrotik: `/system scheduler add name="ping_status" start-date="${startsAtDate}" start-time="${startsAtTime}" interval="${frequencyHours}:${frequencyMinutes}:00" \
+	const startsAtTime = $derived(() => {
+		const startsAtDateTimeCalled = startsAtDateTime();
+
+		if (!startsAtDateTimeCalled) {
+			return undefined;
+		}
+
+		return startsAtDateTimeCalled.toLocaleTimeString('en-GB', { hour12: false });
+	}); // Format: 00:00:00
+
+	const frequencyHours = $derived(() =>
+		$targetSystemData ? Math.floor($targetSystemData.frequency / 60) : undefined
+	);
+	const frequencyMinutes = $derived(() =>
+		$targetSystemData ? $targetSystemData.frequency % 60 : undefined
+	);
+
+	const presetMap = $derived(() => {
+		return {
+			mikrotik: `/system scheduler add name="ping_status" start-date="${startsAtDate()}" start-time="${startsAtTime()}" interval="${frequencyHours()}:${frequencyMinutes()}:00" \
 on-event="/tool fetch url=\\"${API_URL}/ping_status/${$targetSystemData?.id}\\" \
 mode=https http-method=post output=none"`
-	} as Record<string, string>;
+		} as Record<string, string>;
+	});
 
-	let chosenPreset: (typeof presets)[0] | undefined = undefined;
+	// let chosenPreset: (typeof presets)[0] | undefined = undefined;
+
+	let value = $state('');
+
+	const triggerContent = $derived(
+		presets.find((f) => f.value === value)?.label ?? $t('preset_dialog.select_a_preset')
+	);
 </script>
 
 <Dialog.Root bind:open={$presetDialogOpen}>
-	<Dialog.Trigger>
-		<slot />
-	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>
@@ -55,9 +78,9 @@ mode=https http-method=post output=none"`
 			</Dialog.Title>
 
 			<div class="!mt-4">
-				<Select.Root bind:selected={chosenPreset} portal={null}>
+				<Select.Root bind:value type="single">
 					<Select.Trigger class="w-full">
-						<Select.Value placeholder={$t('preset_dialog.select_a_preset')} />
+						{triggerContent}
 					</Select.Trigger>
 					<Select.Content>
 						<Select.Group>
@@ -71,12 +94,12 @@ mode=https http-method=post output=none"`
 				</Select.Root>
 			</div>
 
-			{#if chosenPreset}
-				<CopyableTextarea value={presetMap[chosenPreset.value]} class="h-[320px]" />
+			{#if value}
+				<CopyableTextarea value={presetMap()[value]} class="h-[320px]" />
 			{/if}
 
 			<Dialog.Footer>
-				<Button on:click={() => ($presetDialogOpen = false)} class="w-full">
+				<Button onclick={() => ($presetDialogOpen = false)} class="w-full">
 					<T keyName="close" />
 				</Button>
 			</Dialog.Footer>

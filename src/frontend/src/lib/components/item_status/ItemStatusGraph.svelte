@@ -10,10 +10,6 @@
 	import { T } from '@tolgee/svelte';
 	import { language } from '$lib/components/stores/language.store';
 
-	// export let data: SystemData;
-	// export let now: DateTime;
-	// export let currentPage: number;
-	//// to runes
 	let { data, now, currentPage }: { data: SystemData; now: DateTime; currentPage: number } =
 		$props();
 
@@ -63,7 +59,7 @@
 <div class="flex h-[50px] justify-between">
 	{#each data.instants as instant, i (instant.expected_timestamp)}
 		<Tooltip.Root
-			openDelay={0}
+			delayDuration={0}
 			bind:open={tooltipOpens[i]}
 			onOpenChange={() => clearTooltipsExcept(i)}
 		>
@@ -119,7 +115,7 @@
 
 <div class="mt-1 grid grid-flow-col grid-cols-3 text-gray-500">
 	<div class="text-left">
-		<T keyName="item_status_graph.first_check" params={{ time: firstTime }} />
+		<T keyName="item_status_graph.first_check" params={{ time: firstTime() }} />
 	</div>
 
 	<div class="text-center">
@@ -133,7 +129,7 @@
 	</div>
 
 	<div class="text-right">
-		<T keyName="item_status_graph.last_check" params={{ time: lastTime }} />
+		<T keyName="item_status_graph.last_check" params={{ time: lastTime() }} />
 	</div>
 </div>
 

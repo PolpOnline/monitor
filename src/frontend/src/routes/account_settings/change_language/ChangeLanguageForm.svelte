@@ -41,7 +41,7 @@
 		<Form.FieldErrors />
 	</Form.Field>
 	{#if $message}
-		<div class="text-red-600">{$message}</div>
+		<div class="text-destructive">{$message}</div>
 	{/if}
 	<Form.Button class="mt-8 w-full">
 		{#if !$delayed}

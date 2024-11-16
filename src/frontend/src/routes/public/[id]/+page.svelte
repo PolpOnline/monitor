@@ -6,7 +6,7 @@
 
 	title.set('Public Monitor');
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 
 	title.set(data.system.name + ' status');
 </script>

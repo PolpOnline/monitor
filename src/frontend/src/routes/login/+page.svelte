@@ -8,7 +8,7 @@
 
 	title.set($t('login.login_or_signup'));
 
-	export let data: PageData;
+	let { data }: { data: PageData } = $props();
 </script>
 
 <div class="h-screen-not-navbar flex flex-col items-center justify-center">

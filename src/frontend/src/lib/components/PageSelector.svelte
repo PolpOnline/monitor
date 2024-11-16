@@ -8,10 +8,10 @@
 	import { cn } from '$lib/utils';
 	import { type ClassValue } from 'clsx';
 
-	$: currentPage = Number($page.url.searchParams.get('page')) || 0;
+	const currentPage = $derived(() => Number($page.url.searchParams.get('page')) || 0);
 
-	$: prevPageHref = currentPage > 1 ? `?page=${currentPage - 1}` : `?`;
-	$: nextPageHref = `?page=${currentPage + 1}`;
+	const prevPageHref = $derived(() => (currentPage() > 1 ? `?page=${currentPage() - 1}` : `?`));
+	const nextPageHref = $derived(() => `?page=${currentPage() + 1}`);
 
 	onMount(() => {
 		document.addEventListener('keydown', keyHandler);
@@ -21,24 +21,22 @@
 	});
 
 	function keyHandler(event: KeyboardEvent) {
-		if (event.key === 'ArrowRight' && currentPage > 0) {
-			goto(prevPageHref);
+		if (event.key === 'ArrowRight' && currentPage() > 0) {
+			goto(prevPageHref());
 		}
 		if (event.key === 'ArrowLeft') {
-			goto(nextPageHref);
+			goto(nextPageHref());
 		}
 	}
 
-	let className: ClassValue;
-	// noinspection ReservedWordAsName
-	export { className as class };
+	const { class: className }: { class: ClassValue } = $props();
 </script>
 
 <div class={cn(className, 'flex items-center justify-between')}>
 	<Button
 		variant="outline"
 		size="icon"
-		href={nextPageHref}
+		href={nextPageHref()}
 		data-sveltekit-preload-data="hover"
 		data-sveltekit-preload-code="eager"
 		data-sveltekit-replacestate
@@ -47,11 +45,11 @@
 		<LucideChevronLeft />
 	</Button>
 	<!-- We cannot set `disabled` on a button to which we passed a href, so we need to do this -->
-	{#if currentPage !== 0}
+	{#if currentPage() !== 0}
 		<Button
 			variant="outline"
 			size="icon"
-			href={prevPageHref}
+			href={prevPageHref()}
 			data-sveltekit-preload-data="hover"
 			data-sveltekit-preload-code="eager"
 			data-sveltekit-replacestate

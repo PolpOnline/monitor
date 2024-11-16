@@ -17,7 +17,7 @@
 
 	$title = $t('account_settings.account_settings');
 
-	export let data: PageData;
+	const { data }: { data: PageData } = $props();
 </script>
 
 <div class="mx-3 mb-16">
