@@ -30,7 +30,7 @@
 		<h1 class="text-center text-3xl font-bold">
 			<T keyName="account_settings.account_settings" />
 		</h1>
-		<div />
+		<div></div>
 	</div>
 
 	<div class="grid gap-6 md:grid-cols-2">
@@ -66,9 +66,9 @@
 			</Card.Content>
 		</Card.Root>
 
-		<div class="col-span-2 flex justify-center">
+		<div class="flex justify-center md:col-span-2">
 			<!-- Change password -->
-			<Card.Root class="w-1/2">
+			<Card.Root class="w-full md:w-1/2">
 				<Card.Header>
 					<Card.Title>
 						<LucideRectangleEllipsis class="mb-5 h-10 w-10" />
