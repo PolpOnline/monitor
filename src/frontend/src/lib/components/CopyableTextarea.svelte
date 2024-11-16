@@ -11,13 +11,15 @@
 
 	const { t } = getTranslate();
 
-	let className = '';
-	// noinspection ReservedWordAsName
-	export { className as class };
+	let {
+		value = $bindable(''),
+		class: className
+	}: {
+		value: string;
+		class: string;
+	} = $props();
 
-	export let value = '';
-
-	let displayCheckMark = false;
+	let displayCheckMark = $state(false);
 
 	function copyValue() {
 		navigator.clipboard.writeText(value);
@@ -40,7 +42,7 @@
 
 <div class="relative my-3">
 	<Textarea bind:value class={className} readonly />
-	<Button class="absolute bottom-2 right-2" on:click={copyValue} variant="secondary">
+	<Button class="absolute bottom-2 right-2" onclick={copyValue} variant="secondary">
 		{#if !displayCheckMark}
 			<div in:fly={flyInOptions} class="h-6 w-6">
 				<LucideClipboardCopy class="h-full w-full" />

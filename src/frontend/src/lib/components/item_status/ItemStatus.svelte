@@ -10,7 +10,7 @@
 
 	const { data, showDropdown = true }: { data: SystemData; showDropdown: boolean } = $props();
 
-	const currentPage = $derived(() => Number($page.url.searchParams.get('page')) || 0);
+	const currentPage = $derived(Number($page.url.searchParams.get('page')) || 0);
 
 	let timeoutId: ReturnType<typeof setTimeout>;
 	let intervalId: ReturnType<typeof setInterval>;
@@ -49,7 +49,7 @@
 	}
 
 	onMount(() => {
-		if (currentPage() === 0) {
+		if (currentPage === 0) {
 			autoRefreshSystem(data);
 		}
 	});
@@ -79,11 +79,11 @@
 		{data.name}
 	</h1>
 
-	{#if currentPage() === 0}
+	{#if currentPage === 0}
 		<ItemStatusOperationalStatus {data} {now} />
 	{/if}
 
 	<div class="mx-auto my-3 max-w-[800px]">
-		<ItemStatusGraph {data} {now} currentPage={currentPage()} />
+		<ItemStatusGraph {data} {now} {currentPage} />
 	</div>
 </div>

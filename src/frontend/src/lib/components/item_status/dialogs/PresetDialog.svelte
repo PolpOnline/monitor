@@ -18,12 +18,12 @@
 		}
 	];
 
-	const startsAtDateTime = $derived(() =>
+	const startsAtDateTime = $derived(
 		$targetSystemData ? new Date($targetSystemData.starts_at) : undefined
 	);
 
-	const startsAtDate = $derived(() => {
-		const startsAtDateTimeCalled = startsAtDateTime();
+	const startsAtDate = $derived.by(() => {
+		const startsAtDateTimeCalled = startsAtDateTime;
 
 		if (!startsAtDateTimeCalled) {
 			return undefined;
@@ -36,8 +36,8 @@
 			.toLowerCase();
 	}); // Format: mmm/dd/yyyy (e.g. jan/01/2022)
 
-	const startsAtTime = $derived(() => {
-		const startsAtDateTimeCalled = startsAtDateTime();
+	const startsAtTime = $derived.by(() => {
+		const startsAtDateTimeCalled = startsAtDateTime;
 
 		if (!startsAtDateTimeCalled) {
 			return undefined;
@@ -46,16 +46,16 @@
 		return startsAtDateTimeCalled.toLocaleTimeString('en-GB', { hour12: false });
 	}); // Format: 00:00:00
 
-	const frequencyHours = $derived(() =>
+	const frequencyHours = $derived(
 		$targetSystemData ? Math.floor($targetSystemData.frequency / 60) : undefined
 	);
-	const frequencyMinutes = $derived(() =>
+	const frequencyMinutes = $derived(
 		$targetSystemData ? $targetSystemData.frequency % 60 : undefined
 	);
 
-	const presetMap = $derived(() => {
+	const presetMap = $derived.by(() => {
 		return {
-			mikrotik: `/system scheduler add name="ping_status" start-date="${startsAtDate()}" start-time="${startsAtTime()}" interval="${frequencyHours()}:${frequencyMinutes()}:00" \
+			mikrotik: `/system scheduler add name="ping_status" start-date="${startsAtDate}" start-time="${startsAtTime}" interval="${frequencyHours}:${frequencyMinutes}:00" \
 on-event="/tool fetch url=\\"${API_URL}/ping_status/${$targetSystemData?.id}\\" \
 mode=https http-method=post output=none"`
 		} as Record<string, string>;
@@ -95,7 +95,7 @@ mode=https http-method=post output=none"`
 			</div>
 
 			{#if value}
-				<CopyableTextarea value={presetMap()[value]} class="h-[320px]" />
+				<CopyableTextarea value={presetMap[value]} class="h-[320px]" />
 			{/if}
 
 			<Dialog.Footer>

@@ -27,14 +27,14 @@
 		loggedInEmail
 	}: { loginStatus: LoginStatus; loggedInEmail: string | undefined } = $props();
 
-	const loggedIn = $derived(() => loginStatus === 'logged_in');
+	const loggedIn = $derived(loginStatus === 'logged_in');
 
-	const isPublicPage = $derived(() => $page.url.pathname.startsWith('/public'));
+	const isPublicPage = $derived($page.url.pathname.startsWith('/public'));
 </script>
 
 <nav class="grid h-20 grid-cols-3">
 	<div class="flex items-center">
-		<a class="ml-3 text-3xl" href={loggedIn() ? '/' : undefined} aria-label="Go to home">
+		<a class="ml-3 text-3xl" href={loggedIn ? '/' : undefined} aria-label="Go to home">
 			<PhHeartbeat />
 		</a>
 	</div>
@@ -54,7 +54,7 @@
 					<DropdownMenu.Separator />
 				{/if}
 				<DropdownMenu.Group>
-					{#if isPublicPage() && !loggedIn}
+					{#if isPublicPage && !loggedIn}
 						<DropdownMenuLinkItem href="/login">
 							<LucideLogIn class="mr-2 h-4 w-4" />
 							<T keyName="login" />
@@ -80,7 +80,7 @@
 						<LucideRefreshCw class="mr-2 h-4 w-4" />
 						<T keyName="refresh" />
 					</DropdownMenu.Item>
-					{#if loggedIn()}
+					{#if loggedIn}
 						<DropdownMenuLinkItem href="/account_settings">
 							<LucideSettings class="mr-2 h-4 w-4" />
 							<T keyName="account_settings" />

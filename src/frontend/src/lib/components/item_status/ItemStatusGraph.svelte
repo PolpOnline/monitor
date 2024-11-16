@@ -19,7 +19,7 @@
 		tooltipOpens = tooltipOpens.map((_, i) => i === index);
 	}
 
-	const uptime = $derived(() => {
+	const uptime = $derived.by(() => {
 		const upInstants = data.instants.filter((instant) => instant.status === 'up').length;
 		const validInstants = data.instants.filter((instant) => instant.status !== 'untracked').length;
 
@@ -33,7 +33,7 @@
 		language: $language
 	};
 
-	const firstTime = $derived(() => {
+	const firstTime = $derived.by(() => {
 		const firstInstantExpected = DateTime.fromISO(data.instants[0].expected_timestamp);
 
 		return humanizeDuration(
@@ -43,7 +43,7 @@
 		);
 	});
 
-	const lastTime = $derived(() => {
+	const lastTime = $derived.by(() => {
 		const lastInstantExpected = DateTime.fromISO(
 			data.instants[data.instants.length - 1].expected_timestamp
 		);
@@ -115,21 +115,21 @@
 
 <div class="mt-1 grid grid-flow-col grid-cols-3 text-gray-500">
 	<div class="text-left">
-		<T keyName="item_status_graph.first_check" params={{ time: firstTime() }} />
+		<T keyName="item_status_graph.first_check" params={{ time: firstTime }} />
 	</div>
 
 	<div class="text-center">
 		{#if currentPage !== 0}
 			<div></div>
-		{:else if !isNaN(uptime())}
-			<T keyName="item_status_graph.uptime" params={{ uptime: uptime().toFixed(2) + '%' }} />
+		{:else if !isNaN(uptime)}
+			<T keyName="item_status_graph.uptime" params={{ uptime: uptime.toFixed(2) + '%' }} />
 		{:else}
 			<T keyName="item_status_graph.unknown_uptime" />
 		{/if}
 	</div>
 
 	<div class="text-right">
-		<T keyName="item_status_graph.last_check" params={{ time: lastTime() }} />
+		<T keyName="item_status_graph.last_check" params={{ time: lastTime }} />
 	</div>
 </div>
 
