@@ -14,6 +14,7 @@
 		Tolgee,
 		TolgeeProvider
 	} from '@tolgee/svelte';
+	import { TooltipProvider } from '$lib/components/ui/tooltip';
 
 	import { fly } from 'svelte/transition';
 	import { cubicIn, cubicOut } from 'svelte/easing';
@@ -23,8 +24,9 @@
 	import Loader from '$components/Loader.svelte';
 	import enLang from '$lib/i18n/en.json';
 	import itLang from '$lib/i18n/it.json';
+	import type { Snippet } from 'svelte';
 
-	export let data: LayoutData;
+	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
 	// Page transition
 	const duration = 300;
@@ -34,7 +36,7 @@
 	const transitionIn = { easing: cubicOut, y, duration, delay };
 	const transitionOut = { easing: cubicIn, y: -y, duration };
 
-	let isLoading = false;
+	let isLoading = $state(false);
 
 	// Show loader only when navigating between internal pages
 	beforeNavigate(({ to }) => (isLoading = !!to?.route.id));
@@ -63,21 +65,23 @@
 </svelte:head>
 
 <TolgeeProvider {tolgee}>
-	<div>
-		<Toaster richColors theme={$mode} />
+	<TooltipProvider>
+		<div>
+			<Toaster richColors theme={$mode} />
 
-		<Navbar loginStatus={data.loginStatus} loggedInEmail={data.loggedInEmail} />
+			<Navbar loginStatus={data.loginStatus} loggedInEmail={data.loggedInEmail} />
 
-		<ModeWatcher defaultMode={'dark'} />
+			<ModeWatcher defaultMode={'dark'} />
 
-		{#if isLoading}
-			<Loader />
-		{/if}
+			{#if isLoading}
+				<Loader />
+			{/if}
 
-		{#key data.pathname}
-			<div in:fly={transitionIn} out:fly={transitionOut}>
-				<slot />
-			</div>
-		{/key}
-	</div>
+			{#key data.pathname}
+				<div in:fly={transitionIn} out:fly={transitionOut}>
+					{@render children()}
+				</div>
+			{/key}
+		</div>
+	</TooltipProvider>
 </TolgeeProvider>

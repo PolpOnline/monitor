@@ -19,10 +19,11 @@
 	import LucideEye from '~icons/lucide/eye';
 	// noinspection ES6UnusedImports
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import { Button } from '$lib/components/ui/button/index.js';
+	import { buttonVariants } from '$lib/components/ui/button/index.js';
 	import DurationPicker from '$components/duration_picker/DurationPicker.svelte';
 	import { toast } from 'svelte-sonner';
 	import { getTranslate, T } from '@tolgee/svelte';
+	import { cn } from '$lib/utils';
 
 	const { t } = getTranslate();
 
@@ -56,12 +57,14 @@
 <form action="?/add_system" class={className} method="POST" use:enhance>
 	<div class="space-y-9 p-4">
 		<Form.Field {form} name="name">
-			<Form.Control let:attrs>
-				<Form.Label class="font-bold">
-					<LucidePencil class="inline h-4 w-4" />
-					<T keyName="add_system.name" />
-				</Form.Label>
-				<Input {...attrs} bind:value={$formData.name} />
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label class="font-bold">
+						<LucidePencil class="inline h-4 w-4" />
+						<T keyName="add_system.name" />
+					</Form.Label>
+					<Input {...props} bind:value={$formData.name} />
+				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
@@ -78,59 +81,63 @@
 		</Form.Field>
 
 		<Form.Field {form} name="starts_at">
-			<Form.Control let:attrs>
-				<Form.Label>
-					<LucidePlay class="inline h-4 w-4" />
-					<T keyName="add_system.starting_date_and_time" />
-				</Form.Label>
-				<DateTimePicker {...attrs} bind:value={$formData.starts_at} />
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>
+						<LucidePlay class="inline h-4 w-4" />
+						<T keyName="add_system.starting_date_and_time" />
+					</Form.Label>
+					<DateTimePicker {...props} bind:value={$formData.starts_at} />
+				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="down_after">
-			<Form.Control let:attrs>
-				<Form.Label>
-					<LucideMail class="inline h-4 w-4" />
-					<T keyName="add_system.send_email_after" />
-				</Form.Label>
-				<DurationPicker
-					{...attrs}
-					bind:value={$formData.down_after}
-					defaultValue={{ hours: 2, minutes: 0 }}
-				/>
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>
+						<LucideMail class="inline h-4 w-4" />
+						<T keyName="add_system.send_email_after" />
+					</Form.Label>
+					<DurationPicker
+						{...props}
+						bind:value={$formData.down_after}
+						defaultValue={{ hours: 2, minutes: 0 }}
+					/>
+				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="visibility">
-			<Form.Control let:attrs>
-				<Form.Label>
-					<LucideEye class="inline h-4 w-4" />
-					<T keyName="add_system.visibility" />
-				</Form.Label>
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>
+						<LucideEye class="inline h-4 w-4" />
+						<T keyName="add_system.visibility" />
+					</Form.Label>
 
-				<div {...attrs}>
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger asChild let:builder>
-							<Button variant="outline" builders={[builder]} class="w-full">
+					<div {...props}>
+						<DropdownMenu.Root>
+							<DropdownMenu.Trigger class={cn(buttonVariants({ variant: 'outline' }), 'w-full')}>
 								{$formData.visibility === 'public'
 									? $t('add_system.public')
 									: $t('add_system.private')}
-							</Button>
-						</DropdownMenu.Trigger>
-						<DropdownMenu.Content class="w-[95%]">
-							<DropdownMenu.RadioGroup bind:value={$formData.visibility}>
-								<DropdownMenu.RadioItem value="public">
-									<T keyName="add_system.public" />
-								</DropdownMenu.RadioItem>
-								<DropdownMenu.RadioItem value="private">
-									<T keyName="add_system.private" />
-								</DropdownMenu.RadioItem>
-							</DropdownMenu.RadioGroup>
-						</DropdownMenu.Content>
-					</DropdownMenu.Root>
-				</div>
+							</DropdownMenu.Trigger>
+							<DropdownMenu.Content class="w-[95%]">
+								<DropdownMenu.RadioGroup bind:value={$formData.visibility}>
+									<DropdownMenu.RadioItem value="public">
+										<T keyName="add_system.public" />
+									</DropdownMenu.RadioItem>
+									<DropdownMenu.RadioItem value="private">
+										<T keyName="add_system.private" />
+									</DropdownMenu.RadioItem>
+								</DropdownMenu.RadioGroup>
+							</DropdownMenu.Content>
+						</DropdownMenu.Root>
+					</div>
+				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>

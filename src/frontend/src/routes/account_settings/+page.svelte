@@ -17,7 +17,7 @@
 
 	$title = $t('account_settings.account_settings');
 
-	export let data: PageData;
+	const { data }: { data: PageData } = $props();
 </script>
 
 <div class="mx-3 mb-16">
@@ -30,7 +30,7 @@
 		<h1 class="text-center text-3xl font-bold">
 			<T keyName="account_settings.account_settings" />
 		</h1>
-		<div />
+		<div></div>
 	</div>
 
 	<div class="grid gap-6 md:grid-cols-2">
