@@ -58,7 +58,7 @@
 		"cmdk-sv": "^0.0.18",
 		"formsnap": "^1.0.1",
 		"humanize-duration": "^3.32.1",
-		"lucide-svelte": "^0.454.0",
+		"lucide-svelte": "^0.460.0",
 		"luxon": "^3.5.0",
 		"mode-watcher": "^0.4.1",
 		"svelte-device-info": "^1.0.6",
