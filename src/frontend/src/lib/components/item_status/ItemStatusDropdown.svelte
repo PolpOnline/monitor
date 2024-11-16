@@ -32,7 +32,7 @@
 
 	const { data }: { data: SystemData } = $props();
 
-	const isPublic = $derived(() =>
+	const isPublic = $derived(
 		$targetSystemData ? $targetSystemData.visibility === 'public' : undefined
 	);
 
@@ -87,7 +87,7 @@
 				onclick={async () => {
 					if (!$targetSystemData) return;
 
-					const newVisibility = isPublic() ? 'private' : 'public';
+					const newVisibility = isPublic ? 'private' : 'public';
 
 					$targetSystemData.visibility = newVisibility;
 
@@ -97,7 +97,7 @@
 				{#if isVisibilityChanging}
 					<LineMdLoadingLoop class="mr-2 h-4 w-4" />
 					<T keyName="change_visibility.changing" />
-				{:else if isPublic()}
+				{:else if isPublic}
 					<LucideLock class="mr-2 h-4 w-4" />
 					<T keyName="change_visibility.make_private" />
 				{:else}
@@ -105,7 +105,7 @@
 					<T keyName="change_visibility.make_public" />
 				{/if}
 			</DropdownMenu.Item>
-			{#if isPublic()}
+			{#if isPublic}
 				<DropdownMenu.Item
 					onclick={() => {
 						if (!$targetSystemData) return;

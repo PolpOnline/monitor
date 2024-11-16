@@ -17,7 +17,7 @@
 
 	const lastInstant = data.instants[data.instants.length - 1];
 
-	const downTime: () => string | undefined = $derived(() => {
+	const downTime: string | undefined = $derived.by(() => {
 		// System is up, no need to calculate the downtime
 		if (lastInstant.status !== 'down') {
 			return;
@@ -52,9 +52,9 @@
 
 			<T keyName="down" />
 
-			{#if downTime()}
+			{#if downTime}
 				<br class="sm:hidden" />
-				<T keyName="down_for" params={{ time: downTime() }} />
+				<T keyName="down_for" params={{ time: downTime }} />
 			{/if}
 		{:else}
 			<T keyName="unknown" />
