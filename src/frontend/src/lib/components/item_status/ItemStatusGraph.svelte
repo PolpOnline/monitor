@@ -116,7 +116,7 @@
 
 	<div class="text-center">
 		{#if currentPage !== 0}
-			<div />
+			<div></div>
 		{:else if !isNaN(uptime)}
 			<T keyName="item_status_graph.uptime" params={{ uptime: uptime.toFixed(2) + '%' }} />
 		{:else}
