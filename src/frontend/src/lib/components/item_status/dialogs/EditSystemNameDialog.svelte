@@ -11,7 +11,7 @@
 
 	const { t } = getTranslate();
 
-	let newSystemName = '';
+	let newSystemName = $state('');
 
 	async function editSystemName() {
 		isLoading = true;
@@ -39,13 +39,10 @@
 		editSystemNameDialogOpen.set(false);
 	}
 
-	let isLoading = false;
+	let isLoading = $state(false);
 </script>
 
 <Dialog.Root bind:open={$editSystemNameDialogOpen}>
-	<Dialog.Trigger>
-		<slot />
-	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>
@@ -59,7 +56,7 @@
 			/>
 
 			<Dialog.Footer>
-				<Button on:click={() => editSystemName()}>
+				<Button onclick={() => editSystemName()}>
 					{#if !isLoading}
 						<T keyName="save" />
 					{:else}

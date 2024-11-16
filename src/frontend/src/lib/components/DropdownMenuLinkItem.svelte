@@ -19,9 +19,7 @@
 <DropdownMenuItem class={className}>
 	{#snippet child({ props })}
 		<a {...props} {href} {target}>
-			{#if children}
-				{@render children()}
-			{/if}
+			{@render children?.()}
 		</a>
 	{/snippet}
 </DropdownMenuItem>

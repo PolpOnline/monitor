@@ -34,13 +34,10 @@
 		deleteSystemDialogOpen.set(false);
 	}
 
-	let isLoading = false;
+	let isLoading = $state(false);
 </script>
 
 <Dialog.Root bind:open={$deleteSystemDialogOpen}>
-	<Dialog.Trigger>
-		<slot />
-	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>
@@ -53,12 +50,12 @@
 			<Dialog.Footer>
 				<Button
 					class="mt-3 sm:mt-0"
-					on:click={() => ($deleteSystemDialogOpen = false)}
+					onclick={() => ($deleteSystemDialogOpen = false)}
 					variant="secondary"
 				>
 					<T keyName="cancel" />
 				</Button>
-				<Button class="mt-5 sm:mt-0" on:click={() => deleteSystem()} variant="destructive">
+				<Button class="mt-5 sm:mt-0" onclick={() => deleteSystem()} variant="destructive">
 					{#if !isLoading}
 						<T keyName="delete" />
 					{:else}
