@@ -11,8 +11,13 @@
 
 	const { t } = getTranslate();
 
-	export let data: SuperValidated<Infer<FormSchema>>;
-	export let languages: { value: string; label: string }[] = [
+	const {
+		data
+	}: {
+		data: SuperValidated<Infer<FormSchema>>;
+	} = $props();
+
+	const languages: { value: string; label: string }[] = [
 		{ value: 'en', label: 'English' },
 		{ value: 'it', label: 'Italian' }
 	];
@@ -41,7 +46,7 @@
 		<Form.FieldErrors />
 	</Form.Field>
 	{#if $message}
-		<div class="text-red-600">{$message}</div>
+		<div class="text-destructive">{$message}</div>
 	{/if}
 	<Form.Button class="mt-8 w-full">
 		{#if !$delayed}

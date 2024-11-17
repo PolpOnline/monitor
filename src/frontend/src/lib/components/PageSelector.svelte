@@ -8,10 +8,10 @@
 	import { cn } from '$lib/utils';
 	import { type ClassValue } from 'clsx';
 
-	$: currentPage = Number($page.url.searchParams.get('page')) || 0;
+	const currentPage = $derived(Number($page.url.searchParams.get('page')) || 0);
 
-	$: prevPageHref = currentPage > 1 ? `?page=${currentPage - 1}` : `?`;
-	$: nextPageHref = `?page=${currentPage + 1}`;
+	const prevPageHref = $derived(currentPage > 1 ? `?page=${currentPage - 1}` : `?`);
+	const nextPageHref = $derived(`?page=${currentPage + 1}`);
 
 	onMount(() => {
 		document.addEventListener('keydown', keyHandler);
@@ -29,9 +29,7 @@
 		}
 	}
 
-	let className: ClassValue;
-	// noinspection ReservedWordAsName
-	export { className as class };
+	const { class: className }: { class: ClassValue } = $props();
 </script>
 
 <div class={cn(className, 'flex items-center justify-between')}>

@@ -17,16 +17,19 @@
 	import { page } from '$app/stores';
 	import type { LoginStatus } from '../../app';
 	import { toast } from 'svelte-sonner';
-	import { T, getTranslate } from '@tolgee/svelte';
+	import { getTranslate, T } from '@tolgee/svelte';
+	import DropdownMenuLinkItem from '$components/DropdownMenuLinkItem.svelte';
 
 	const { t } = getTranslate();
 
-	export let loginStatus: LoginStatus;
-	export let loggedInEmail: string | undefined;
+	const {
+		loginStatus,
+		loggedInEmail
+	}: { loginStatus: LoginStatus; loggedInEmail: string | undefined } = $props();
 
-	$: loggedIn = loginStatus === 'logged_in';
+	const loggedIn = $derived(loginStatus === 'logged_in');
 
-	$: isPublicPage = $page.url.pathname.startsWith('/public');
+	const isPublicPage = $derived($page.url.pathname.startsWith('/public'));
 </script>
 
 <nav class="grid h-20 grid-cols-3">
@@ -52,12 +55,12 @@
 				{/if}
 				<DropdownMenu.Group>
 					{#if isPublicPage && !loggedIn}
-						<DropdownMenu.Item href="/login">
+						<DropdownMenuLinkItem href="/login">
 							<LucideLogIn class="mr-2 h-4 w-4" />
 							<T keyName="login" />
-						</DropdownMenu.Item>
+						</DropdownMenuLinkItem>
 					{/if}
-					<DropdownMenu.Item on:click={toggleMode}>
+					<DropdownMenu.Item onclick={toggleMode}>
 						{#if $mode === 'dark'}
 							<LucideSun class="mr-2 h-4 w-4" />
 						{:else}
@@ -68,7 +71,7 @@
 						</span>
 					</DropdownMenu.Item>
 					<DropdownMenu.Item
-						on:click={async () => {
+						onclick={async () => {
 							toast($t('refreshing'), { icon: LineMdLoadingLoop });
 							await invalidateAll();
 							toast.success($t('refreshed'));
@@ -78,25 +81,23 @@
 						<T keyName="refresh" />
 					</DropdownMenu.Item>
 					{#if loggedIn}
-						<DropdownMenu.Item href="/account_settings">
+						<DropdownMenuLinkItem href="/account_settings">
 							<LucideSettings class="mr-2 h-4 w-4" />
 							<T keyName="account_settings" />
-						</DropdownMenu.Item>
-						<DropdownMenu.Item
-							class="text-red-600"
-							href="/logout"
-							data-sveltekit-preload-data="off"
-						>
-							<LucideLogOut class="mr-2 h-4 w-4" />
-							<T keyName="logout" />
-						</DropdownMenu.Item>
+						</DropdownMenuLinkItem>
+						<div data-sveltekit-preload-data="off">
+							<DropdownMenuLinkItem class="text-red-600" href="/logout">
+								<LucideLogOut class="mr-2 h-4 w-4" />
+								<T keyName="logout" />
+							</DropdownMenuLinkItem>
+						</div>
 					{/if}
 				</DropdownMenu.Group>
 				<DropdownMenu.Separator />
-				<DropdownMenu.Item href="https://github.com/PolpOnline/monitor" target="_blank">
+				<DropdownMenuLinkItem href="https://github.com/PolpOnline/monitor" target="_blank">
 					<LucideGithub class="mr-2 h-4 w-4" />
 					<T keyName="view_on_github" />
-				</DropdownMenu.Item>
+				</DropdownMenuLinkItem>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</div>

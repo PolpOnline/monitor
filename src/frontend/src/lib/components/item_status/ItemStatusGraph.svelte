@@ -10,27 +10,21 @@
 	import { T } from '@tolgee/svelte';
 	import { language } from '$lib/components/stores/language.store';
 
-	export let data: SystemData;
-	export let now: DateTime;
-	export let currentPage: number;
+	let { data, now, currentPage }: { data: SystemData; now: DateTime; currentPage: number } =
+		$props();
 
-	let tooltipOpens: boolean[] = new Array(data.instants.length).fill(false);
+	let tooltipOpens: boolean[] = $state(new Array(data.instants.length).fill(false));
 
 	function clearTooltipsExcept(index: number) {
 		tooltipOpens = tooltipOpens.map((_, i) => i === index);
 	}
 
-	$: uptime = (() => {
+	const uptime = $derived.by(() => {
 		const upInstants = data.instants.filter((instant) => instant.status === 'up').length;
 		const validInstants = data.instants.filter((instant) => instant.status !== 'untracked').length;
 
 		return (upInstants / validInstants) * 100;
-	})();
-
-	$: firstInstantExpected = DateTime.fromISO(data.instants[0].expected_timestamp);
-	$: lastInstantExpected = DateTime.fromISO(
-		data.instants[data.instants.length - 1].expected_timestamp
-	);
+	});
 
 	const durationParams: humanizeDuration.Options = {
 		round: true,
@@ -39,23 +33,33 @@
 		language: $language
 	};
 
-	$: firstTime = humanizeDuration(
-		// Difference between now and the least recent instant
-		now.diff(firstInstantExpected).as('milliseconds'),
-		durationParams
-	);
+	const firstTime = $derived.by(() => {
+		const firstInstantExpected = DateTime.fromISO(data.instants[0].expected_timestamp);
 
-	$: lastTime = humanizeDuration(
-		// Difference between now and the most recent instant
-		now.diff(lastInstantExpected).as('milliseconds'),
-		durationParams
-	);
+		return humanizeDuration(
+			// Difference between now and the least recent instant
+			now.diff(firstInstantExpected).as('milliseconds'),
+			durationParams
+		);
+	});
+
+	const lastTime = $derived.by(() => {
+		const lastInstantExpected = DateTime.fromISO(
+			data.instants[data.instants.length - 1].expected_timestamp
+		);
+
+		return humanizeDuration(
+			// Difference between now and the most recent instant
+			now.diff(lastInstantExpected).as('milliseconds'),
+			durationParams
+		);
+	});
 </script>
 
 <div class="flex h-[50px] justify-between">
 	{#each data.instants as instant, i (instant.expected_timestamp)}
 		<Tooltip.Root
-			openDelay={0}
+			delayDuration={0}
 			bind:open={tooltipOpens[i]}
 			onOpenChange={() => clearTooltipsExcept(i)}
 		>
@@ -65,10 +69,10 @@
 				]} custom-transition-transform max-w-3 cursor-default"
 				class:custom-scale={tooltipOpens[i]}
 				style="width: calc((100% / {data.instants.length}) - 2px)"
-				on:mouseenter={() => {
+				onmouseenter={() => {
 					clearTooltipsExcept(i);
 				}}
-				on:mouseleave={() => {
+				onmouseleave={() => {
 					tooltipOpens[i] = false;
 				}}
 				role="button"

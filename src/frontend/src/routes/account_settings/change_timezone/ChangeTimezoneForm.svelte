@@ -12,7 +12,11 @@
 
 	const { t } = getTranslate();
 
-	export let data: SuperValidated<Infer<FormSchema>>;
+	const {
+		data
+	}: {
+		data: SuperValidated<Infer<FormSchema>>;
+	} = $props();
 
 	const form = superForm(data, {
 		dataType: 'json',
@@ -38,7 +42,7 @@
 		<Form.FieldErrors />
 	</Form.Field>
 	{#if $message}
-		<div class="text-red-600">{$message}</div>
+		<div class="text-destructive">{$message}</div>
 	{/if}
 	<Form.Button class="mt-8 w-full">
 		{#if !$delayed}

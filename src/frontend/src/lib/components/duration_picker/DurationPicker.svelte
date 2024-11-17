@@ -3,16 +3,22 @@
 	import { Label } from '$lib/components/ui/label';
 	import { T } from '@tolgee/svelte';
 
-	export let defaultValue: {
-		hours: number;
-		minutes: number;
-	} = { hours: 0, minutes: 0 };
-	export let value: number;
+	const {
+		defaultValue = { hours: 0, minutes: 0 }
+	}: {
+		defaultValue: {
+			hours: number;
+			minutes: number;
+		};
+	} = $props();
 
-	let hours = defaultValue.hours;
-	let minutes = defaultValue.minutes;
+	let hours = $state(defaultValue.hours);
+	let minutes = $state(defaultValue.minutes);
 
-	$: value = (hours || 0) * 60 + (minutes || 0);
+	// noinspection JSUnusedGlobalSymbols
+	const value: number = $derived((hours || 0) * 60 + (minutes || 0));
+
+	export { value };
 </script>
 
 <div class="mt-2 flex w-full content-center items-center gap-2">

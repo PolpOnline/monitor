@@ -10,21 +10,23 @@
 	} from '@internationalized/date';
 	import { T } from '@tolgee/svelte';
 
-	export let value: string | undefined;
-
 	const now = new Date();
 
-	let hours = now.getMinutes() > 30 ? now.getHours() + 1 : now.getHours();
-	let minutes = 0;
-	let seconds = 0;
+	let hours = $state(now.getMinutes() > 30 ? now.getHours() + 1 : now.getHours());
+	let minutes = $state(0);
+	let seconds = $state(0);
 
-	let date: DateValue | undefined;
+	let date: DateValue | undefined = $state(undefined);
 
-	$: time = new Time(hours, minutes, seconds);
+	const time = $derived(new Time(hours, minutes, seconds));
 
-	$: completeDate = date ? toCalendarDateTime(date, time) : undefined;
+	const completeDate = $derived(date ? toCalendarDateTime(date, time) : undefined);
 
-	$: value = completeDate?.toDate(getLocalTimeZone()).toISOString();
+	const value: string = $derived(
+		completeDate ? completeDate.toDate(getLocalTimeZone()).toISOString() : ''
+	);
+
+	export { value };
 </script>
 
 <div class="flex flex-col items-center">

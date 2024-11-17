@@ -12,7 +12,11 @@
 
 	const { t } = getTranslate();
 
-	export let data: SuperValidated<Infer<FormSchema>>;
+	const {
+		data
+	}: {
+		data: SuperValidated<Infer<FormSchema>>;
+	} = $props();
 
 	const form = superForm(data, {
 		validators: zodClient(formSchema),
@@ -28,25 +32,29 @@
 
 <form method="POST" use:enhance>
 	<Form.Field {form} name="email">
-		<Form.Control let:attrs>
-			<Form.Label>
-				<T keyName="login.email" />
-			</Form.Label>
-			<Input {...attrs} bind:value={$formData.email} type="email" autocomplete="username" />
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>
+					<T keyName="login.email" />
+				</Form.Label>
+				<Input {...props} bind:value={$formData.email} type="email" autocomplete="username" />
+			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Field {form} name="password">
-		<Form.Control let:attrs>
-			<Form.Label>
-				<T keyName="login.password" />
-			</Form.Label>
-			<PasswordInput {...attrs} bind:value={$formData.password} autocomplete="current-password" />
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>
+					<T keyName="login.password" />
+				</Form.Label>
+				<PasswordInput {...props} bind:value={$formData.password} autocomplete="current-password" />
+			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	{#if $message}
-		<div class="text-red-600">{$message}</div>
+		<div class="text-destructive">{$message}</div>
 	{/if}
 	<Form.Button class="mt-8 w-full">
 		{#if !$delayed}

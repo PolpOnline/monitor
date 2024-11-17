@@ -19,14 +19,23 @@
 	import LucideEye from '~icons/lucide/eye';
 	// noinspection ES6UnusedImports
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import { Button } from '$lib/components/ui/button/index.js';
+	import { buttonVariants } from '$lib/components/ui/button/index.js';
 	import DurationPicker from '$components/duration_picker/DurationPicker.svelte';
 	import { toast } from 'svelte-sonner';
 	import { getTranslate, T } from '@tolgee/svelte';
+	import { cn } from '$lib/utils';
 
 	const { t } = getTranslate();
 
-	export let data: SuperValidated<Infer<FormSchema>>;
+	let {
+		data,
+		class: className = '',
+		typeOfWrapper = 'sheet'
+	}: {
+		data: SuperValidated<Infer<FormSchema>>;
+		class?: string;
+		typeOfWrapper: 'sheet' | 'drawer';
+	} = $props();
 
 	// noinspection JSUnusedGlobalSymbols
 	const form = superForm(data, {
@@ -43,94 +52,121 @@
 
 	const { form: formData, enhance } = form;
 
-	export let delayed = form.delayed;
+	const delayed = form.delayed;
 
-	let className = '';
+	let dateTimePicker: { value: string } | undefined = $state(); // bound to the DateTimePicker component
 
-	// noinspection ReservedWordAsName
-	export { className as class };
+	let starts_at = $derived(dateTimePicker ? dateTimePicker.value : '');
 
-	export let typeOfWrapper: 'sheet' | 'drawer' = 'sheet';
+	$effect(() => {
+		$formData.starts_at = starts_at;
+	});
+
+	let durationPickerFrequency: { value: number } | undefined = $state(); // bound to the DurationPicker component
+
+	let frequency = $derived(durationPickerFrequency ? durationPickerFrequency.value : 0);
+
+	$effect(() => {
+		$formData.frequency = frequency;
+	});
+
+	let durationPickerDownAfter: { value: number } | undefined = $state(); // bound to the DurationPicker component
+
+	let down_after = $derived(durationPickerDownAfter ? durationPickerDownAfter.value : 0);
+
+	$effect(() => {
+		$formData.down_after = down_after;
+	});
 </script>
 
 <form action="?/add_system" class={className} method="POST" use:enhance>
 	<div class="space-y-9 p-4">
 		<Form.Field {form} name="name">
-			<Form.Control let:attrs>
-				<Form.Label class="font-bold">
-					<LucidePencil class="inline h-4 w-4" />
-					<T keyName="add_system.name" />
-				</Form.Label>
-				<Input {...attrs} bind:value={$formData.name} />
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label class="font-bold">
+						<LucidePencil class="inline h-4 w-4" />
+						<T keyName="add_system.name" />
+					</Form.Label>
+					<Input {...props} bind:value={$formData.name} />
+				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="frequency">
 			<Form.Control>
-				<Form.Label>
-					<LucideClock class="inline h-4 w-4" />
-					<T keyName="add_system.check_frequency" />
-				</Form.Label>
-				<DurationPicker bind:value={$formData.frequency} defaultValue={{ hours: 0, minutes: 30 }} />
+				{#snippet children()}
+					<Form.Label>
+						<LucideClock class="inline h-4 w-4" />
+						<T keyName="add_system.check_frequency" />
+					</Form.Label>
+					<DurationPicker
+						bind:this={durationPickerFrequency}
+						defaultValue={{ hours: 0, minutes: 30 }}
+					/>
+				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="starts_at">
-			<Form.Control let:attrs>
-				<Form.Label>
-					<LucidePlay class="inline h-4 w-4" />
-					<T keyName="add_system.starting_date_and_time" />
-				</Form.Label>
-				<DateTimePicker {...attrs} bind:value={$formData.starts_at} />
+			<Form.Control>
+				{#snippet children()}
+					<Form.Label>
+						<LucidePlay class="inline h-4 w-4" />
+						<T keyName="add_system.starting_date_and_time" />
+					</Form.Label>
+					<DateTimePicker bind:this={dateTimePicker} />
+				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="down_after">
-			<Form.Control let:attrs>
-				<Form.Label>
-					<LucideMail class="inline h-4 w-4" />
-					<T keyName="add_system.send_email_after" />
-				</Form.Label>
-				<DurationPicker
-					{...attrs}
-					bind:value={$formData.down_after}
-					defaultValue={{ hours: 2, minutes: 0 }}
-				/>
+			<Form.Control>
+				{#snippet children()}
+					<Form.Label>
+						<LucideMail class="inline h-4 w-4" />
+						<T keyName="add_system.send_email_after" />
+					</Form.Label>
+					<DurationPicker
+						bind:this={durationPickerDownAfter}
+						defaultValue={{ hours: 2, minutes: 0 }}
+					/>
+				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="visibility">
-			<Form.Control let:attrs>
-				<Form.Label>
-					<LucideEye class="inline h-4 w-4" />
-					<T keyName="add_system.visibility" />
-				</Form.Label>
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label>
+						<LucideEye class="inline h-4 w-4" />
+						<T keyName="add_system.visibility" />
+					</Form.Label>
 
-				<div {...attrs}>
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger asChild let:builder>
-							<Button variant="outline" builders={[builder]} class="w-full">
+					<div {...props}>
+						<DropdownMenu.Root>
+							<DropdownMenu.Trigger class={cn(buttonVariants({ variant: 'outline' }), 'w-full')}>
 								{$formData.visibility === 'public'
 									? $t('add_system.public')
 									: $t('add_system.private')}
-							</Button>
-						</DropdownMenu.Trigger>
-						<DropdownMenu.Content class="w-[95%]">
-							<DropdownMenu.RadioGroup bind:value={$formData.visibility}>
-								<DropdownMenu.RadioItem value="public">
-									<T keyName="add_system.public" />
-								</DropdownMenu.RadioItem>
-								<DropdownMenu.RadioItem value="private">
-									<T keyName="add_system.private" />
-								</DropdownMenu.RadioItem>
-							</DropdownMenu.RadioGroup>
-						</DropdownMenu.Content>
-					</DropdownMenu.Root>
-				</div>
+							</DropdownMenu.Trigger>
+							<DropdownMenu.Content class="w-[95%]">
+								<DropdownMenu.RadioGroup bind:value={$formData.visibility}>
+									<DropdownMenu.RadioItem value="public">
+										<T keyName="add_system.public" />
+									</DropdownMenu.RadioItem>
+									<DropdownMenu.RadioItem value="private">
+										<T keyName="add_system.private" />
+									</DropdownMenu.RadioItem>
+								</DropdownMenu.RadioGroup>
+							</DropdownMenu.Content>
+						</DropdownMenu.Root>
+					</div>
+				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>

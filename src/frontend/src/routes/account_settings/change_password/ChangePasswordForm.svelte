@@ -7,12 +7,15 @@
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import PasswordInput from '$components/password_input/PasswordInput.svelte';
 	import { toast } from 'svelte-sonner';
-	import { T } from '@tolgee/svelte';
-	import { getTranslate } from '@tolgee/svelte';
+	import { getTranslate, T } from '@tolgee/svelte';
 
 	const { t } = getTranslate();
 
-	export let data: SuperValidated<Infer<FormSchema>>;
+	const {
+		data
+	}: {
+		data: SuperValidated<Infer<FormSchema>>;
+	} = $props();
 
 	const form = superForm(data, {
 		validators: zodClient(changePasswordFormSchema),
@@ -28,42 +31,48 @@
 
 <form action="?/change_password" method="POST" use:enhance>
 	<Form.Field {form} name="old_password">
-		<Form.Control let:attrs>
-			<Form.Label>
-				<T keyName="account_settings.old_password" />
-			</Form.Label>
-			<PasswordInput
-				{...attrs}
-				bind:value={$formData.old_password}
-				autocomplete="current-password"
-			/>
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>
+					<T keyName="account_settings.old_password" />
+				</Form.Label>
+				<PasswordInput
+					{...props}
+					bind:value={$formData.old_password}
+					autocomplete="current-password"
+				/>
+			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Field {form} name="new_password">
-		<Form.Control let:attrs>
-			<Form.Label>
-				<T keyName="account_settings.new_password" />
-			</Form.Label>
-			<PasswordInput {...attrs} bind:value={$formData.new_password} autocomplete="new-password" />
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>
+					<T keyName="account_settings.new_password" />
+				</Form.Label>
+				<PasswordInput {...props} bind:value={$formData.new_password} autocomplete="new-password" />
+			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	<Form.Field {form} name="new_password_confirm">
-		<Form.Control let:attrs>
-			<Form.Label>
-				<T keyName="account_settings.new_password_confirm" />
-			</Form.Label>
-			<PasswordInput
-				{...attrs}
-				bind:value={$formData.new_password_confirm}
-				autocomplete="new-password"
-			/>
+		<Form.Control>
+			{#snippet children({ props })}
+				<Form.Label>
+					<T keyName="account_settings.new_password_confirm" />
+				</Form.Label>
+				<PasswordInput
+					{...props}
+					bind:value={$formData.new_password_confirm}
+					autocomplete="new-password"
+				/>
+			{/snippet}
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
 	{#if $message}
-		<div class="text-red-600">{$message}</div>
+		<div class="text-destructive">{$message}</div>
 	{/if}
 	<Form.Button class="mt-8 w-full">
 		{#if !$delayed}

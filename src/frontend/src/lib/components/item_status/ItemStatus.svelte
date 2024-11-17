@@ -8,10 +8,9 @@
 	import { DateTime, Duration } from 'luxon';
 	import { onDestroy, onMount } from 'svelte';
 
-	export let showDropdown: boolean = true;
-	export let data: SystemData;
+	const { data, showDropdown = true }: { data: SystemData; showDropdown?: boolean } = $props();
 
-	$: currentPage = Number($page.url.searchParams.get('page')) || 0;
+	const currentPage = $derived(Number($page.url.searchParams.get('page')) || 0);
 
 	let timeoutId: ReturnType<typeof setTimeout>;
 	let intervalId: ReturnType<typeof setInterval>;
@@ -60,7 +59,7 @@
 		clearTimeout(timeoutId);
 	});
 
-	let now = DateTime.now();
+	let now = $state(DateTime.now());
 	onMount(() => {
 		const interval = setInterval(() => {
 			now = DateTime.now();
