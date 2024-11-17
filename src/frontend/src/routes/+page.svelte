@@ -17,7 +17,7 @@
 
 	const inParams: FlyParams = { y: '100%', duration: 300, easing: cubicOut };
 	const outParams: FlyParams = { x: '100%', duration: 700, easing: cubicOut };
-	const animateParams: AnimationConfig = { delay: 700, duration: 300, easing: cubicOut };
+	const animateParams: AnimationConfig = { delay: 0, duration: 300, easing: cubicOut };
 </script>
 
 <svelte:head>
