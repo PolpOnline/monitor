@@ -213,12 +213,11 @@ impl SystemData {
         ping_records: Vec<PingRecord>,
         frequency: Duration,
         starts_at: NaiveDateTime,
-        mut nearest_datetime: NaiveDateTime,
+        nearest_datetime: NaiveDateTime,
         furthest_datetime: NaiveDateTime,
         list_size: i64,
     ) -> Result<Vec<Instant>, Response> {
-        // Hashmap that contains the key as the expected timestamp and the value as the
-        // actual timestamp
+        // Create a HashMap with expected timestamp as key and actual timestamp as value
         let hashmap: AHashMap<NaiveDateTime, NaiveDateTime> = ping_records
             .into_iter()
             .map(|t| {
@@ -231,34 +230,33 @@ impl SystemData {
 
         let mut instants = Vec::with_capacity(list_size as usize);
 
-        while nearest_datetime > furthest_datetime {
-            let instant = match hashmap.get(&nearest_datetime) {
-                Some(status) => Instant {
+        let mut older_datetime = furthest_datetime;
+        let newer_datetime = nearest_datetime;
+
+        while older_datetime <= newer_datetime {
+            let instant = if let Some(status) = hashmap.get(&older_datetime) {
+                Instant {
                     status: Status::Up,
                     timestamp: Some(status.and_utc()),
-                    expected_timestamp: nearest_datetime.and_utc(),
-                },
-                None => {
-                    let status = if nearest_datetime > starts_at {
-                        Status::Down
-                    } else {
-                        Status::Untracked
-                    };
+                    expected_timestamp: older_datetime.and_utc(),
+                }
+            } else {
+                let status = if older_datetime > starts_at {
+                    Status::Down
+                } else {
+                    Status::Untracked
+                };
 
-                    Instant {
-                        status,
-                        timestamp: None,
-                        expected_timestamp: nearest_datetime.and_utc(),
-                    }
+                Instant {
+                    status,
+                    timestamp: None,
+                    expected_timestamp: older_datetime.and_utc(),
                 }
             };
 
             instants.push(instant);
-
-            nearest_datetime -= frequency;
+            older_datetime += frequency;
         }
-
-        instants.reverse();
 
         Ok(instants)
     }
