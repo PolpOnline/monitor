@@ -15,10 +15,8 @@
 		dateStyle: 'long'
 	});
 
-	let {
-		value = today(getLocalTimeZone()),
-		class: className = ''
-	}: { value?: DateValue; class?: ClassValue } = $props();
+	let { value = $bindable(), class: className = '' }: { value?: DateValue; class?: ClassValue } =
+		$props();
 </script>
 
 <Popover.Root>

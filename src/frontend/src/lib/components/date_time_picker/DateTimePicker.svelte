@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
+	import { today } from '@internationalized/date';
 	import DatePicker from './date_picker/DatePicker.svelte';
 	import {
 		type DateValue,
@@ -16,7 +17,7 @@
 	let minutes = $state(0);
 	let seconds = $state(0);
 
-	let date: DateValue | undefined = $state(undefined);
+	let date: DateValue = $state(today(getLocalTimeZone()));
 
 	const time = $derived(new Time(hours, minutes, seconds));
 
