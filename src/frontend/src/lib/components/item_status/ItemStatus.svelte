@@ -8,7 +8,7 @@
 	import { DateTime, Duration } from 'luxon';
 	import { onDestroy, onMount } from 'svelte';
 
-	const { data, showDropdown = true }: { data: SystemData; showDropdown: boolean } = $props();
+	const { data, showDropdown = true }: { data: SystemData; showDropdown?: boolean } = $props();
 
 	const currentPage = $derived(Number($page.url.searchParams.get('page')) || 0);
 
