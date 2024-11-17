@@ -21,13 +21,13 @@
 </script>
 
 <div class="mx-3 mb-16">
-	<div class="mb-5 mt-3 grid grid-cols-3">
+	<div class="mb-5 mt-3 grid grid-cols-6">
 		<div class="flex items-center">
 			<Button href="/" variant="outline" size="icon">
 				<LucideChevronLeft class="h-6 w-6" />
 			</Button>
 		</div>
-		<h1 class="text-center text-3xl font-bold">
+		<h1 class="col-span-4 text-center text-3xl font-bold">
 			<T keyName="account_settings.account_settings" />
 		</h1>
 		<div></div>
