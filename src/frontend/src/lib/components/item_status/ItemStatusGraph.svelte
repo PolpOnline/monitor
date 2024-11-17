@@ -61,7 +61,10 @@
 		<Tooltip.Root
 			delayDuration={0}
 			bind:open={tooltipOpens[i]}
-			onOpenChange={() => clearTooltipsExcept(i)}
+			controlledOpen
+			onOpenChange={() => {
+				if (tooltipOpens[i]) clearTooltipsExcept(i);
+			}}
 		>
 			<div
 				class="mx-0.25 h-full rounded {colorMap[
@@ -78,11 +81,14 @@
 				role="button"
 				tabindex={-1}
 			>
-				<Tooltip.Trigger class="h-full w-full cursor-default" aria-labelledby={'instant' + i} />
+				<Tooltip.Trigger
+					class="h-full w-full cursor-default"
+					aria-labelledby={data.id + 'instant' + i}
+				/>
 			</div>
 			<Tooltip.Content class="{colorMap[instant.status]} {colorMapBorder[instant.status]}">
 				<Tooltip.Arrow class="{colorMapText[instant.status]} rounded-[2px]" />
-				<div class="flex items-center" id={'instant' + i}>
+				<div class="flex items-center" id={data.id + 'instant' + i}>
 					{#if instant.status !== 'untracked'}
 						{#if instant.status === 'up'}
 							<HeroiconsCheck20Solid class="mr-2 inline-block h-6" />
