@@ -29,7 +29,7 @@
 		}
 	}
 
-	const { class: className }: { class: ClassValue } = $props();
+	const { class: className }: { class?: ClassValue } = $props();
 </script>
 
 <div class={cn(className, 'flex items-center justify-between')}>
