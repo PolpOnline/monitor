@@ -15,11 +15,10 @@
 		dateStyle: 'long'
 	});
 
-	export let value: DateValue = today(getLocalTimeZone());
-
-	let className: ClassValue = '';
-	// noinspection ReservedWordAsName
-	export { className as class };
+	let {
+		value = today(getLocalTimeZone()),
+		class: className = ''
+	}: { value?: DateValue; class?: ClassValue } = $props();
 </script>
 
 <Popover.Root>

@@ -12,7 +12,11 @@
 
 	const { t } = getTranslate();
 
-	export let data: SuperValidated<Infer<FormSchema>>;
+	const {
+		data
+	}: {
+		data: SuperValidated<Infer<FormSchema>>;
+	} = $props();
 
 	const form = superForm(data, {
 		dataType: 'json',

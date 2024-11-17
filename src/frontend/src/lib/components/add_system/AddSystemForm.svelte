@@ -27,7 +27,15 @@
 
 	const { t } = getTranslate();
 
-	export let data: SuperValidated<Infer<FormSchema>>;
+	let {
+		data,
+		class: className = '',
+		typeOfWrapper = 'sheet'
+	}: {
+		data: SuperValidated<Infer<FormSchema>>;
+		class?: string;
+		typeOfWrapper: 'sheet' | 'drawer';
+	} = $props();
 
 	// noinspection JSUnusedGlobalSymbols
 	const form = superForm(data, {
@@ -44,14 +52,31 @@
 
 	const { form: formData, enhance } = form;
 
-	export let delayed = form.delayed;
+	const delayed = form.delayed;
 
-	let className = '';
+	let dateTimePicker: { value: string } | undefined = $state(); // bound to the DateTimePicker component
 
-	// noinspection ReservedWordAsName
-	export { className as class };
+	let starts_at = $derived(dateTimePicker ? dateTimePicker.value : '');
 
-	export let typeOfWrapper: 'sheet' | 'drawer' = 'sheet';
+	$effect(() => {
+		$formData.starts_at = starts_at;
+	});
+
+	let durationPickerFrequency: { value: number } | undefined = $state(); // bound to the DurationPicker component
+
+	let frequency = $derived(durationPickerFrequency ? durationPickerFrequency.value : 0);
+
+	$effect(() => {
+		$formData.frequency = frequency;
+	});
+
+	let durationPickerDownAfter: { value: number } | undefined = $state(); // bound to the DurationPicker component
+
+	let down_after = $derived(durationPickerDownAfter ? durationPickerDownAfter.value : 0);
+
+	$effect(() => {
+		$formData.down_after = down_after;
+	});
 </script>
 
 <form action="?/add_system" class={className} method="POST" use:enhance>
@@ -71,23 +96,28 @@
 
 		<Form.Field {form} name="frequency">
 			<Form.Control>
-				<Form.Label>
-					<LucideClock class="inline h-4 w-4" />
-					<T keyName="add_system.check_frequency" />
-				</Form.Label>
-				<DurationPicker bind:value={$formData.frequency} defaultValue={{ hours: 0, minutes: 30 }} />
+				{#snippet children()}
+					<Form.Label>
+						<LucideClock class="inline h-4 w-4" />
+						<T keyName="add_system.check_frequency" />
+					</Form.Label>
+					<DurationPicker
+						bind:this={durationPickerFrequency}
+						defaultValue={{ hours: 0, minutes: 30 }}
+					/>
+				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="starts_at">
 			<Form.Control>
-				{#snippet children({ props })}
+				{#snippet children()}
 					<Form.Label>
 						<LucidePlay class="inline h-4 w-4" />
 						<T keyName="add_system.starting_date_and_time" />
 					</Form.Label>
-					<DateTimePicker {...props} bind:value={$formData.starts_at} />
+					<DateTimePicker bind:this={dateTimePicker} />
 				{/snippet}
 			</Form.Control>
 			<Form.FieldErrors />
@@ -95,14 +125,13 @@
 
 		<Form.Field {form} name="down_after">
 			<Form.Control>
-				{#snippet children({ props })}
+				{#snippet children()}
 					<Form.Label>
 						<LucideMail class="inline h-4 w-4" />
 						<T keyName="add_system.send_email_after" />
 					</Form.Label>
 					<DurationPicker
-						{...props}
-						bind:value={$formData.down_after}
+						bind:this={durationPickerDownAfter}
 						defaultValue={{ hours: 2, minutes: 0 }}
 					/>
 				{/snippet}

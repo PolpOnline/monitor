@@ -11,8 +11,13 @@
 
 	const { t } = getTranslate();
 
-	export let data: SuperValidated<Infer<FormSchema>>;
-	export let languages: { value: string; label: string }[] = [
+	const {
+		data
+	}: {
+		data: SuperValidated<Infer<FormSchema>>;
+	} = $props();
+
+	const languages: { value: string; label: string }[] = [
 		{ value: 'en', label: 'English' },
 		{ value: 'it', label: 'Italian' }
 	];
