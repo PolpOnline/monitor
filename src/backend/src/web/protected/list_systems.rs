@@ -219,16 +219,15 @@ impl SystemData {
     ) -> Result<Vec<Instant>, Response> {
         // Hashmap that contains the key as the expected timestamp and the value as the
         // actual timestamp
-        let hashmap =
-            ping_records
-                .iter()
-                .fold(AHashMap::with_capacity(ping_records.len()), |mut acc, t| {
-                    acc.insert(
-                        approx_expected_timestamp(t.timestamp, frequency, starts_at).unwrap(),
-                        t.timestamp,
-                    );
-                    acc
-                });
+        let hashmap: AHashMap<NaiveDateTime, NaiveDateTime> = ping_records
+            .into_iter()
+            .map(|t| {
+                (
+                    approx_expected_timestamp(t.timestamp, frequency, starts_at).unwrap(),
+                    t.timestamp,
+                )
+            })
+            .collect();
 
         let mut instants = Vec::with_capacity(list_size as usize);
 
