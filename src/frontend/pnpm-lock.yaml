@@ -16,7 +16,7 @@ importers:
         version: 5.2.9(@sveltejs/kit@2.8.1(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.2)(vite@5.4.11(@types/node@22.9.0)))(svelte@5.2.2)(vite@5.4.11(@types/node@22.9.0)))
       '@tolgee/svelte':
         specifier: ^5.31.4
-        version: 5.31.4(svelte@5.2.2)
+        version: 5.31.5(svelte@5.2.2)
       '@vvo/tzdb':
         specifier: ^6.149.0
         version: 6.149.0
@@ -809,16 +809,16 @@ packages:
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20'
 
-  '@tolgee/core@5.31.4':
-    resolution: {integrity: sha512-hZxw/TdJixqD7pfIaisPQwKN9Mhk/6Os03kJjN2hwwBOqsijS61nxB41DyhmFbb7SXIHtrVDmUl3wKuh/XWysA==}
+  '@tolgee/core@5.31.5':
+    resolution: {integrity: sha512-op8Gt1FOKVLhL6gqLMCSpJxo6/PDDTn/h86HrI0Dwo8wbT5sSl4XVM3T/CoGvKmpl3+vXZKldmmKYrbuxzO1kw==}
 
-  '@tolgee/svelte@5.31.4':
-    resolution: {integrity: sha512-U2graVOIGTrMVZA4ZZmqCsNlx0BThfyh9+lhg9HFRS7YFentAZu0VNGfmwfXKkJ2+7Fshdw8b6MZwYhCJOJsmA==}
+  '@tolgee/svelte@5.31.5':
+    resolution: {integrity: sha512-CgOEeB6AQT6T7Efc57x66EKVkvA5tVPBIQReEh/bTC0fblr/iYdQpplqC9oPgoWDsmkEIHanAPJgZfLjf7Agqg==}
     peerDependencies:
       svelte: ^4.0.0 || ^5.0.0
 
-  '@tolgee/web@5.31.4':
-    resolution: {integrity: sha512-1FCoKIvAeQqPOc/vKkouNapdMKa1Dn80H2Rj6v/rLL2XRp+YFLqCRa1ItxSSJ+jdpEIGwb0hy3XmnbCnTlYlMQ==}
+  '@tolgee/web@5.31.5':
+    resolution: {integrity: sha512-ZJy9HGbbyNyPpuZkGjd65fvNqW0YI0DN4ARwhvAfKpQC4UIjceEOzZgZg599qAd/6ueNyp69LjvRftn/5FtOCw==}
 
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
@@ -2717,16 +2717,16 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.15
 
-  '@tolgee/core@5.31.4': {}
+  '@tolgee/core@5.31.5': {}
 
-  '@tolgee/svelte@5.31.4(svelte@5.2.2)':
+  '@tolgee/svelte@5.31.5(svelte@5.2.2)':
     dependencies:
-      '@tolgee/web': 5.31.4
+      '@tolgee/web': 5.31.5
       svelte: 5.2.2
 
-  '@tolgee/web@5.31.4':
+  '@tolgee/web@5.31.5':
     dependencies:
-      '@tolgee/core': 5.31.4
+      '@tolgee/core': 5.31.5
 
   '@types/cookie@0.6.0': {}
 
