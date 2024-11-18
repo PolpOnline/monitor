@@ -69,5 +69,5 @@
 		"luxon": "^3.5.0",
 		"svelte-device-info": "^1.0.6"
 	},
-	"packageManager": "pnpm@latest"
+	"packageManager": "pnpm@9.13.2"
 }
