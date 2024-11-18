@@ -79,7 +79,7 @@
 					tooltipOpens[i] = false;
 				}}
 				role="button"
-				tabindex={-1}
+				tabindex="-1"
 			>
 				<Tooltip.Trigger
 					class="h-full w-full cursor-default"
