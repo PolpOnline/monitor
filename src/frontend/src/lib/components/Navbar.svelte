@@ -1,6 +1,5 @@
 <script lang="ts">
 	import PhHeartbeat from '~icons/ph/heartbeat';
-	import { Button } from '$lib/components/ui/button';
 	import LucideMoon from '~icons/lucide/moon';
 	import LucideSun from '~icons/lucide/sun';
 	import LucideLogIn from '~icons/lucide/log-in';
@@ -19,6 +18,7 @@
 	import { toast } from 'svelte-sonner';
 	import { getTranslate, T } from '@tolgee/svelte';
 	import DropdownMenuLinkItem from '$components/DropdownMenuLinkItem.svelte';
+	import { buttonVariants } from '$lib/components/ui/button/index.js';
 
 	const { t } = getTranslate();
 
@@ -43,10 +43,8 @@
 	</div>
 	<div class="mr-3 flex items-center gap-1 justify-self-end">
 		<DropdownMenu.Root>
-			<DropdownMenu.Trigger>
-				<Button size="icon" aria-label="Navbar Menu">
-					<LucideUser />
-				</Button>
+			<DropdownMenu.Trigger class={buttonVariants({ size: 'icon' })} aria-label="Navbar Menu">
+				<LucideUser />
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
 				{#if loggedInEmail}
