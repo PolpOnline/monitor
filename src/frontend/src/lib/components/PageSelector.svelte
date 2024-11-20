@@ -32,7 +32,7 @@
 	const { class: className }: { class?: ClassValue } = $props();
 </script>
 
-<div class={cn(className, 'flex items-center justify-between')}>
+<div class={cn(className, 'mb-3 flex items-center justify-between')}>
 	<Button
 		variant="outline"
 		size="icon"

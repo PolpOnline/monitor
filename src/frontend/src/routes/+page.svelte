@@ -26,7 +26,7 @@
 
 <main>
 	<div class="mx-4" data-vaul-drawer-wrapper>
-		<PageSelector class="mb-3" />
+		<PageSelector />
 
 		<div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
 			{#each data.systems as system (system.id)}
