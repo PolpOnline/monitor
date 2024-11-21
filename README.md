@@ -7,7 +7,7 @@ Simple cronjob monitoring tool for your servers
 ## Installation and usage
 
 Use [Nixpacks](https://nixpacks.com/docs/getting-started)
-to build the frontend and backend images and run them with Docker
+to build the frontend and backend images and run them with Docker.
 
 Note that the project requires configuration in `.env` files,
 see the example files in the `src/backend` and `src/frontend` directories.
