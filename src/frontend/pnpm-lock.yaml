@@ -50,7 +50,7 @@ importers:
         version: 1.2.1
       '@internationalized/date':
         specifier: ^3.5.6
-        version: 3.5.6
+        version: 3.6.0
       '@sveltejs/kit':
         specifier: ^2.8.1
         version: 2.8.1(@sveltejs/vite-plugin-svelte@4.0.1(svelte@5.2.5)(vite@5.4.11(@types/node@22.9.1)))(svelte@5.2.5)(vite@5.4.11(@types/node@22.9.1))
@@ -586,8 +586,8 @@ packages:
   '@iconify/utils@2.1.33':
     resolution: {integrity: sha512-jP9h6v/g0BIZx0p7XGJJVtkVnydtbgTgt9mVNcGDYwaa7UhdHdI9dvoq+gKj9sijMSJKxUPEG2JyjsgXjxL7Kw==}
 
-  '@internationalized/date@3.5.6':
-    resolution: {integrity: sha512-jLxQjefH9VI5P9UQuqB6qNKnvFt1Ky1TPIzHGsIlCi7sZZoMR8SdYbBGRvM0y+Jtb+ez4ieBzmiAUcpmPYpyOw==}
+  '@internationalized/date@3.6.0':
+    resolution: {integrity: sha512-+z6ti+CcJnRlLHok/emGEsWQhe7kfSmEW+/6qCzvKY67YPh7YOBfvc7+/+NXq+zJlbArg30tYpqLjNgcAYv2YQ==}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -2509,7 +2509,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@internationalized/date@3.5.6':
+  '@internationalized/date@3.6.0':
     dependencies:
       '@swc/helpers': 0.5.15
 
@@ -2941,7 +2941,7 @@ snapshots:
     dependencies:
       '@floating-ui/core': 1.6.8
       '@floating-ui/dom': 1.6.12
-      '@internationalized/date': 3.5.6
+      '@internationalized/date': 3.6.0
       esm-env: 1.1.4
       runed: 0.15.3(svelte@5.2.5)
       svelte: 5.2.5
