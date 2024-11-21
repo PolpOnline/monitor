@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        WITH updated AS (\n            UPDATE system\n            SET down_sent_email = false\n            WHERE id = $1\n        )\n        INSERT INTO ping (system_id) VALUES ($1)\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "bc1e9e839086dfab0910a828053b10f69ad99797e30db92e44893c48b8cc53dd"
+}

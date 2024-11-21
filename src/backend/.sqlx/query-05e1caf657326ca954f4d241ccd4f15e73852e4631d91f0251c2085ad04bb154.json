@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        UPDATE system SET name = ($1) WHERE id = $2  \n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "05e1caf657326ca954f4d241ccd4f15e73852e4631d91f0251c2085ad04bb154"
+}

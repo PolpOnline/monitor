@@ -30,8 +30,6 @@ jobs:
 
       - name: Build and push Docker images
         uses: iloveitaly/github-action-nixpacks@main
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         with:
           context: './src/backend'
           push: true

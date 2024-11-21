@@ -1,0 +1,68 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT s.id AS system_id,\n               s.name AS system_name,\n               s.starts_at AS system_starts_at,\n               s.down_after,\n               u.email AS user_email,\n               u.timezone AS user_timezone,\n               u.language AS user_language,\n               s.frequency,\n               latest_ping.timestamp\n        FROM system s\n            JOIN \"user\" u ON s.user_id = u.id\n        LEFT JOIN LATERAL (\n            SELECT p.timestamp\n            FROM ping p\n            WHERE p.system_id = s.id\n            ORDER BY p.timestamp DESC\n            LIMIT 1\n        ) latest_ping ON TRUE\n        WHERE (NOW() - latest_ping.timestamp) > s.down_after\n          AND s.deleted = FALSE\n          AND s.down_sent_email = FALSE;\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "system_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "system_name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "system_starts_at",
+        "type_info": "Timestamp"
+      },
+      {
+        "ordinal": 3,
+        "name": "down_after",
+        "type_info": "Interval"
+      },
+      {
+        "ordinal": 4,
+        "name": "user_email",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 5,
+        "name": "user_timezone",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 6,
+        "name": "user_language",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 7,
+        "name": "frequency",
+        "type_info": "Interval"
+      },
+      {
+        "ordinal": 8,
+        "name": "timestamp",
+        "type_info": "Timestamp"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "546f4d2a985eae3ef242dca976a0d7f0643d4239cb5eea1b079c3d16ff2feff1"
+}

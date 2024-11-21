@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        UPDATE system SET deleted = true WHERE id = $1  \n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "8fd797b7ef2e8a73abb7652fe6b7f1c28af4c3dbe724c27e77ac4fb1131c55a9"
+}
