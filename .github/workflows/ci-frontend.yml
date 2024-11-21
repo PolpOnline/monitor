@@ -34,6 +34,7 @@ jobs:
           context: './src/frontend'
           push: true
           cache: true
+          cache_tag: ${{ env.IMAGE_NAME }}:latest
           tags: |
             ${{ env.IMAGE_NAME }}:id-${{ env.DATE_STAMP }}
             ${{ env.IMAGE_NAME }}:latest
