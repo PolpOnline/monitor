@@ -1,6 +1,12 @@
 name: Build & Publish Frontend
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'src/frontend/**'
+  pull_request:
+    paths:
+      - 'src/frontend/**'
 
 jobs:
   build:

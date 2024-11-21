@@ -1,6 +1,13 @@
 name: Build & Publish Backend
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'src/backend/**'
+  pull_request:
+    paths:
+      - 'src/backend/**'
+
 
 jobs:
   build:
@@ -30,6 +37,8 @@ jobs:
 
       - name: Build and push Docker images
         uses: iloveitaly/github-action-nixpacks@main
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         with:
           context: './src/backend'
           push: true
