@@ -1,8 +1,8 @@
 <div align="center">
   <h1>Monitor</h1>
-</div>
 
-Simple cronjob monitoring tool for your servers
+  Simple cronjob monitoring tool for your servers
+</div>
 
 ## Installation and usage
 
