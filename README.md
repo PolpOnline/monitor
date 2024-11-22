@@ -63,7 +63,6 @@ fn main() {
 
 Then run the project with cargo run and copy the cookie key to the .env file in the backend directory.
 
-
 Cd into the both frontend and back end directories and run the following commands:
 ```bash
 cd src/frontend
