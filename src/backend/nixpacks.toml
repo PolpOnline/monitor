@@ -6,6 +6,4 @@ nixPkgs = ['mold']
 cmds = ['mkdir -p bin', 'RUSTFLAGS="-C link-arg=-fuse-ld=mold" cargo build --release', 'cp target/release/monitor bin/']
 
 [start]
-runImage = 'debian:bullseye-slim'
-onlyIncludeFiles = ['./bin/monitor', './migrations/**']
 cmd = './bin/monitor'
