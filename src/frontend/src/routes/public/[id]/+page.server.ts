@@ -13,9 +13,15 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 				'Content-Type': 'application/json'
 			}
 		}
-	).then((res) => res.json() as Promise<GetPublicResponse>);
+	);
+
+	if (!res.ok) {
+		return new Response('Failed to fetch', { status: res.status });
+	}
+
+	const data = (await res.json()) as GetPublicResponse;
 
 	return {
-		system: res.system
+		system: data.system
 	};
 };

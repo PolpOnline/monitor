@@ -41,25 +41,24 @@ import { zod } from 'sveltekit-superforms/adapters';
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	const page = Number(url.searchParams.get('page')) || 0;
 
-	const response = await getSystemsList(fetch, page);
-
-	return {
-		systems: response.systems as SystemData[],
-		form: await superValidate(zod(formSchema))
-	};
-};
-
-async function getSystemsList(
-	fetch: WindowOrWorkerGlobalScope['fetch'],
-	page: number
-): Promise<ListSystemsResponse> {
-	return fetch(`${API_URL}/list_systems?list_size=${LIST_SIZE}&page=${page}`, {
+	const res = await fetch(`${API_URL}/list_systems?list_size=${LIST_SIZE}&page=${page}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
 		}
-	}).then((res) => res.json() as Promise<ListSystemsResponse>);
-}
+	});
+
+	if (!res.ok) {
+		return new Response('Failed to fetch', { status: res.status });
+	}
+
+	const data = (await res.json()) as ListSystemsResponse;
+
+	return {
+		systems: data.systems as SystemData[],
+		form: await superValidate(zod(formSchema))
+	};
+};
 
 // noinspection JSUnusedGlobalSymbols
 export const actions: Actions = {
