@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 jobs:
   backend:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -39,6 +40,7 @@ jobs:
             ${{ env.IMAGE_NAME }}:id-${{ env.DATE_STAMP }}
             ${{ env.IMAGE_NAME }}:latest
   frontend:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     permissions:
       contents: read
