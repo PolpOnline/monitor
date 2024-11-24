@@ -61,7 +61,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.loginStatus = event.cookies.get('id') ? 'logged_in' : ('logged_out' as LoginStatus);
 
 	if (requestedPath === '/login' || requestedPath.startsWith('/public/')) {
-		return await resolve(event, resolveOptions);
+		return resolve(event, resolveOptions);
 	}
 
 	if (event.locals.loginStatus === 'logged_out') {
@@ -74,5 +74,5 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// Set the login status in the "locals" object, so we can access it in the page component
 	event.locals.email = event.cookies.get('user_email');
 
-	return await resolve(event, resolveOptions);
+	return resolve(event, resolveOptions);
 };
