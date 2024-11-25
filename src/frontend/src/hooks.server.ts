@@ -58,7 +58,9 @@ export const resolveOptions: ResolveOptions = {
 export const handle: Handle = async ({ event, resolve }) => {
 	const requestedPath = event.url.pathname;
 	// Auth check
-	event.locals.loginStatus = event.cookies.get('id') ? 'logged_in' : ('logged_out' as LoginStatus);
+	event.locals.loginStatus = event.cookies.get('monitor_id')
+		? 'logged_in'
+		: ('logged_out' as LoginStatus);
 
 	if (requestedPath === '/login' || requestedPath.startsWith('/public/')) {
 		return resolve(event, resolveOptions);

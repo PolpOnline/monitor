@@ -61,7 +61,7 @@ export const actions: Actions = {
 			});
 		}
 
-		event.cookies.set('id', '', {
+		event.cookies.set('monitor_id', '', {
 			sameSite: 'strict',
 			path: '/',
 			maxAge: 0,
