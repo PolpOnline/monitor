@@ -14,7 +14,10 @@ use tower_http::{
 };
 use tower_sessions::cookie::Key;
 use tower_sessions_redis_store::{
-    fred::prelude::{ClientLike, RedisConfig as RedisFredConfig, RedisPool as RedisFredPool},
+    fred::{
+        prelude::{ClientLike, RedisConfig as RedisFredConfig, RedisPool as RedisFredPool},
+        types::ReconnectPolicy,
+    },
     RedisStore,
 };
 use tracing::info;
@@ -167,7 +170,7 @@ impl App {
 
         let config = RedisFredConfig::from_url(&redis_url)?;
 
-        let pool = RedisFredPool::new(config, None, None, None, 6)?;
+        let pool = RedisFredPool::new(config, None, None, Some(ReconnectPolicy::default()), 6)?;
 
         pool.init().await?;
 
