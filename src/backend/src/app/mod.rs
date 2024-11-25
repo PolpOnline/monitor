@@ -72,6 +72,7 @@ impl App {
         let key = parse_cookie_key(key);
 
         let session_layer = SessionManagerLayer::new(session_store)
+            .with_name("monitor_id")
             .with_secure(true)
             .with_expiry(Expiry::OnInactivity(
                 tower_sessions::cookie::time::Duration::days(7),
