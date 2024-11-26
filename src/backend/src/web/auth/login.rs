@@ -40,7 +40,7 @@ pub enum AuthError {
 }
 
 #[utoipa::path(
-    get,
+    post,
     path = "/login",
     responses(
         (status = CREATED, description = "User was created"),
