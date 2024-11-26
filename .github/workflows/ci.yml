@@ -30,7 +30,7 @@ jobs:
         run: echo "DATE_STAMP=$(date +%s)" > "$GITHUB_ENV"
 
       - name: Build and push Docker images
-        uses: PolpOnline/github-action-nixpacks@main
+        uses: iloveitaly/github-action-nixpacks@main
         with:
           context: './src/backend'
           push: true
@@ -65,7 +65,7 @@ jobs:
         run: echo "IMAGE_NAME=ghcr.io/$(echo "${{ github.repository }}-frontend" | tr '[:upper:]' '[:lower:]')" > "$GITHUB_ENV"
 
       - name: Build and push Docker images
-        uses: PolpOnline/github-action-nixpacks@main
+        uses: iloveitaly/github-action-nixpacks@main
         with:
           context: './src/frontend'
           push: true
