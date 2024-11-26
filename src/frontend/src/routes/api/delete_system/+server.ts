@@ -1,16 +1,12 @@
-import { API_URL } from '$lib/api/api';
-import type { DeleteSystemRequest } from '$lib/bindings';
+import { client } from '$lib/api/api';
+import type { components } from '$lib/api/schema';
+
+export type DeleteSystemRequest = components['schemas']['DeleteSystemRequest'];
 
 export async function DELETE({ request, fetch }) {
 	const { id } = (await request.json()) as DeleteSystemRequest;
 
-	const res = await fetch(`${API_URL}/delete_system`, {
-		method: 'DELETE',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ id } as DeleteSystemRequest)
-	});
+	const res = await client.DELETE('/delete_system', { body: { id }, fetch });
 
-	return new Response(await res.text(), { status: res.status });
+	return new Response('', { status: res.response.status });
 }

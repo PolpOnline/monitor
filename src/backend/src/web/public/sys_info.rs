@@ -2,22 +2,25 @@ use axum::{response::IntoResponse, Json};
 use serde::Serialize;
 use sysinfo::System;
 use tokio::time::sleep;
+use utoipa::ToSchema;
 
-#[derive(Serialize)]
+use crate::app::MONITORING_TAG;
+
+#[derive(Serialize, ToSchema)]
 pub struct MemInfo {
     total: String,
     free: String,
     used: String,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct SwapInfo {
     total: String,
     free: String,
     used: String,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct CpuInfo {
     usage: f32,
     name: String,
@@ -26,7 +29,7 @@ pub struct CpuInfo {
     frequency: String,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct BasicSystemInfo {
     system_name: String,
     system_kernel_version: String,
@@ -34,7 +37,7 @@ pub struct BasicSystemInfo {
     system_host_name: String,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct SystemInfoResponse {
     cpu_info: CpuInfo,
     memory: MemInfo,
@@ -42,6 +45,15 @@ pub struct SystemInfoResponse {
     basic: BasicSystemInfo,
 }
 
+#[utoipa::path(
+    get,
+    path = "/sys_info",
+    responses(
+        (status = OK, description = "System information was retrieved successfully", body = SystemInfoResponse),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+    ),
+    tag = MONITORING_TAG
+)]
 pub async fn sys_info() -> impl IntoResponse {
     let mut s = System::new_all();
 

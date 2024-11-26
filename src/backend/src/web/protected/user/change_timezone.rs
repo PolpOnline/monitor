@@ -5,12 +5,11 @@ use axum_thiserror::ErrorStatus;
 use http::StatusCode;
 use serde::Deserialize;
 use thiserror::Error;
-use ts_rs::TS;
+use utoipa::ToSchema;
 
 use crate::users::AuthSession;
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export)]
+#[derive(Debug, Deserialize, ToSchema)]
 pub struct ChangeTimezoneRequest {
     timezone: String,
 }
@@ -28,6 +27,21 @@ pub enum ChangeTimezoneError {
     FailedToUpdateTimezone,
 }
 
+#[utoipa::path(
+    patch,
+    path = "/change_timezone",
+    request_body = ChangeTimezoneRequest,
+    responses(
+        (status = OK, description = "Timezone was changed successfully"),
+        (status = UNAUTHORIZED, description = "User is not logged in"),
+        (status = BAD_REQUEST, description = "Timezone is not valid"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = "User"
+)]
 pub async fn change_timezone(
     auth_session: AuthSession,
     Json(request): Json<ChangeTimezoneRequest>,

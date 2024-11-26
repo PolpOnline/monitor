@@ -18,10 +18,10 @@
 	import { invalidateAll } from '$app/navigation';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import LucideLink from '~icons/lucide/link';
-	import { type ChangeVisibilityRequest, type SystemData, type Visibility } from '$lib/bindings';
 	import { page } from '$app/stores';
 	import { toast } from 'svelte-sonner';
 	import { getTranslate, T } from '@tolgee/svelte';
+	import type { components } from '$lib/api/schema';
 
 	const { t } = getTranslate();
 
@@ -30,7 +30,7 @@
 	// noinspection ReservedWordAsName
 	export { className as class };
 
-	const { data }: { data: SystemData } = $props();
+	const { data }: { data: components['schemas']['SystemData'] } = $props();
 
 	const isPublic = $derived(
 		$targetSystemData ? $targetSystemData.visibility === 'public' : undefined
@@ -38,9 +38,12 @@
 
 	let isVisibilityChanging = $state(false);
 
-	async function changeVisibility(newVisibility: Visibility, id: string) {
+	async function changeVisibility(newVisibility: components['schemas']['Visibility'], id: string) {
 		isVisibilityChanging = true;
-		const request = { id, visibility: newVisibility } as ChangeVisibilityRequest;
+		const request = {
+			id,
+			visibility: newVisibility
+		} as components['schemas']['ChangeVisibilityRequest'];
 
 		const res = await fetch(`/api/change_visibility`, {
 			method: 'PATCH',

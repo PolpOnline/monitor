@@ -1,11 +1,3 @@
-#[config]
-#default_to_workspace = false
-
-[tasks.generate-ts]
-env = { "TS_RS_EXPORT_DIR" = "../frontend/src/lib/bindings" }
-command = "cargo"
-args = ["test"]
-
 [tasks.pull-translations]
 command = "tolgee"
 args = ["pull"]

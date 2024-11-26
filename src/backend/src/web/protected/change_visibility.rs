@@ -1,18 +1,31 @@
 use axum::{response::IntoResponse, Json};
 use http::StatusCode;
 use serde::Deserialize;
-use ts_rs::TS;
+use utoipa::ToSchema;
 use uuid::Uuid;
 
-use crate::{users::AuthSession, web::protected::list_systems::Visibility};
+use crate::{app::SYSTEM_TAG, users::AuthSession, web::protected::list_systems::Visibility};
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export)]
+#[derive(Debug, Deserialize, ToSchema)]
 pub struct ChangeVisibilityRequest {
     id: Uuid,
     visibility: Visibility,
 }
 
+#[utoipa::path(
+    patch,
+    path = "/change_visibility",
+    request_body = ChangeVisibilityRequest,
+    responses(
+        (status = OK, description = "Visibility was changed successfully"),
+        (status = UNAUTHORIZED, description = "User is not logged in"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = SYSTEM_TAG
+)]
 pub async fn change_visibility(
     auth_session: AuthSession,
     Json(request): Json<ChangeVisibilityRequest>,

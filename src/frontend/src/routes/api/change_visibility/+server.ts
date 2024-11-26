@@ -1,16 +1,15 @@
-import { API_URL } from '$lib/api/api';
-import type { ChangeVisibilityRequest } from '$lib/bindings';
+import { client } from '$lib/api/api';
+import type { components } from '$lib/api/schema';
+
+export type ChangeVisibilityRequest = components['schemas']['ChangeVisibilityRequest'];
 
 export async function PATCH({ request, fetch }) {
 	const { id, visibility } = (await request.json()) as ChangeVisibilityRequest;
 
-	const res = await fetch(`${API_URL}/change_visibility`, {
-		method: 'PATCH',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ id, visibility } as ChangeVisibilityRequest)
+	const res = await client.PATCH('/change_visibility', {
+		body: { id, visibility },
+		fetch
 	});
 
-	return new Response(await res.text(), { status: res.status });
+	return new Response('', { status: res.response.status });
 }

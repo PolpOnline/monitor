@@ -1,16 +1,15 @@
-import { API_URL } from '$lib/api/api';
-import type { EditSystemNameRequest } from '$lib/bindings';
+import { client } from '$lib/api/api';
+import type { components } from '$lib/api/schema';
+
+export type EditSystemNameRequest = components['schemas']['EditSystemNameRequest'];
 
 export async function PATCH({ request, fetch }) {
 	const { id, name } = (await request.json()) as EditSystemNameRequest;
 
-	const res = await fetch(`${API_URL}/edit_system_name`, {
-		method: 'PATCH',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ id, name } as EditSystemNameRequest)
+	const res = await client.PATCH('/edit_system_name', {
+		body: { id, name },
+		fetch
 	});
 
-	return new Response(await res.text(), { status: res.status });
+	return new Response('', { status: res.response.status });
 }

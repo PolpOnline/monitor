@@ -3,27 +3,12 @@ mod change_password;
 mod change_timezone;
 mod get_current_settings;
 
-use axum::{
-    routing::{get, patch},
-    Router,
-};
+use utoipa_axum::{router::OpenApiRouter, routes};
 
-pub fn router() -> Router<()> {
-    Router::new()
-        .route(
-            "/user/change_password",
-            patch(change_password::change_password),
-        )
-        .route(
-            "/user/change_timezone",
-            patch(change_timezone::change_timezone),
-        )
-        .route(
-            "/user/get_current_settings",
-            get(get_current_settings::get_current_settings),
-        )
-        .route(
-            "/user/change_language",
-            patch(change_language::change_language),
-        )
+pub fn router() -> OpenApiRouter {
+    OpenApiRouter::new()
+        .routes(routes![change_password::change_password])
+        .routes(routes![change_timezone::change_timezone])
+        .routes(routes![get_current_settings::get_current_settings])
+        .routes(routes![change_language::change_language])
 }

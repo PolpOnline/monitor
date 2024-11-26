@@ -1,13 +1,10 @@
 mod login;
 mod logout;
 
-use axum::{
-    routing::{get, post},
-    Router,
-};
+use utoipa_axum::{router::OpenApiRouter, routes};
 
-pub fn router() -> Router<()> {
-    Router::new()
-        .route("/login", post(login::login))
-        .route("/logout", get(logout::logout))
+pub fn router() -> OpenApiRouter {
+    OpenApiRouter::new()
+        .routes(routes![login::login])
+        .routes(routes![logout::logout])
 }

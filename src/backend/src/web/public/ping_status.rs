@@ -3,8 +3,20 @@ use http::StatusCode;
 use tracing::info;
 use uuid::Uuid;
 
-use crate::users::AuthSession;
+use crate::{app::DATA_TAG, users::AuthSession};
 
+#[utoipa::path(
+    post,
+    path = "/ping_status/{id}",
+    responses(
+        (status = OK, description = "Ping was successful"),
+        (status = NOT_FOUND, description = "System not found"),
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = DATA_TAG
+)]
 pub async fn ping_status(Path(id): Path<Uuid>, auth_session: AuthSession) -> impl IntoResponse {
     info!("System {} just pinged!", id);
 

@@ -1,7 +1,4 @@
-use axum::{
-    routing::{delete, get, patch, post},
-    Router,
-};
+use utoipa_axum::{router::OpenApiRouter, routes};
 
 pub mod add_system;
 pub mod change_visibility;
@@ -10,18 +7,12 @@ pub mod edit_system_name;
 pub mod list_systems;
 pub mod user;
 
-pub fn router() -> Router<()> {
-    Router::new()
-        .merge(user::router())
-        .route("/add_system", post(add_system::add_system))
-        .route("/delete_system", delete(delete_system::delete_system))
-        .route("/list_systems", get(list_systems::list_systems))
-        .route(
-            "/edit_system_name",
-            patch(edit_system_name::edit_system_name),
-        )
-        .route(
-            "/change_visibility",
-            patch(change_visibility::change_visibility),
-        )
+pub fn router() -> OpenApiRouter {
+    OpenApiRouter::new()
+        .nest("/user", user::router())
+        .routes(routes![add_system::add_system])
+        .routes(routes![delete_system::delete_system])
+        .routes(routes![list_systems::list_systems])
+        .routes(routes![edit_system_name::edit_system_name])
+        .routes(routes![change_visibility::change_visibility])
 }

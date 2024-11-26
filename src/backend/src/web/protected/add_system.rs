@@ -3,30 +3,42 @@ use chrono::{DateTime, Duration, Utc};
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::types::PgInterval;
-use ts_rs::TS;
+use utoipa::ToSchema;
 use uuid::Uuid;
 
-use crate::{users::AuthSession, web::protected::list_systems::Visibility};
+use crate::{app::SYSTEM_TAG, users::AuthSession, web::protected::list_systems::Visibility};
 
-#[derive(Debug, Deserialize, Clone, TS)]
-#[ts(export)]
+#[derive(Debug, Deserialize, Clone, ToSchema)]
 pub struct AddSystemRequest {
     name: String,
     /// Frequency in minutes
     frequency: i64,
-    #[ts(type = "string")]
     starts_at: DateTime<Utc>,
     /// Time in minutes after which the user will get emailed
     down_after: i64,
     visibility: Visibility,
 }
 
-#[derive(Debug, Serialize, Clone, TS)]
-#[ts(export)]
+#[derive(Debug, Serialize, Clone, ToSchema)]
 pub struct AddSystemResponse {
     id: Uuid,
 }
 
+#[utoipa::path(
+    post,
+    path = "/add_system",
+    request_body = AddSystemRequest,
+    responses(
+        (status = CREATED, description = "System was created successfully", body = AddSystemResponse),
+        (status = BAD_REQUEST, description = "Bad request"),
+        (status = UNAUTHORIZED, description = "User is not logged in"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = SYSTEM_TAG
+)]
 pub async fn add_system(
     auth_session: AuthSession,
     Json(request): Json<AddSystemRequest>,
@@ -71,5 +83,5 @@ pub async fn add_system(
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    Json(AddSystemResponse { id }).into_response()
+    (StatusCode::CREATED, Json(AddSystemResponse { id })).into_response()
 }

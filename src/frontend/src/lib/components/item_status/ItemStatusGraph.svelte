@@ -2,16 +2,19 @@
 	import humanizeDuration from 'humanize-duration';
 	// noinspection ES6UnusedImports
 	import * as Tooltip from '$components/ui/tooltip';
-	import type { SystemData } from '$lib/bindings';
 	import HeroiconsXMark20Solid from '~icons/heroicons/x-mark-20-solid';
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
 	import { DateTime } from 'luxon';
 	import { colorMap, colorMapBorder, colorMapText } from './index';
 	import { T } from '@tolgee/svelte';
 	import { language } from '$lib/components/stores/language.store';
+	import type { components } from '$lib/api/schema';
 
-	let { data, now, currentPage }: { data: SystemData; now: DateTime; currentPage: number } =
-		$props();
+	let {
+		data,
+		now,
+		currentPage
+	}: { data: components['schemas']['SystemData']; now: DateTime; currentPage: number } = $props();
 
 	let tooltipOpens: boolean[] = $state(new Array(data.instants.length).fill(false));
 

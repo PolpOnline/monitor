@@ -4,6 +4,7 @@ use password_auth::verify_password;
 use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, PgPool};
 use tokio::task;
+use utoipa::ToSchema;
 
 #[derive(Clone, Serialize, Deserialize, FromRow)]
 pub struct User {
@@ -43,7 +44,7 @@ impl AuthUser for User {
 
 // This allows us to extract the authentication fields from forms. We use this
 // to authenticate requests with the backendOld.
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, ToSchema)]
 pub struct Credentials {
     pub email: String,
     pub password: String,

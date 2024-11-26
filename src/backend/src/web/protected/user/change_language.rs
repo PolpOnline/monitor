@@ -4,12 +4,11 @@ use http::StatusCode;
 use rust_i18n::available_locales;
 use serde::Deserialize;
 use thiserror::Error;
-use ts_rs::TS;
+use utoipa::ToSchema;
 
 use crate::users::AuthSession;
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export)]
+#[derive(Debug, Deserialize, ToSchema)]
 pub struct ChangeLanguageRequest {
     language: String,
 }
@@ -27,6 +26,21 @@ pub enum ChangeLanguageError {
     FailedToUpdateLanguage,
 }
 
+#[utoipa::path(
+    patch,
+    path = "/change_language",
+    request_body = ChangeLanguageRequest,
+    responses(
+        (status = OK, description = "Language was changed successfully"),
+        (status = UNAUTHORIZED, description = "User is not logged in"),
+        (status = BAD_REQUEST, description = "Language is not valid"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = "User"
+)]
 pub async fn change_language(
     auth_session: AuthSession,
     Json(request): Json<ChangeLanguageRequest>,

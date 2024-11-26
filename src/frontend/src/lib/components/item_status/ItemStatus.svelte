@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { Instant, SystemData } from '$lib/bindings';
 	import ItemStatusDropdown from './ItemStatusDropdown.svelte';
 	import { page } from '$app/stores';
 	import ItemStatusOperationalStatus from '$components/item_status/ItemStatusOperationalStatus.svelte';
@@ -7,23 +6,28 @@
 	import { invalidateAll } from '$app/navigation';
 	import { DateTime, Duration } from 'luxon';
 	import { onDestroy, onMount } from 'svelte';
+	import type { components } from '$lib/api/schema';
 
-	const { data, showDropdown = true }: { data: SystemData; showDropdown?: boolean } = $props();
+	const {
+		data,
+		showDropdown = true
+	}: { data: components['schemas']['SystemData']; showDropdown?: boolean } = $props();
 
 	const currentPage = $derived(Number($page.url.searchParams.get('page')) || 0);
 
 	let timeoutId: ReturnType<typeof setTimeout>;
 	let intervalId: ReturnType<typeof setInterval>;
 
-	function refresh(system: SystemData) {
+	function refresh(system: components['schemas']['SystemData']) {
 		return () => {
 			console.debug(`%cRefreshing "${system.name}"`, 'color: #00d5ff;');
 			invalidateAll();
 		};
 	}
 
-	function autoRefreshSystem(system: SystemData) {
-		const lastInstantRaw: Instant = system.instants[system.instants.length - 1];
+	function autoRefreshSystem(system: components['schemas']['SystemData']) {
+		const lastInstantRaw: components['schemas']['Instant'] =
+			system.instants[system.instants.length - 1];
 		// add 5 seconds to the last instant time to avoid refreshing too soon
 		const lastInstant = DateTime.fromISO(lastInstantRaw.expected_timestamp).plus(
 			Duration.fromObject({ second: 5 })
