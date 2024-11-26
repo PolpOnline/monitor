@@ -5,27 +5,31 @@ import { formSchema as changePasswordFormSchema } from './change_password/schema
 import { formSchema as changeTimezoneFormSchema } from './change_timezone/schema';
 import { formSchema as changeLanguageFormSchema } from './change_language/schema';
 import { zod } from 'sveltekit-superforms/adapters';
-import { API_URL } from '$lib/api/api';
-import type { GetCurrentSettingsResponse } from '$lib/bindings';
+import { API_URL, client } from '$lib/api/api';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	const currentSettings = await fetch(`${API_URL}/user/get_current_settings`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json'
-		}
-	}).then(async (res) => (await res.json()) as Promise<GetCurrentSettingsResponse>);
+	const {
+		data: currentSettings,
+		error,
+		response
+	} = await client.GET('/user/get_current_settings', {
+		fetch
+	});
+
+	if (error) {
+		return new Response(`Failed to fetch: ${error}`, { status: response.status });
+	}
 
 	return {
 		passwordForm: await superValidate(zod(changePasswordFormSchema)),
 		timezoneForm: await superValidate(zod(changeTimezoneFormSchema), {
 			defaults: {
-				timezone: currentSettings.timezone
+				timezone: currentSettings!.timezone
 			}
 		}),
 		languageForm: await superValidate(zod(changeLanguageFormSchema), {
 			defaults: {
-				language: currentSettings.language
+				language: currentSettings!.language
 			}
 		})
 	};

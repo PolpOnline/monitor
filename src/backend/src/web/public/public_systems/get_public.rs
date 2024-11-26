@@ -26,7 +26,7 @@ pub struct GetPublicResponse {
 
 #[utoipa::path(
     get,
-    path = "/public_systems/:id",
+    path = "/get_public/:id",
     params(GetPublicQuery),
     responses(
         (status = OK, description = "Public system was retrieved successfully", body = GetPublicResponse),

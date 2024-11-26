@@ -15,7 +15,7 @@ pub struct GetCurrentSettingsResponse {
     get,
     path = "/get_current_settings",
     responses(
-        (status = OK, description = "Current settings were retrieved successfully"),
+        (status = OK, description = "Current settings were retrieved successfully", body = GetCurrentSettingsResponse),
         (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
     ),
     security(

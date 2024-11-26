@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { SystemData } from '$lib/bindings';
 	import HeroiconsXMark20Solid from '~icons/heroicons/x-mark-20-solid';
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
 	import { slide, type SlideParams } from 'svelte/transition';
@@ -9,8 +8,15 @@
 	import { language } from '$lib/components/stores/language.store';
 	import { DateTime } from 'luxon';
 	import { colorMapText } from './index';
+	import type { components } from '$lib/api/schema';
 
-	const { data, now }: { data: SystemData; now: DateTime } = $props();
+	const {
+		data,
+		now
+	}: {
+		data: components['schemas']['SystemData'];
+		now: DateTime;
+	} = $props();
 
 	const transitionIn: SlideParams = { easing: cubicOut, duration: 300 };
 	const transitionOut: SlideParams = { easing: cubicIn, duration: 300 };
