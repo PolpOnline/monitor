@@ -46,7 +46,9 @@ impl AuthUser for User {
 // to authenticate requests with the backendOld.
 #[derive(Debug, Clone, Deserialize, ToSchema)]
 pub struct Credentials {
+    /// The email of the user
     pub email: String,
+    /// The password of the user
     pub password: String,
 }
 

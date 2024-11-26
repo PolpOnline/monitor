@@ -9,24 +9,29 @@ use utoipa::{IntoParams, ToSchema};
 use uuid::Uuid;
 
 use crate::{
+    app::PUBLIC_SYSTEM_TAG,
     users::AuthSession,
     web::protected::list_systems::{SystemData, SystemRecord, Visibility, LIMIT_SYSTEM_REQUEST},
 };
 
 #[derive(Debug, Deserialize, Clone, IntoParams)]
 pub struct GetPublicQuery {
+    /// The maximum number of instants to return
     pub list_size: i64,
+    /// The page number to return
     pub page: i64,
 }
 
 #[derive(Debug, Serialize, Clone, ToSchema)]
 pub struct GetPublicResponse {
+    /// The requested system's data
     pub system: SystemData,
 }
 
 #[utoipa::path(
     get,
     path = "/get_public/{id}",
+    description = "Retrieve info about a public system",
     params(GetPublicQuery),
     responses(
         (status = OK, description = "Public system was retrieved successfully", body = GetPublicResponse),
@@ -34,10 +39,7 @@ pub struct GetPublicResponse {
         (status = NOT_FOUND, description = "System not found"),
         (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
     ),
-    security(
-        ("session" = [])
-    ),
-    tag = "Public Systems"
+    tag = PUBLIC_SYSTEM_TAG
 )]
 pub async fn get_public(
     auth_session: AuthSession,

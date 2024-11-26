@@ -22,24 +22,35 @@ use crate::{
 
 #[derive(Debug, Serialize, Clone, ToSchema)]
 pub struct ListSystemsResponse {
+    /// The list of systems that the user has
     systems: Vec<SystemData>,
 }
 
 #[derive(Debug, Serialize, Clone, ToSchema)]
 pub struct SystemData {
+    /// The ID of the system
     id: Uuid,
+    /// The name of the system
     name: String,
+    /// The list of instants (containing states for each expected ping) for the
+    /// system
     instants: Vec<Instant>,
     /// Frequency in minutes
     frequency: u32,
+    /// The time at which the system starts pinging
     starts_at: DateTime<Utc>,
+    /// The visibility of the system
     visibility: Visibility,
 }
 
 #[derive(Debug, Serialize, Clone, ToSchema)]
 pub struct Instant {
+    /// The status of the system at this instant
     status: Status,
+    /// The actual timestamp of the ping
     timestamp: Option<DateTime<Utc>>,
+    /// The expected timestamp of the ping (calculated from the frequency and
+    /// the start time)
     expected_timestamp: DateTime<Utc>,
 }
 
@@ -86,7 +97,9 @@ pub struct PingRecord {
 
 #[derive(Debug, Deserialize, Clone, IntoParams)]
 pub struct ListSystemsQuery {
+    /// The page number to return
     pub page: i64,
+    /// The maximum number of instants to return
     pub list_size: i64,
 }
 

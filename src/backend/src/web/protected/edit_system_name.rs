@@ -8,14 +8,17 @@ use crate::{app::SYSTEM_TAG, users::AuthSession};
 
 #[derive(Debug, Deserialize, ToSchema)]
 pub struct EditSystemNameRequest {
-    name: String,
+    /// The ID of the system
     id: Uuid,
+    /// The new name of the system
+    name: String,
 }
 
 #[utoipa::path(
     patch,
     path = "/edit_system_name",
     request_body = EditSystemNameRequest,
+    description = "Edit the name of a system",
     responses(
         (status = OK, description = "System name was edited successfully"),
         (status = UNAUTHORIZED, description = "User is not logged in"),

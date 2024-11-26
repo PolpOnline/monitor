@@ -10,15 +10,16 @@ use crate::users::AuthSession;
 
 #[derive(Debug, Deserialize, ToSchema)]
 pub struct ChangeLanguageRequest {
+    /// The new language, as defined by the IETF language tag
     language: String,
 }
 
 #[derive(Error, Debug, ErrorStatus)]
 pub enum ChangeLanguageError {
-    #[error("User not logged in")]
+    #[error("User is not logged in")]
     #[status(StatusCode::UNAUTHORIZED)]
     UserNotLoggedIn,
-    #[error("Language isn't valid")]
+    #[error("Language is not valid")]
     #[status(StatusCode::BAD_REQUEST)]
     LanguageNotValid,
     #[error("Failed to update language")]
@@ -29,12 +30,13 @@ pub enum ChangeLanguageError {
 #[utoipa::path(
     patch,
     path = "/change_language",
+    description = "Change the language of the current user",
     request_body = ChangeLanguageRequest,
     responses(
         (status = OK, description = "Language was changed successfully"),
-        (status = UNAUTHORIZED, description = "User is not logged in"),
-        (status = BAD_REQUEST, description = "Language is not valid"),
-        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+        (status = UNAUTHORIZED, description = "User is not logged in", body = str, example = "User is not logged in"),
+        (status = BAD_REQUEST, description = "Language is not valid", body = str, example = "Language is not valid"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error", body = str, example = "Failed to update language")
     ),
     security(
         ("session" = [])

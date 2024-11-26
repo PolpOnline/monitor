@@ -1,32 +1,24 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
 use http::StatusCode;
-use serde::Serialize;
-use utoipa::ToSchema;
 
 use crate::{app::AUTH_TAG, users::AuthSession};
-
-#[derive(Debug, Serialize, ToSchema)]
-pub struct LogoutResponse {
-    pub status: String,
-}
 
 #[utoipa::path(
     get,
     path = "/logout",
+    description = "Logout the current user",
     responses(
         (status = OK, description = "User was logged out"),
         (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
     ),
     tag = AUTH_TAG
 )]
 pub async fn logout(mut auth_session: AuthSession) -> impl IntoResponse {
     match auth_session.logout().await {
-        Ok(_) => {
-            let res = LogoutResponse {
-                status: "success".to_string(),
-            };
-            Json(res).into_response()
-        }
+        Ok(_) => StatusCode::OK.into_response(),
         Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     }
 }

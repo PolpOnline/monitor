@@ -7,13 +7,17 @@ use crate::users::AuthSession;
 
 #[derive(Serialize, Debug, ToSchema)]
 pub struct GetCurrentSettingsResponse {
+    /// The current timezone of the user, as defined by the IANA Time Zone
+    /// Database
     pub timezone: String,
+    /// The current language of the user, as defined by the IETF language tag
     pub language: String,
 }
 
 #[utoipa::path(
     get,
     path = "/get_current_settings",
+    description = "Retrieves the current settings of the current user",
     responses(
         (status = OK, description = "Current settings were retrieved successfully", body = GetCurrentSettingsResponse),
         (status = INTERNAL_SERVER_ERROR, description = "Internal server error")

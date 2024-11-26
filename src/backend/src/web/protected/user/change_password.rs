@@ -11,7 +11,9 @@ use crate::users::{AuthSession, Credentials};
 
 #[derive(Debug, Deserialize, ToSchema)]
 pub struct ChangePasswordRequest {
+    /// The old password
     old_password: String,
+    /// The new password
     new_password: String,
 }
 
@@ -20,7 +22,7 @@ pub enum ChangePasswordError {
     #[error("Failed to generate hash")]
     #[status(StatusCode::INTERNAL_SERVER_ERROR)]
     FailedToGenerateHash,
-    #[error("User not logged in")]
+    #[error("User is not logged in")]
     #[status(StatusCode::UNAUTHORIZED)]
     UserNotLoggedIn,
     #[error("Old password is wrong")]
@@ -37,12 +39,13 @@ pub enum ChangePasswordError {
 #[utoipa::path(
     patch,
     path = "/change_password",
+    description = "Change the password of the current user",
     request_body = ChangePasswordRequest,
     responses(
         (status = OK, description = "Password was changed successfully"),
-        (status = UNAUTHORIZED, description = "User is not logged in"),
-        (status = FORBIDDEN, description = "Old password is wrong"),
-        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+        (status = UNAUTHORIZED, description = "User is not logged in", body = str, example = "User is not logged in"),
+        (status = FORBIDDEN, description = "Old password is wrong", body = str, example = "Old password is wrong"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error", body = str)
     ),
     security(
         ("session" = [])

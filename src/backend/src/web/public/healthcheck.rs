@@ -6,6 +6,7 @@ use crate::app::MONITORING_TAG;
 #[utoipa::path(
     get,
     path = "/healthcheck",
+    description = "Check if the server is running",
     responses(
         (status = OK, description = "Healthcheck was successful")
     ),

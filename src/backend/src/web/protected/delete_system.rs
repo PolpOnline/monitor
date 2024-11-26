@@ -8,12 +8,14 @@ use crate::{app::SYSTEM_TAG, users::AuthSession};
 
 #[derive(Debug, Deserialize, ToSchema)]
 pub struct DeleteSystemRequest {
+    /// The ID of the system to delete
     id: Uuid,
 }
 
 #[utoipa::path(
     delete,
     path = "/delete_system",
+    description = "Delete a system",
     request_body = DeleteSystemRequest,
     responses(
         (status = OK, description = "System was deleted successfully"),

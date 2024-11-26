@@ -8,12 +8,10 @@ use crate::{app::DATA_TAG, users::AuthSession};
 #[utoipa::path(
     post,
     path = "/ping_status/{id}",
+    description = "Ping this endpoint to update the status of the system",
     responses(
         (status = OK, description = "Ping was successful"),
         (status = NOT_FOUND, description = "System not found"),
-    ),
-    security(
-        ("session" = [])
     ),
     tag = DATA_TAG
 )]

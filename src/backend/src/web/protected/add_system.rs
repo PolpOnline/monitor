@@ -10,23 +10,28 @@ use crate::{app::SYSTEM_TAG, users::AuthSession, web::protected::list_systems::V
 
 #[derive(Debug, Deserialize, Clone, ToSchema)]
 pub struct AddSystemRequest {
+    /// The name of the system
     name: String,
-    /// Frequency in minutes
+    /// The frequency in minutes of the pings
     frequency: i64,
+    /// The time at which the system starts pinging
     starts_at: DateTime<Utc>,
     /// Time in minutes after which the user will get emailed
     down_after: i64,
+    /// The visibility of the system
     visibility: Visibility,
 }
 
 #[derive(Debug, Serialize, Clone, ToSchema)]
 pub struct AddSystemResponse {
+    /// The ID of the system that was created
     id: Uuid,
 }
 
 #[utoipa::path(
     post,
     path = "/add_system",
+    description = "Add a new system",
     request_body = AddSystemRequest,
     responses(
         (status = CREATED, description = "System was created successfully", body = AddSystemResponse),

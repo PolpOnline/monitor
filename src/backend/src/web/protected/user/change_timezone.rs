@@ -11,12 +11,13 @@ use crate::users::AuthSession;
 
 #[derive(Debug, Deserialize, ToSchema)]
 pub struct ChangeTimezoneRequest {
+    /// The new timezone, as defined by the IANA Time Zone Database
     timezone: String,
 }
 
 #[derive(Error, Debug, ErrorStatus)]
 pub enum ChangeTimezoneError {
-    #[error("User not logged in")]
+    #[error("User is not logged in")]
     #[status(StatusCode::UNAUTHORIZED)]
     UserNotLoggedIn,
     #[error("Timezone not valid")]
@@ -30,12 +31,13 @@ pub enum ChangeTimezoneError {
 #[utoipa::path(
     patch,
     path = "/change_timezone",
+    description = "Change the timezone of the current user",
     request_body = ChangeTimezoneRequest,
     responses(
         (status = OK, description = "Timezone was changed successfully"),
-        (status = UNAUTHORIZED, description = "User is not logged in"),
-        (status = BAD_REQUEST, description = "Timezone is not valid"),
-        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+        (status = UNAUTHORIZED, description = "User is not logged in", body = str, example = "User is not logged in"),
+        (status = BAD_REQUEST, description = "Timezone is not valid", body = str, example = "Timezone not valid"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error", body = str, example = "Failed to update timezone")
     ),
     security(
         ("session" = [])

@@ -8,13 +8,16 @@ use crate::{app::SYSTEM_TAG, users::AuthSession, web::protected::list_systems::V
 
 #[derive(Debug, Deserialize, ToSchema)]
 pub struct ChangeVisibilityRequest {
+    /// The ID of the system
     id: Uuid,
+    /// The new visibility of the system
     visibility: Visibility,
 }
 
 #[utoipa::path(
     patch,
     path = "/change_visibility",
+    description = "Change the visibility of a system",
     request_body = ChangeVisibilityRequest,
     responses(
         (status = OK, description = "Visibility was changed successfully"),
