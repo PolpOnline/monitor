@@ -17,11 +17,11 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 		fetch
 	});
 
-	if (error) {
+	if (error || !data || !data.system) {
 		return new Response(`Failed to fetch: ${error}`, { status: response.status });
 	}
 
 	return {
-		system: data!.system
+		system: data.system
 	};
 };

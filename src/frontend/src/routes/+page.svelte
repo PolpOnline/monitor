@@ -18,6 +18,9 @@
 	const inParams: FlyParams = { y: '100%', duration: 300, easing: cubicOut };
 	const outParams: FlyParams = { x: '100%', duration: 700, easing: cubicOut };
 	const animateParams: AnimationConfig = { delay: 0, duration: 300, easing: cubicOut };
+
+	const systems = data.systems!;
+	const form = data.form!;
 </script>
 
 <svelte:head>
@@ -29,12 +32,12 @@
 		<PageSelector />
 
 		<div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
-			{#each data.systems as system (system.id)}
+			{#each systems as system (system.id)}
 				<div
 					in:fly={inParams}
 					out:fly={outParams}
 					animate:flip={animateParams}
-					class:custom-col-width={data.systems.length % 2 === 1}
+					class:custom-col-width={systems.length % 2 === 1}
 					class="h-full"
 				>
 					<ItemStatus data={system} />
@@ -43,7 +46,7 @@
 		</div>
 	</div>
 
-	<AddSystem data={data.form} />
+	<AddSystem data={form} />
 
 	<DeleteSystemDialog />
 

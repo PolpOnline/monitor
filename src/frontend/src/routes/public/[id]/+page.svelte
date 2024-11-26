@@ -8,11 +8,13 @@
 
 	let { data }: { data: PageData } = $props();
 
-	title.set(data.system.name + ' status');
+	const system = data.system!;
+
+	title.set(system.name + ' status');
 </script>
 
 <div class="mx-4">
 	<PageSelector />
 
-	<ItemStatus data={data.system} showDropdown={false} />
+	<ItemStatus data={system} showDropdown={false} />
 </div>

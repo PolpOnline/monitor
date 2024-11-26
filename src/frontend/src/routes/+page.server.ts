@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 		fetch
 	});
 
-	if (error) {
+	if (error || !data || !data.systems) {
 		return new Response(`Failed to fetch: ${error}`, { status: response.status });
 	}
 
