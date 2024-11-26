@@ -1,7 +1,7 @@
 mod get_public;
 
-use axum::{routing::get, Router};
+use utoipa_axum::{router::OpenApiRouter, routes};
 
-pub fn router() -> Router<()> {
-    Router::new().route("/get_public/:id", get(get_public::get_public))
+pub fn router() -> OpenApiRouter {
+    OpenApiRouter::new().routes(routes![get_public::get_public])
 }

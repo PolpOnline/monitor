@@ -8,10 +8,11 @@ use chrono::{DateTime, Duration, NaiveDateTime, Utc};
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::types::PgInterval, PgPool};
-use ts_rs::TS;
+use utoipa::{IntoParams, ToSchema};
 use uuid::Uuid;
 
 use crate::{
+    app::SYSTEM_TAG,
     users::AuthSession,
     web::utils::{
         time::{approx_expected_timestamp, naive_datetime_now},
@@ -19,38 +20,31 @@ use crate::{
     },
 };
 
-#[derive(Debug, Serialize, Clone, TS)]
-#[ts(export)]
+#[derive(Debug, Serialize, Clone, ToSchema)]
 pub struct ListSystemsResponse {
     systems: Vec<SystemData>,
 }
 
-#[derive(Debug, Serialize, Clone, TS)]
-#[ts(export)]
+#[derive(Debug, Serialize, Clone, ToSchema)]
 pub struct SystemData {
     id: Uuid,
     name: String,
     instants: Vec<Instant>,
     /// Frequency in minutes
     frequency: u32,
-    #[ts(type = "string")]
     starts_at: DateTime<Utc>,
     visibility: Visibility,
 }
 
-#[derive(Debug, Serialize, Clone, TS)]
-#[ts(export)]
+#[derive(Debug, Serialize, Clone, ToSchema)]
 pub struct Instant {
     status: Status,
-    #[ts(type = "string | null")]
     timestamp: Option<DateTime<Utc>>,
-    #[ts(type = "string")]
     expected_timestamp: DateTime<Utc>,
 }
 
-#[derive(Debug, Serialize, Clone, TS)]
+#[derive(Debug, Serialize, Clone, ToSchema)]
 #[serde(rename_all = "snake_case")]
-#[ts(export)]
 pub enum Status {
     Up,
     Down,
@@ -59,10 +53,9 @@ pub enum Status {
 
 pub const LIMIT_SYSTEM_REQUEST: i64 = 100;
 
-#[derive(Debug, Serialize, Deserialize, Clone, TS, sqlx::Type)]
+#[derive(Debug, Serialize, Deserialize, Clone, sqlx::Type, ToSchema)]
 #[sqlx(type_name = "visibility", rename_all = "snake_case")]
 #[serde(rename_all = "snake_case")]
-#[ts(export)]
 pub enum Visibility {
     Public,
     Private,
@@ -91,12 +84,27 @@ pub struct PingRecord {
     timestamp: NaiveDateTime,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, IntoParams)]
 pub struct ListSystemsQuery {
     pub page: i64,
     pub list_size: i64,
 }
 
+#[utoipa::path(
+    get,
+    path = "/list_systems",
+    params(ListSystemsQuery),
+    responses(
+        (status = OK, description = "List of systems", body = ListSystemsResponse),
+        (status = BAD_REQUEST, description = "Bad request"),
+        (status = UNAUTHORIZED, description = "User is not logged in"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = SYSTEM_TAG
+)]
 pub async fn list_systems(
     auth_session: AuthSession,
     Query(query): Query<ListSystemsQuery>,

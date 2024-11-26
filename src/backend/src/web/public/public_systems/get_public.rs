@@ -5,7 +5,7 @@ use axum::{
 };
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
-use ts_rs::TS;
+use utoipa::{IntoParams, ToSchema};
 use uuid::Uuid;
 
 use crate::{
@@ -13,18 +13,32 @@ use crate::{
     web::protected::list_systems::{SystemData, SystemRecord, Visibility, LIMIT_SYSTEM_REQUEST},
 };
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Deserialize, Clone, IntoParams)]
 pub struct GetPublicQuery {
     pub list_size: i64,
     pub page: i64,
 }
 
-#[derive(Debug, Serialize, Clone, TS)]
-#[ts(export)]
+#[derive(Debug, Serialize, Clone, ToSchema)]
 pub struct GetPublicResponse {
     pub system: SystemData,
 }
 
+#[utoipa::path(
+    get,
+    path = "/public_systems/:id",
+    params(GetPublicQuery),
+    responses(
+        (status = OK, description = "Public system was retrieved successfully", body = GetPublicResponse),
+        (status = BAD_REQUEST, description = "List size is too large"),
+        (status = NOT_FOUND, description = "System not found"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = "Public Systems"
+)]
 pub async fn get_public(
     auth_session: AuthSession,
     Path(uuid): Path<Uuid>,

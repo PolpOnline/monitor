@@ -7,23 +7,26 @@ use serde::Serialize;
 use thiserror::Error;
 use tokio::task;
 use tracing::{debug, info};
-use ts_rs::TS;
+use utoipa::ToSchema;
 
-use crate::users::{AuthSession, Credentials, User};
+use crate::{
+    app::AUTH_TAG,
+    users::{AuthSession, Credentials, User},
+};
 
-#[derive(Debug, Serialize, TS)]
-#[ts(export)]
+#[derive(Debug, Serialize, ToSchema)]
 pub struct LoginResponse {
     pub status: String,
 }
 
-#[derive(Error, Debug, ErrorStatus)]
+#[derive(Error, Debug, ErrorStatus, ToSchema)]
 pub enum AuthError {
     #[error("Failed to generate hash")]
     #[status(StatusCode::INTERNAL_SERVER_ERROR)]
     FailedToGenerateHash,
     #[error("Failed to insert user")]
     #[status(StatusCode::INTERNAL_SERVER_ERROR)]
+    #[schema(value_type = String)]
     FailedToInsertNewUser(#[from] sqlx::Error),
     #[error("User doesn't exist after signup")]
     #[status(StatusCode::INTERNAL_SERVER_ERROR)]
@@ -36,6 +39,17 @@ pub enum AuthError {
     WrongPassword,
 }
 
+#[utoipa::path(
+    get,
+    path = "/login",
+    responses(
+        (status = CREATED, description = "User was created"),
+        (status = OK, description = "User was logged in"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error", body = str, content_type = "text/plain"),
+        (status = UNAUTHORIZED, description = "Wrong password")
+    ),
+    tag = AUTH_TAG
+)]
 pub async fn login(
     mut auth_session: AuthSession,
     Json(req): Json<Credentials>,

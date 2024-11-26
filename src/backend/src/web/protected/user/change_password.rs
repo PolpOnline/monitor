@@ -5,12 +5,11 @@ use password_auth::generate_hash;
 use serde::Deserialize;
 use thiserror::Error;
 use tokio::task;
-use ts_rs::TS;
+use utoipa::ToSchema;
 
 use crate::users::{AuthSession, Credentials};
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export)]
+#[derive(Debug, Deserialize, ToSchema)]
 pub struct ChangePasswordRequest {
     old_password: String,
     new_password: String,
@@ -25,7 +24,7 @@ pub enum ChangePasswordError {
     #[status(StatusCode::UNAUTHORIZED)]
     UserNotLoggedIn,
     #[error("Old password is wrong")]
-    #[status(StatusCode::UNAUTHORIZED)]
+    #[status(StatusCode::FORBIDDEN)]
     OldPasswordIsWrong,
     #[error("Failed to authenticate with old password")]
     #[status(StatusCode::INTERNAL_SERVER_ERROR)]
@@ -35,6 +34,21 @@ pub enum ChangePasswordError {
     FailedToUpdatePassword,
 }
 
+#[utoipa::path(
+    patch,
+    path = "/change_password",
+    request_body = ChangePasswordRequest,
+    responses(
+        (status = OK, description = "Password was changed successfully"),
+        (status = UNAUTHORIZED, description = "User is not logged in"),
+        (status = FORBIDDEN, description = "Old password is wrong"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = "User"
+)]
 pub async fn change_password(
     auth_session: AuthSession,
     Json(request): Json<ChangePasswordRequest>,

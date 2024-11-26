@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use axum::middleware;
+use axum::{middleware, routing::get};
 use axum_login::{
     tower_sessions::{Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
@@ -21,6 +21,12 @@ use tower_sessions_redis_store::{
     RedisStore,
 };
 use tracing::info;
+use utoipa::{
+    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
+    Modify, OpenApi,
+};
+use utoipa_axum::router::OpenApiRouter;
+use utoipa_scalar::{Scalar, Servable};
 
 use crate::{
     custom_login_required,
@@ -33,6 +39,38 @@ use crate::{
     },
     PRODUCTION,
 };
+
+pub const AUTH_TAG: &str = "Auth";
+pub const MONITORING_TAG: &str = "Monitoring";
+pub const USER_TAG: &str = "User";
+pub const SYSTEM_TAG: &str = "System";
+pub const DATA_TAG: &str = "Data";
+
+#[derive(OpenApi)]
+#[openapi(
+    modifiers(&ApiDocSecurityAddon),
+    tags(
+        (name = AUTH_TAG, description = "Endpoints to authenticate users"),
+        (name = MONITORING_TAG, description = "Endpoints to monitor the system"),
+        (name = USER_TAG, description = "Endpoints related to users"),
+        (name = SYSTEM_TAG, description = "Endpoints related to systems"),
+        (name = DATA_TAG, description = "Endpoints that must be connected to by the monitored systems")
+    )
+)]
+struct ApiDoc;
+
+struct ApiDocSecurityAddon;
+
+impl Modify for ApiDocSecurityAddon {
+    fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
+        if let Some(components) = openapi.components.as_mut() {
+            components.add_security_scheme(
+                "session",
+                SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("monitor_id"))),
+            )
+        }
+    }
+}
 
 type RedisLibPool = bb8::Pool<RedisConnectionManager>;
 
@@ -89,7 +127,8 @@ impl App {
         let backend = LoginBackend::new(self.db);
         let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
 
-        let app = protected::router()
+        let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
+            .merge(protected::router())
             .route_layer(custom_login_required!(
                 LoginBackend,
                 (StatusCode::UNAUTHORIZED, "You are not logged in.")
@@ -101,14 +140,24 @@ impl App {
             .layer(middleware::from_fn(set_cache_control))
             .layer(TraceLayer::new_for_http())
             .layer(CompressionLayer::new())
-            .layer(DecompressionLayer::new());
+            .layer(DecompressionLayer::new())
+            .split_for_parts();
+
+        let router = {
+            let api_json =
+                serde_json::to_value(api.clone()).expect("Failed to convert api to JSON");
+
+            router
+                .route("/openapi.json", get(move || async { axum::Json(api_json) }))
+                .merge(Scalar::with_url("/scalar", api))
+        };
 
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
 
         info!("Axum: Listening on {}", listener.local_addr()?);
 
         // Ensure we use a shutdown signal to abort the deletion task.
-        axum::serve(listener, app.into_make_service())
+        axum::serve(listener, router.into_make_service())
             .with_graceful_shutdown(shutdown_signal(vec![worker_task.abort_handle()]))
             .await?;
 

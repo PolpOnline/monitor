@@ -1,17 +1,30 @@
 use axum::{response::IntoResponse, Json};
 use http::StatusCode;
 use serde::Deserialize;
-use ts_rs::TS;
+use utoipa::ToSchema;
 use uuid::Uuid;
 
-use crate::users::AuthSession;
+use crate::{app::SYSTEM_TAG, users::AuthSession};
 
-#[derive(Debug, Deserialize, TS)]
-#[ts(export)]
+#[derive(Debug, Deserialize, ToSchema)]
 pub struct DeleteSystemRequest {
     id: Uuid,
 }
 
+#[utoipa::path(
+    delete,
+    path = "/delete_system",
+    request_body = DeleteSystemRequest,
+    responses(
+        (status = OK, description = "System was deleted successfully"),
+        (status = UNAUTHORIZED, description = "User is not logged in"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = SYSTEM_TAG
+)]
 pub async fn delete_system(
     auth_session: AuthSession,
     Json(request): Json<DeleteSystemRequest>,

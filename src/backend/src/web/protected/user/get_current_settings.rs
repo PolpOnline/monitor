@@ -1,17 +1,28 @@
 use axum::{response::IntoResponse, Json};
 use http::StatusCode;
 use serde::Serialize;
-use ts_rs::TS;
+use utoipa::ToSchema;
 
 use crate::users::AuthSession;
 
-#[derive(Serialize, Debug, TS)]
-#[ts(export)]
+#[derive(Serialize, Debug, ToSchema)]
 pub struct GetCurrentSettingsResponse {
     pub timezone: String,
     pub language: String,
 }
 
+#[utoipa::path(
+    get,
+    path = "/get_current_settings",
+    responses(
+        (status = OK, description = "Current settings were retrieved successfully"),
+        (status = INTERNAL_SERVER_ERROR, description = "Internal server error")
+    ),
+    security(
+        ("session" = [])
+    ),
+    tag = "User"
+)]
 pub async fn get_current_settings(auth_session: AuthSession) -> impl IntoResponse {
     let current_user = match auth_session.user {
         Some(ref user) => user,
