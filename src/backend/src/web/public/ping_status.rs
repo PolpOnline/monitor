@@ -7,7 +7,7 @@ use crate::{app::DATA_TAG, users::AuthSession};
 
 #[utoipa::path(
     post,
-    path = "/ping_status/:id",
+    path = "/ping_status/{id}",
     responses(
         (status = OK, description = "Ping was successful"),
         (status = NOT_FOUND, description = "System not found"),

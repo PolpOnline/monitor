@@ -4,9 +4,11 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ fetch, params, url }) => {
 	const page = Number(url.searchParams.get('page')) || 0;
 
-	const { data, error, response } = await client.GET('/get_public/:id', {
+	const { data, error, response } = await client.GET('/get_public/{id}', {
 		params: {
-			id: params.id,
+			path: {
+				id: params.id
+			},
 			query: {
 				list_size: LIST_SIZE,
 				page
