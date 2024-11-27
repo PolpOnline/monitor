@@ -4,7 +4,7 @@ use serde::Deserialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-use crate::{app::SYSTEM_TAG, users::AuthSession};
+use crate::{app::openapi::SYSTEM_TAG, users::AuthSession};
 
 #[derive(Debug, Deserialize, ToSchema)]
 pub struct DeleteSystemRequest {

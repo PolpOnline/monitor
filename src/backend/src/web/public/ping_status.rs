@@ -3,7 +3,7 @@ use http::StatusCode;
 use tracing::info;
 use uuid::Uuid;
 
-use crate::{app::DATA_TAG, users::AuthSession};
+use crate::{app::openapi::DATA_TAG, users::AuthSession};
 
 #[utoipa::path(
     post,

@@ -1,3 +1,8 @@
+mod db;
+pub mod openapi;
+mod redis;
+mod workers;
+
 use std::str::FromStr;
 
 use axum::{middleware, routing::get};
@@ -6,75 +11,26 @@ use axum_login::{
     AuthManagerLayerBuilder,
 };
 use http::StatusCode;
-use sidekiq::{periodic, Processor, RedisConnectionManager};
-use sqlx::{postgres::PgPoolOptions, PgPool};
+use sqlx::PgPool;
 use tokio::{signal, task::AbortHandle};
 use tower_http::{
     compression::CompressionLayer, decompression::DecompressionLayer, trace::TraceLayer,
 };
 use tower_sessions::cookie::Key;
-use tower_sessions_redis_store::{
-    fred::{
-        prelude::{ClientLike, RedisConfig as RedisFredConfig, RedisPool as RedisFredPool},
-        types::ReconnectPolicy,
-    },
-    RedisStore,
-};
+use tower_sessions_redis_store::{fred::prelude::RedisPool as RedisFredPool, RedisStore};
 use tracing::info;
-use utoipa::{
-    openapi::security::{ApiKey, ApiKeyValue, SecurityScheme},
-    Modify, OpenApi,
-};
+use utoipa::OpenApi;
 use utoipa_axum::router::OpenApiRouter;
 use utoipa_scalar::{Scalar, Servable};
 
 use crate::{
+    app::{openapi::ApiDoc, redis::RedisLibPool},
     custom_login_required,
     middleware::{set_cache_control::set_cache_control, set_user_info::set_user_info},
     users::LoginBackend,
     web::{auth, protected, public},
-    workers::{
-        email_worker::{init_smtp_client, SmtpClient},
-        register_workers,
-    },
-    PRODUCTION,
+    workers::email_worker::{init_smtp_client, SmtpClient},
 };
-
-pub const AUTH_TAG: &str = "Auth";
-pub const MONITORING_TAG: &str = "Monitoring";
-pub const USER_TAG: &str = "User";
-pub const SYSTEM_TAG: &str = "System";
-pub const DATA_TAG: &str = "Data";
-pub const PUBLIC_SYSTEM_TAG: &str = "Public systems";
-
-#[derive(OpenApi)]
-#[openapi(
-    modifiers(&ApiDocSecurityAddon),
-    tags(
-        (name = AUTH_TAG, description = "Endpoints to authenticate users"),
-        (name = MONITORING_TAG, description = "Endpoints to monitor the system (such as healthchecks)"),
-        (name = USER_TAG, description = "Endpoints related to users and their accounts"),
-        (name = SYSTEM_TAG, description = "Endpoints related to monitored systems"),
-        (name = DATA_TAG, description = "Endpoints that must be connected to by the monitored systems"),
-        (name = PUBLIC_SYSTEM_TAG, description = "Endpoints related to monitored systems that are public")
-    )
-)]
-struct ApiDoc;
-
-struct ApiDocSecurityAddon;
-
-impl Modify for ApiDocSecurityAddon {
-    fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
-        if let Some(components) = openapi.components.as_mut() {
-            components.add_security_scheme(
-                "session",
-                SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("monitor_id"))),
-            )
-        }
-    }
-}
-
-type RedisLibPool = bb8::Pool<RedisConnectionManager>;
 
 pub struct App {
     db: PgPool,
@@ -166,101 +122,6 @@ impl App {
         futures::future::join_all(vec![worker_task]).await;
 
         Ok(())
-    }
-
-    async fn setup_db() -> color_eyre::Result<PgPool> {
-        info!("SQLx: Connecting to the database...");
-
-        let database_url = match std::env::var("DATABASE_PRIVATE_URL") {
-            Ok(url) => {
-                info!("SQLx: Using DATABASE_PRIVATE_URL");
-                url
-            }
-            Err(_) => {
-                info!("SQLx: Using DATABASE_URL");
-                std::env::var("DATABASE_URL")?
-            }
-        };
-
-        let pool = PgPoolOptions::new()
-            .max_connections(5)
-            .connect(&database_url)
-            .await?;
-
-        info!("SQLx: Connected to the database");
-
-        sqlx::migrate!().run(&pool).await?;
-
-        info!("SQLx: Migrations run");
-
-        Ok(pool)
-    }
-
-    async fn setup_redis_lib() -> color_eyre::Result<RedisLibPool> {
-        info!("Redis Lib: Connecting to Redis (to manage workers)...");
-
-        let db_num = 1u8;
-
-        let redis_url = std::env::var("REDIS_URL")?;
-        let redis_url = format!("{}/{}", redis_url, db_num);
-        let manager = RedisConnectionManager::new(redis_url)?;
-        let redis = bb8::Pool::builder().build(manager).await?;
-
-        info!("Redis Lib: Connected to Redis (to manage workers)");
-
-        Ok(redis)
-    }
-
-    async fn setup_redis_fred() -> color_eyre::Result<RedisFredPool> {
-        info!("Redis Fred: Connecting to Redis (to manage sessions)...");
-
-        let db_num = 0u8;
-
-        let redis_url = std::env::var("REDIS_URL")?;
-        let redis_url = format!("{}/{}", redis_url, db_num);
-
-        let config = RedisFredConfig::from_url(&redis_url)?;
-
-        let pool = RedisFredPool::new(config, None, None, Some(ReconnectPolicy::default()), 6)?;
-
-        pool.init().await?;
-
-        info!("Redis Fred: Connected to Redis (to manage sessions)");
-
-        Ok(pool)
-    }
-
-    async fn start_workers(p: Processor) -> color_eyre::Result<()> {
-        info!(
-            "Sidekiq: Workers started in {} mode",
-            if *PRODUCTION {
-                "production"
-            } else {
-                "development"
-            }
-        );
-
-        // Start the server
-        p.run().await;
-
-        Ok(())
-    }
-
-    async fn init_workers(
-        redis: RedisLibPool,
-        db: PgPool,
-        smtp_client: SmtpClient,
-    ) -> color_eyre::Result<Processor> {
-        // Clear out all periodic jobs and their schedules
-        periodic::destroy_all(redis.clone()).await?;
-
-        // Sidekiq server
-        let mut p = Processor::new(redis, vec!["down_emails".to_string()]);
-
-        // Add known workers
-        register_workers(&mut p, db, smtp_client).await?;
-
-        Ok(p)
     }
 }
 

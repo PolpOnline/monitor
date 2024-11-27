@@ -6,7 +6,9 @@ use sqlx::postgres::types::PgInterval;
 use utoipa::ToSchema;
 use uuid::Uuid;
 
-use crate::{app::SYSTEM_TAG, users::AuthSession, web::protected::list_systems::Visibility};
+use crate::{
+    app::openapi::SYSTEM_TAG, users::AuthSession, web::protected::list_systems::Visibility,
+};
 
 #[derive(Debug, Deserialize, Clone, ToSchema)]
 pub struct AddSystemRequest {

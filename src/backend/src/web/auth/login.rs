@@ -10,7 +10,7 @@ use tracing::{debug, info};
 use utoipa::ToSchema;
 
 use crate::{
-    app::AUTH_TAG,
+    app::openapi::AUTH_TAG,
     users::{AuthSession, Credentials, User},
 };
 

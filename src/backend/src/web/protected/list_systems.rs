@@ -12,7 +12,7 @@ use utoipa::{IntoParams, ToSchema};
 use uuid::Uuid;
 
 use crate::{
-    app::SYSTEM_TAG,
+    app::openapi::SYSTEM_TAG,
     users::AuthSession,
     web::utils::{
         time::{approx_expected_timestamp, naive_datetime_now},

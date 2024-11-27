@@ -4,7 +4,7 @@ use sysinfo::System;
 use tokio::time::sleep;
 use utoipa::ToSchema;
 
-use crate::app::MONITORING_TAG;
+use crate::app::openapi::MONITORING_TAG;
 
 #[derive(Serialize, ToSchema)]
 pub struct MemInfo {

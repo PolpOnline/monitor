@@ -1,7 +1,7 @@
 use axum::response::IntoResponse;
 use http::StatusCode;
 
-use crate::app::MONITORING_TAG;
+use crate::app::openapi::MONITORING_TAG;
 
 #[utoipa::path(
     get,

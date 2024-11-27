@@ -9,7 +9,7 @@ use utoipa::{IntoParams, ToSchema};
 use uuid::Uuid;
 
 use crate::{
-    app::PUBLIC_SYSTEM_TAG,
+    app::openapi::PUBLIC_SYSTEM_TAG,
     users::AuthSession,
     web::protected::list_systems::{SystemData, SystemRecord, Visibility, LIMIT_SYSTEM_REQUEST},
 };
