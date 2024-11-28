@@ -8,9 +8,9 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const system = data.system!;
+	const system = $derived(data.system!);
 
-	title.set(system.name + ' status');
+	title.set(data.system!.name + ' status');
 </script>
 
 <div class="mx-4">

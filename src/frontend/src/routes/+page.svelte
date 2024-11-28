@@ -19,8 +19,8 @@
 	const outParams: FlyParams = { x: '100%', duration: 700, easing: cubicOut };
 	const animateParams: AnimationConfig = { delay: 0, duration: 300, easing: cubicOut };
 
-	const systems = data.systems!;
-	const form = data.form!;
+	const systems = $derived(data.systems!);
+	const form = $derived(data.form!);
 </script>
 
 <svelte:head>
