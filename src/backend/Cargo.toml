@@ -12,7 +12,7 @@ http = "1.0"
 hyper = "1.0"
 password-auth = "1.0"
 serde = "1"
-sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-native-tls", "uuid", "chrono"] }
+sqlx = { version = "0.8", features = ["postgres", "runtime-tokio-rustls", "uuid", "chrono"] }
 chrono = { version = "0.4", features = ["serde"] }
 tokio = { version = "1.34", features = ["full"] }
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
@@ -27,9 +27,9 @@ tower-http = { version = "0.6", features = ["trace", "compression-full", "decomp
 bb8 = "0.8"
 rusty-sidekiq = { version = "0.11", default-features = false }
 futures = "0.3"
-lettre = { version = "0.11", features = ["tokio1-native-tls", "tokio1"] }
+lettre = { version = "0.11", features = ["tokio1-rustls-tls", "tokio1"] }
 once_cell = "1.19"
-tower-sessions-redis-store = { version = "0.15", features = ["enable-native-tls"] }
+tower-sessions-redis-store = { version = "0.15", features = ["enable-rustls"] }
 chrono-tz = "0.10"
 humanize-duration = { version = "0.0", features = ["chrono"] }
 sysinfo = { version = "0.32", features = ["serde", "system"], default-features = false }
