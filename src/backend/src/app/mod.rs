@@ -14,7 +14,9 @@ use http::StatusCode;
 use sqlx::PgPool;
 use tokio::{signal, task::AbortHandle};
 use tower_http::{
-    compression::CompressionLayer, decompression::DecompressionLayer, trace::TraceLayer,
+    compression::CompressionLayer,
+    decompression::{DecompressionLayer, RequestDecompressionLayer},
+    trace::TraceLayer,
 };
 use tower_sessions::cookie::Key;
 use tower_sessions_redis_store::{fred::prelude::Pool as FredPool, RedisStore};
@@ -55,35 +57,43 @@ impl App {
     }
 
     pub async fn serve(self) -> color_eyre::Result<()> {
+        // Worker task.
+        let worker_task_handle = {
+            let processor =
+                Self::init_workers(self.redis_lib.clone(), self.db.clone(), self.smtp_client)
+                    .await?;
+
+            tokio::task::spawn(Self::start_workers(processor))
+        };
+
         // Session layer.
         //
         // This uses `tower-sessions` to establish a layer that will provide the session
         // as a request extension.
-        let session_store = RedisStore::new(self.redis_fred.clone());
+        let session_layer = {
+            let session_store = RedisStore::new(self.redis_fred.clone());
 
-        let processor =
-            Self::init_workers(self.redis_lib.clone(), self.db.clone(), self.smtp_client).await?;
+            // Get the cookie key from the environment.
+            let key = &std::env::var("COOKIE_KEY")?;
+            let key = parse_cookie_key(key);
 
-        let worker_task = tokio::task::spawn(Self::start_workers(processor));
-
-        // Generate a cryptographic key to sign the session cookie.
-        let key = &std::env::var("COOKIE_KEY")?;
-        let key = parse_cookie_key(key);
-
-        let session_layer = SessionManagerLayer::new(session_store)
-            .with_name("monitor_id")
-            .with_secure(true)
-            .with_expiry(Expiry::OnInactivity(
-                tower_sessions::cookie::time::Duration::days(7),
-            ))
-            .with_signed(key);
+            SessionManagerLayer::new(session_store)
+                .with_name("monitor_id")
+                .with_secure(true)
+                .with_expiry(Expiry::OnInactivity(
+                    tower_sessions::cookie::time::Duration::days(7),
+                ))
+                .with_signed(key)
+        };
 
         // Auth service.
         //
         // This combines the session layer with our backendOld to establish the auth
         // service which will provide the auth session as a request extension.
-        let backend = LoginBackend::new(self.db);
-        let auth_layer = AuthManagerLayerBuilder::new(backend, session_layer).build();
+        let auth_layer = {
+            let backend = LoginBackend::new(self.db);
+            AuthManagerLayerBuilder::new(backend, session_layer).build()
+        };
 
         let (router, api) = OpenApiRouter::with_openapi(ApiDoc::openapi())
             .merge(protected::router())
@@ -96,9 +106,6 @@ impl App {
             .layer(middleware::from_fn(set_user_info))
             .layer(auth_layer)
             .layer(middleware::from_fn(set_cache_control))
-            .layer(TraceLayer::new_for_http())
-            .layer(CompressionLayer::new())
-            .layer(DecompressionLayer::new())
             .split_for_parts();
 
         let router = {
@@ -110,16 +117,22 @@ impl App {
                 .merge(Scalar::with_url("/scalar", api))
         };
 
+        let router = router
+            .layer(TraceLayer::new_for_http())
+            .layer(CompressionLayer::new())
+            .layer(RequestDecompressionLayer::new())
+            .layer(DecompressionLayer::new());
+
         let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await?;
 
         info!("Axum: Listening on {}", listener.local_addr()?);
 
         // Ensure we use a shutdown signal to abort the deletion task.
         axum::serve(listener, router.into_make_service())
-            .with_graceful_shutdown(shutdown_signal(vec![worker_task.abort_handle()]))
+            .with_graceful_shutdown(shutdown_signal(vec![worker_task_handle.abort_handle()]))
             .await?;
 
-        futures::future::join_all(vec![worker_task]).await;
+        futures::future::join_all(vec![worker_task_handle]).await;
 
         Ok(())
     }
