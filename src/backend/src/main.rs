@@ -8,6 +8,7 @@ use color_eyre::Result;
 use dotenvy::dotenv;
 use once_cell::sync::Lazy;
 use rust_i18n::i18n;
+use rustls::crypto::aws_lc_rs;
 use tracing::info;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 use web::App;
@@ -39,6 +40,10 @@ async fn main() -> Result<()> {
         .try_init()?;
 
     dotenv().unwrap_or_default();
+
+    aws_lc_rs::default_provider()
+        .install_default()
+        .expect("Failed to install AWS LC provider");
 
     if *PRODUCTION {
         info!("System: Production mode");

@@ -6,8 +6,8 @@ use chrono_tz::Tz;
 use color_eyre::Result;
 use humanize_duration::{prelude::*, Truncate};
 use lettre::{
-    message::header::ContentType, transport::smtp::authentication::Credentials, AsyncTransport,
-    Message, Tokio1Executor,
+    message::header::ContentType, transport::smtp::authentication::Credentials, AsyncSmtpTransport,
+    AsyncTransport, Message, Tokio1Executor,
 };
 use rust_i18n::t;
 use sidekiq::Worker;
@@ -20,7 +20,7 @@ use crate::{
     SITE_URL,
 };
 
-pub type SmtpClient = lettre::AsyncSmtpTransport<Tokio1Executor>;
+pub type SmtpClient = AsyncSmtpTransport<Tokio1Executor>;
 
 #[derive(Clone)]
 pub struct EmailWorker {
