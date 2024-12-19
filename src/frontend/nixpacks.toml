@@ -2,4 +2,5 @@
 NIXPACKS_NODE_VERSION = '22'
 
 [start]
+runImage = 'alpine:latest'
 cmd = 'node build'
