@@ -24,7 +24,6 @@ tracing = "0.1"
 uuid = { version = "1.10", features = ["v4", "serde"] }
 axum_thiserror = "0.1"
 tower-http = { version = "0.6", features = ["trace", "compression-full", "decompression-full"] }
-bb8 = "0.8"
 rusty-sidekiq = { version = "0.11", default-features = false }
 futures = "0.3"
 lettre = { version = "0.11", features = ["builder", "hostname", "smtp-transport", "pool", "tokio1-rustls-tls", "tokio1"], default-features = false }
