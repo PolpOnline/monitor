@@ -13,7 +13,7 @@
 	import LucideGithub from '~icons/lucide/github';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import { invalidateAll } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import type { LoginStatus } from '../../app';
 	import { toast } from 'svelte-sonner';
 	import { getTranslate, T } from '@tolgee/svelte';
@@ -29,7 +29,7 @@
 
 	const loggedIn = $derived(loginStatus === 'logged_in');
 
-	const isPublicPage = $derived($page.url.pathname.startsWith('/public'));
+	const isPublicPage = $derived(page.url.pathname.startsWith('/public'));
 </script>
 
 <nav class="grid h-20 grid-cols-3">

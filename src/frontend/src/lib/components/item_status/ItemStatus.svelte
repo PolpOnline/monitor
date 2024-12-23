@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ItemStatusDropdown from './ItemStatusDropdown.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import ItemStatusOperationalStatus from '$components/item_status/ItemStatusOperationalStatus.svelte';
 	import ItemStatusGraph from '$components/item_status/ItemStatusGraph.svelte';
 	import { invalidateAll } from '$app/navigation';
@@ -13,7 +13,7 @@
 		showDropdown = true
 	}: { data: components['schemas']['SystemData']; showDropdown?: boolean } = $props();
 
-	const currentPage = $derived(Number($page.url.searchParams.get('page')) || 0);
+	const currentPage = $derived(Number(page.url.searchParams.get('page')) || 0);
 
 	let timeoutId: ReturnType<typeof setTimeout>;
 	let intervalId: ReturnType<typeof setInterval>;

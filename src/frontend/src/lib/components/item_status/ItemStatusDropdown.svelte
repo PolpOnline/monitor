@@ -18,7 +18,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import LucideLink from '~icons/lucide/link';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { toast } from 'svelte-sonner';
 	import { getTranslate, T } from '@tolgee/svelte';
 	import type { components } from '$lib/api/schema';
@@ -113,7 +113,7 @@
 					onclick={() => {
 						if (!$targetSystemData) return;
 
-						navigator.clipboard.writeText(`${$page.url.origin}/public/${$targetSystemData.id}`);
+						navigator.clipboard.writeText(`${page.url.origin}/public/${$targetSystemData.id}`);
 					}}
 				>
 					<LucideLink class="mr-2 h-4 w-4" />

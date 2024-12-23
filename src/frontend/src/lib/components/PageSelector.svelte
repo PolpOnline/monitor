@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import LucideChevronLeft from '~icons/lucide/chevron-left';
 	import LucideChevronRight from '~icons/lucide/chevron-right';
 	import { goto } from '$app/navigation';
@@ -8,7 +8,7 @@
 	import { cn } from '$lib/utils';
 	import { type ClassValue } from 'clsx';
 
-	const currentPage = $derived(Number($page.url.searchParams.get('page')) || 0);
+	const currentPage = $derived(Number(page.url.searchParams.get('page')) || 0);
 
 	const prevPageHref = $derived(currentPage > 1 ? `?page=${currentPage - 1}` : `?`);
 	const nextPageHref = $derived(`?page=${currentPage + 1}`);
