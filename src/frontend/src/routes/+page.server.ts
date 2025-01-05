@@ -1,20 +1,33 @@
 import { client, LIST_SIZE } from '$lib/api/api';
 import { formSchema } from '$lib/components/add_system/schema';
+import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import type { Actions, PageServerLoad } from './$types.js';
-import { fail } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	const page = Number(url.searchParams.get('page')) || 0;
 
-	const { data, error, response } = await client.GET('/list_systems', {
+	const {
+		data,
+		error: errorMessage,
+		response
+	} = await client.GET('/list_systems', {
 		params: { query: { list_size: LIST_SIZE, page } },
 		fetch
 	});
 
-	if (error || !data || !data.systems) {
-		return new Response(`Failed to fetch: ${error}`, { status: response.status });
+	if (response.status === StatusCodes.UNAUTHORIZED) {
+		redirect(StatusCodes.MOVED_TEMPORARILY, '/login');
+	}
+
+	if (errorMessage) {
+		error(StatusCodes.INTERNAL_SERVER_ERROR, getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+	}
+
+	if (!data) {
+		error(StatusCodes.INTERNAL_SERVER_ERROR, getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
 	}
 
 	return {
@@ -29,7 +42,7 @@ export const actions: Actions = {
 		const form = await superValidate(event, zod(formSchema));
 
 		if (!form.valid) {
-			return fail(400, {
+			return fail(StatusCodes.BAD_REQUEST, {
 				form
 			});
 		}

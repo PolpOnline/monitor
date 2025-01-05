@@ -4,6 +4,7 @@ import { message, superValidate } from 'sveltekit-superforms';
 import { formSchema } from './schema';
 import { zod } from 'sveltekit-superforms/adapters';
 import { API_URL } from '$lib/api/api';
+import { StatusCodes } from 'http-status-codes';
 
 export const load: PageServerLoad = async () => {
 	return {
@@ -17,7 +18,7 @@ export const actions: Actions = {
 
 		// If the form is not valid, return a 400 error
 		if (!form.valid) {
-			return fail(400, {
+			return fail(StatusCodes.BAD_REQUEST, {
 				form
 			});
 		}
@@ -42,6 +43,6 @@ export const actions: Actions = {
 
 		// Cookie is handled by handleFetch in hooks.server.ts
 
-		redirect(303, '/');
+		redirect(StatusCodes.SEE_OTHER, '/');
 	}
 } satisfies Actions;
