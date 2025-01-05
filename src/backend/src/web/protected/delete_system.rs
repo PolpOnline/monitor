@@ -15,7 +15,7 @@ pub struct DeleteSystemRequest {
 #[utoipa::path(
     delete,
     path = "/delete_system",
-    description = "Delete a system",
+    summary = "Delete System",
     request_body = DeleteSystemRequest,
     responses(
         (status = OK, description = "System was deleted successfully"),

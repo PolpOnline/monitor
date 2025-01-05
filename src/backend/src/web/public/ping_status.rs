@@ -8,6 +8,7 @@ use crate::{app::openapi::DATA_TAG, users::AuthSession};
 #[utoipa::path(
     post,
     path = "/ping_status/{id}",
+    summary = "Ping as system",
     description = "Ping this endpoint to update the status of the system",
     responses(
         (status = OK, description = "Ping was successful"),

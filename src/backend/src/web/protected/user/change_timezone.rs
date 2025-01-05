@@ -31,7 +31,7 @@ pub enum ChangeTimezoneError {
 #[utoipa::path(
     patch,
     path = "/change_timezone",
-    description = "Change the timezone of the current user",
+    summary = "Change Timezone",
     request_body = ChangeTimezoneRequest,
     responses(
         (status = OK, description = "Timezone was changed successfully"),

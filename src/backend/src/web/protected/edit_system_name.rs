@@ -18,7 +18,7 @@ pub struct EditSystemNameRequest {
     patch,
     path = "/edit_system_name",
     request_body = EditSystemNameRequest,
-    description = "Edit the name of a system",
+    summary = "Edit Name",
     responses(
         (status = OK, description = "System name was edited successfully"),
         (status = UNAUTHORIZED, description = "User is not logged in"),

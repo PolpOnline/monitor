@@ -6,6 +6,7 @@ use crate::{app::openapi::AUTH_TAG, users::AuthSession};
 #[utoipa::path(
     get,
     path = "/logout",
+    summary = "Logout",
     description = "Logout the current user",
     responses(
         (status = OK, description = "User was logged out"),

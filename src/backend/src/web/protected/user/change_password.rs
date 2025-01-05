@@ -39,7 +39,7 @@ pub enum ChangePasswordError {
 #[utoipa::path(
     patch,
     path = "/change_password",
-    description = "Change the password of the current user",
+    summary = "Change Password",
     request_body = ChangePasswordRequest,
     responses(
         (status = OK, description = "Password was changed successfully"),

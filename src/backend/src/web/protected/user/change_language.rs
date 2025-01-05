@@ -30,7 +30,7 @@ pub enum ChangeLanguageError {
 #[utoipa::path(
     patch,
     path = "/change_language",
-    description = "Change the language of the current user",
+    summary = "Change Language",
     request_body = ChangeLanguageRequest,
     responses(
         (status = OK, description = "Language was changed successfully"),

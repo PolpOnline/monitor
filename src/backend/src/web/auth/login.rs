@@ -42,6 +42,7 @@ pub enum AuthError {
 #[utoipa::path(
     post,
     path = "/login",
+    summary = "Login",
     description = "Login or sign up a user if it does not exist",
     responses(
         (status = CREATED, description = "User was created"),

@@ -31,6 +31,7 @@ pub struct GetPublicResponse {
 #[utoipa::path(
     get,
     path = "/get_public/{id}",
+    summary = "Retrieve Info",
     description = "Retrieve info about a public system",
     params(GetPublicQuery),
     responses(

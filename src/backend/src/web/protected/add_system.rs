@@ -33,7 +33,7 @@ pub struct AddSystemResponse {
 #[utoipa::path(
     post,
     path = "/add_system",
-    description = "Add a new system",
+    summary = "Add System",
     request_body = AddSystemRequest,
     responses(
         (status = CREATED, description = "System was created successfully", body = AddSystemResponse),

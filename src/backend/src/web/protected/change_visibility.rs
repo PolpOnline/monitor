@@ -19,6 +19,7 @@ pub struct ChangeVisibilityRequest {
 #[utoipa::path(
     patch,
     path = "/change_visibility",
+    summary = "Change Visibility",
     description = "Change the visibility of a system",
     request_body = ChangeVisibilityRequest,
     responses(

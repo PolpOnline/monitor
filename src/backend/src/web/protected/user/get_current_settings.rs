@@ -17,7 +17,7 @@ pub struct GetCurrentSettingsResponse {
 #[utoipa::path(
     get,
     path = "/get_current_settings",
-    description = "Retrieves the current settings of the current user",
+    summary = "Retrieve Settings",
     responses(
         (status = OK, description = "Current settings were retrieved successfully", body = GetCurrentSettingsResponse),
         (status = INTERNAL_SERVER_ERROR, description = "Internal server error")

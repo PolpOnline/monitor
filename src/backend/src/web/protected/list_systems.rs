@@ -107,6 +107,7 @@ pub struct ListSystemsQuery {
     get,
     path = "/list_systems",
     params(ListSystemsQuery),
+    summary = "List Systems",
     responses(
         (status = OK, description = "List of systems", body = ListSystemsResponse),
         (status = BAD_REQUEST, description = "Bad request"),

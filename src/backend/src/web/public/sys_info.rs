@@ -48,6 +48,7 @@ pub struct SystemInfoResponse {
 #[utoipa::path(
     get,
     path = "/sys_info",
+    summary = "System information",
     description = "Get system information",
     responses(
         (status = OK, description = "System information was retrieved successfully", body = SystemInfoResponse),
