@@ -11,7 +11,7 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<div class="h-screen-not-navbar flex flex-col items-center justify-center">
+<main class="h-screen-not-navbar flex flex-col items-center justify-center">
 	<div class="max-w-96">
 		<h1 class="mb-5 text-center text-3xl font-bold">
 			<T keyName="login.login_or_signup" />
@@ -20,10 +20,10 @@
 			<LoginForm data={data.form} />
 		</div>
 	</div>
-</div>
+</main>
 
 <style lang="postcss">
 	.h-screen-not-navbar {
-		height: calc(100vh - 5rem);
+		height: calc(100svh - 5rem);
 	}
 </style>
