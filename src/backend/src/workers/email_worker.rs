@@ -62,10 +62,10 @@ impl Worker<()> for EmailWorker {
         });
 
         for email in emails {
-            self.smtp_client.send(email).await.map_err(|e| {
-                error!("Scheduled task: Error sending email: {}", e);
-                GenericError::from(e)
-            })?;
+            match self.smtp_client.send(email).await {
+                Ok(_) => {}
+                Err(e) => error!("Scheduled task: Error sending email: {}", e),
+            }
         }
 
         let down_ids = down_services
