@@ -48,7 +48,7 @@ pub async fn get_public(
     Query(query): Query<GetPublicQuery>,
 ) -> impl IntoResponse {
     if query.list_size > LIMIT_SYSTEM_REQUEST {
-        return StatusCode::BAD_REQUEST.into_response();
+        return (StatusCode::BAD_REQUEST, "Limit of list_size exceeded").into_response();
     }
 
     let db_system = match sqlx::query_as!(

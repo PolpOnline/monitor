@@ -129,7 +129,7 @@ pub async fn list_systems(
     };
 
     if query.list_size > LIMIT_SYSTEM_REQUEST {
-        return StatusCode::BAD_REQUEST.into_response();
+        return (StatusCode::BAD_REQUEST, "Limit of list_size exceeded").into_response();
     }
 
     let db_systems = match sqlx::query_as!(
