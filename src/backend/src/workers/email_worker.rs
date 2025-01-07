@@ -61,12 +61,17 @@ impl Worker<()> for EmailWorker {
             }
         });
 
-        for email in emails {
+        let emails_fut = emails.map(|email| async {
             match self.smtp_client.send(email).await {
-                Ok(_) => {}
-                Err(e) => error!("Scheduled task: Error sending email: {}", e),
+                Ok(_) => Ok(()),
+                Err(e) => {
+                    error!("Scheduled task: Error sending email: {}", e);
+                    Err(e)
+                }
             }
-        }
+        });
+
+        futures::future::join_all(emails_fut).await;
 
         let down_ids = down_services
             .iter()
