@@ -159,23 +159,23 @@ pub async fn list_systems(
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    let mut systems: Vec<SystemData> = Vec::with_capacity(db_systems.len());
+    let systems_fut: Vec<_> = db_systems
+        .into_iter()
+        .map(|db_system| async {
+            SystemData::fetch_from_db(
+                &auth_session.backend.db,
+                query.list_size,
+                query.page,
+                db_system,
+            )
+            .await
+        })
+        .collect();
 
-    for db_system in db_systems {
-        let system_data = match SystemData::fetch_from_db(
-            &auth_session.backend.db,
-            query.list_size,
-            query.page,
-            db_system,
-        )
-        .await
-        {
-            Ok(r) => r,
-            Err(s) => return s.into_response(),
-        };
-
-        systems.push(system_data);
-    }
+    let systems = match futures::future::try_join_all(systems_fut).await {
+        Ok(systems) => systems,
+        Err(err) => return err.into_response(),
+    };
 
     Json(ListSystemsResponse { systems }).into_response()
 }
