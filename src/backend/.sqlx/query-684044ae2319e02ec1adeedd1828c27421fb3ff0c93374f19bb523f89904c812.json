@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n        SELECT id, name, user_id, frequency, starts_at, deleted, down_after, down_sent_email, visibility AS \"visibility: Visibility\"\n        FROM system WHERE user_id = $1 AND deleted = false ORDER BY starts_at\n        ",
+  "query": "\n        SELECT id,\n               name,\n               user_id,\n               frequency,\n               starts_at,\n               deleted,\n               down_after,\n               down_sent_email,\n               visibility AS \"visibility: Visibility\"\n        FROM system\n        WHERE user_id = $1\n          AND deleted = FALSE\n        ORDER BY starts_at\n        ",
   "describe": {
     "columns": [
       {
@@ -76,5 +76,5 @@
       false
     ]
   },
-  "hash": "a9eb834a318ca26e4bb8f2505c645f6ddc9d0b2cbe2512a70606d6509cbdc3f5"
+  "hash": "684044ae2319e02ec1adeedd1828c27421fb3ff0c93374f19bb523f89904c812"
 }

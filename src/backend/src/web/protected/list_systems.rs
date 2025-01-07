@@ -136,8 +136,19 @@ pub async fn list_systems(
         SystemRecord,
         // language=PostgreSQL
         r#"
-        SELECT id, name, user_id, frequency, starts_at, deleted, down_after, down_sent_email, visibility AS "visibility: Visibility"
-        FROM system WHERE user_id = $1 AND deleted = false ORDER BY starts_at
+        SELECT id,
+               name,
+               user_id,
+               frequency,
+               starts_at,
+               deleted,
+               down_after,
+               down_sent_email,
+               visibility AS "visibility: Visibility"
+        FROM system
+        WHERE user_id = $1
+          AND deleted = FALSE
+        ORDER BY starts_at
         "#,
         user.id,
     )
