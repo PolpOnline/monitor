@@ -248,7 +248,7 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
     Ok(rows)
 }
 
-pub fn init_smtp_client() -> Result<SmtpClient> {
+pub async fn init_smtp_client() -> Result<SmtpClient> {
     let host = std::env::var("EMAIL_HOST")?;
     let username = std::env::var("EMAIL_USERNAME")?;
     let password = std::env::var("EMAIL_PASSWORD")?;

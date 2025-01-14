@@ -43,10 +43,12 @@ pub struct App {
 
 impl App {
     pub async fn new() -> color_eyre::Result<Self> {
-        let db = Self::setup_db().await?;
-        let redis_lib = Self::setup_redis_lib().await?;
-        let redis_fred = Self::setup_redis_fred().await?;
-        let smtp_client = init_smtp_client()?;
+        let (db, redis_lib, redis_fred, smtp_client) = tokio::try_join!(
+            Self::setup_db(),
+            Self::setup_redis_lib(),
+            Self::setup_redis_fred(),
+            init_smtp_client()
+        )?;
 
         Ok(Self {
             db,
