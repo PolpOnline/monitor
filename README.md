@@ -6,7 +6,7 @@
 
 ## Installation and usage
 
-Use [Nixpacks](https://nixpacks.com/docs/getting-started)
+Use the dockerfiles
 to build the frontend and backend images and run them with Docker.
 
 Note that the project requires configuration in `.env` files,
