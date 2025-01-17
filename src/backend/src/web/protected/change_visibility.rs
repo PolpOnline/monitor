@@ -41,7 +41,6 @@ pub async fn change_visibility(
     }
 
     match sqlx::query!(
-        // language=PostgreSQL
         r#"
         UPDATE system SET visibility = ($1) WHERE id = $2  
         "#,

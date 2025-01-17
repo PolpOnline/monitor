@@ -81,7 +81,6 @@ impl Worker<()> for EmailWorker {
         // Finalize by setting the down_sent_email flag to true for all systems that
         // have been sent an email
         sqlx::query!(
-            // language=PostgreSQL
             r#"
             UPDATE system
             SET down_sent_email = TRUE
@@ -176,7 +175,6 @@ async fn query_down_services(db: &PgPool) -> GenericResult<Vec<EmailData>> {
     // Query all systems that are down for longer than the down_after interval for
     // which an email has not been sent
     let rows = sqlx::query!(
-        // language=PostgreSQL
         r#"
         SELECT s.id AS system_id,
                s.name AS system_name,

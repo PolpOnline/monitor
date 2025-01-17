@@ -70,7 +70,6 @@ pub async fn add_system(
     };
 
     match sqlx::query!(
-        // language=PostgreSQL
         r#"
         INSERT INTO system (id, name, user_id, frequency, starts_at, down_after, visibility)
         VALUES ($1, $2, $3, $4, $5, $6, $7)

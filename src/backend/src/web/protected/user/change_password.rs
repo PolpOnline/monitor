@@ -79,7 +79,6 @@ pub async fn change_password(
         };
 
     match sqlx::query!(
-        // language=PostgreSQL
         r#"
         UPDATE "user" SET password = $1 WHERE id = $2
         "#,

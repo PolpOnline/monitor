@@ -134,7 +134,6 @@ pub async fn list_systems(
 
     let db_systems = match sqlx::query_as!(
         SystemRecord,
-        // language=PostgreSQL
         r#"
         SELECT id,
                name,
@@ -200,7 +199,6 @@ impl SystemData {
 
         let db_instants = match sqlx::query_as!(
             PingRecord,
-            // language=PostgreSQL
             r#"
             SELECT * FROM ping WHERE system_id = $1
                                 AND timestamp < $2

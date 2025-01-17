@@ -53,7 +53,6 @@ pub async fn get_public(
 
     let db_system = match sqlx::query_as!(
         SystemRecord,
-        // language=PostgreSQL
         r#"
         SELECT id, name, user_id, frequency, starts_at, deleted, down_after, down_sent_email, visibility AS "visibility: Visibility"
         FROM system WHERE id = $1 AND visibility = 'public'

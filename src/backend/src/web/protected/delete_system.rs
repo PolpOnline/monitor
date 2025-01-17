@@ -36,7 +36,6 @@ pub async fn delete_system(
     }
 
     match sqlx::query!(
-        // language=PostgreSQL
         r#"
         UPDATE system SET deleted = true WHERE id = $1  
         "#,

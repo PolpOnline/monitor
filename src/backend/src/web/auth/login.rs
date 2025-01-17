@@ -121,7 +121,6 @@ pub async fn re_auth_after_sign_up(
 
 pub async fn get_user_existence(email: String, auth_session: AuthSession) -> bool {
     let user = sqlx::query!(
-        // language=PostgreSQL
         r#"
         SELECT email
         FROM "user"
@@ -152,7 +151,6 @@ pub async fn sign_up(
 
     let user = sqlx::query_as!(
         User,
-        // language=PostgreSQL
         r#"
         INSERT INTO "user" (email, password, timezone, language)
         VALUES ($1, $2, $3, $4)

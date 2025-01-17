@@ -34,7 +34,6 @@ pub async fn get_current_settings(auth_session: AuthSession) -> impl IntoRespons
     };
 
     let current_settings = match sqlx::query!(
-        // language=PostgreSQL
         r#"
         SELECT timezone, language FROM "user" WHERE id = $1
         "#,

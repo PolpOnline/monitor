@@ -21,7 +21,6 @@ pub async fn ping_status(Path(id): Path<Uuid>, auth_session: AuthSession) -> imp
 
     // Check if the system exists and is not deleted
     if sqlx::query!(
-        // language=PostgreSQL
         r#"
         SELECT id FROM system WHERE id = $1 AND deleted = false
         "#,
@@ -36,7 +35,6 @@ pub async fn ping_status(Path(id): Path<Uuid>, auth_session: AuthSession) -> imp
 
     // Insert the ping into the database and reset the down_sent_email flag
     sqlx::query!(
-        // language=PostgreSQL
         r#"
         WITH updated AS (
             UPDATE system

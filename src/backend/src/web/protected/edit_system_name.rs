@@ -38,7 +38,6 @@ pub async fn edit_system_name(
     }
 
     match sqlx::query!(
-        // language=PostgreSQL
         r#"
         UPDATE system SET name = ($1) WHERE id = $2  
         "#,

@@ -59,7 +59,6 @@ pub async fn change_timezone(
     };
 
     match sqlx::query!(
-        // language=PostgreSQL
         r#"
         UPDATE "user" SET timezone = $1 WHERE id = $2
         "#,

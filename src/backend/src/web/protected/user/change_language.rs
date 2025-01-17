@@ -59,7 +59,6 @@ pub async fn change_language(
     }
 
     match sqlx::query!(
-        // language=PostgreSQL
         r#"
         UPDATE "user" SET language = $1 WHERE id = $2
         "#,
