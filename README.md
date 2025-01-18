@@ -66,12 +66,16 @@ Then run the project with cargo run and copy the cookie key to the .env file in 
 Cd into the both frontend and back end directories and run the following commands:
 ```bash
 cd src/frontend
-nixpacks build .
+docker build -t forum-meucci-frontend .
 cd ../backend
-nixpacks build .
+docker build -t forum-meucci-backend .
 ```
-Then run the command provided by Nixpacks to run the images.
 
+Then run the following command to start the containers:
+```bash
+docker run -d -p 5173:5173 --env-file .env forum-meucci-frontend
+docker run -d -p 3000:300 --env-file .env forum-meucci-backend
+```
 Remember to set the environment variables
 while deploying to prod as `.env` won't be copied over to the Docker container.
 
