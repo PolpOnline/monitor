@@ -18,13 +18,12 @@
 
 	import { fly } from 'svelte/transition';
 	import { cubicIn, cubicOut } from 'svelte/easing';
-	import { afterNavigate, beforeNavigate } from '$app/navigation';
 
 	import { title } from '$components/stores/title.store';
-	import Loader from '$components/Loader.svelte';
 	import enLang from '$lib/i18n/en.json';
 	import itLang from '$lib/i18n/it.json';
 	import type { Snippet } from 'svelte';
+	import { ProgressBar } from '@prgm/sveltekit-progress-bar';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -35,12 +34,6 @@
 
 	const transitionIn = { easing: cubicOut, y, duration, delay };
 	const transitionOut = { easing: cubicIn, y: -y, duration };
-
-	let isLoading = $state(false);
-
-	// Show loader only when navigating between internal pages
-	beforeNavigate(({ to }) => (isLoading = !!to?.route.id));
-	afterNavigate(() => (isLoading = false));
 
 	const tolgee = Tolgee()
 		.use(DevTools())
@@ -69,13 +62,11 @@
 		<div>
 			<Toaster richColors theme={$mode} />
 
+			<ProgressBar class="text-white" zIndex={100} />
+
 			<Navbar loginStatus={data.loginStatus} loggedInEmail={data.loggedInEmail} />
 
 			<ModeWatcher defaultMode={'dark'} />
-
-			{#if isLoading}
-				<Loader />
-			{/if}
 
 			{#key data.pathname}
 				<div in:fly={transitionIn} out:fly={transitionOut}>
