@@ -12,7 +12,7 @@ use axum_login::{
 };
 use http::StatusCode;
 use sqlx::PgPool;
-use tokio::{signal, task::AbortHandle};
+use tokio::signal;
 use tower_http::{
     compression::CompressionLayer,
     decompression::{DecompressionLayer, RequestDecompressionLayer},
@@ -131,16 +131,24 @@ impl App {
 
         // Ensure we use a shutdown signal to abort the deletion task.
         axum::serve(listener, router.into_make_service())
-            .with_graceful_shutdown(shutdown_signal(vec![worker_task_handle.abort_handle()]))
+            .with_graceful_shutdown(shutdown_signal())
             .await?;
 
-        futures::future::join_all(vec![worker_task_handle]).await;
+        let handles = vec![worker_task_handle];
+
+        // Abort each worker
+        for handle in handles.iter() {
+            handle.abort_handle().abort();
+        }
+
+        // Wait for each worker to finish.
+        futures::future::join_all(handles).await;
 
         Ok(())
     }
 }
 
-async fn shutdown_signal(abort_handles: Vec<AbortHandle>) {
+async fn shutdown_signal() {
     let ctrl_c = async {
         signal::ctrl_c()
             .await
@@ -159,13 +167,11 @@ async fn shutdown_signal(abort_handles: Vec<AbortHandle>) {
     let terminate = std::future::pending::<()>();
 
     tokio::select! {
-        _ = ctrl_c => {
-            abort_handles.iter().for_each(|handle| handle.abort());
-        },
-        _ = terminate => {
-            abort_handles.iter().for_each(|handle| handle.abort());
-        },
+        _ = ctrl_c => {},
+        _ = terminate => {},
     }
+
+    info!("Shutting down...");
 }
 
 fn parse_cookie_key(cookie_key: &str) -> Key {
