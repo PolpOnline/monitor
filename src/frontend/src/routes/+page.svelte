@@ -31,7 +31,7 @@
 	<div class="mx-4" data-vaul-drawer-wrapper>
 		<PageSelector />
 
-		<div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+		<div class="grid grid-cols-1 gap-3 pb-20 lg:grid-cols-2">
 			{#each systems as system (system.id)}
 				<div
 					in:fly={inParams}
