@@ -103,7 +103,7 @@
 					</Form.Label>
 					<DurationPicker
 						bind:this={durationPickerFrequency}
-						defaultValue={{ hours: 0, minutes: 30 }}
+						defaultValue={{ hours: 4, minutes: 0 }}
 					/>
 				{/snippet}
 			</Form.Control>
@@ -132,7 +132,7 @@
 					</Form.Label>
 					<DurationPicker
 						bind:this={durationPickerDownAfter}
-						defaultValue={{ hours: 2, minutes: 0 }}
+						defaultValue={{ hours: 4, minutes: 0 }}
 					/>
 				{/snippet}
 			</Form.Control>
