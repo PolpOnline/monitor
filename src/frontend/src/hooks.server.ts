@@ -1,4 +1,4 @@
-import { API_URL } from '$lib/api/api';
+import { API_URL } from '$lib/api/api.server';
 import type { Handle, HandleFetch, ResolveOptions } from '@sveltejs/kit';
 import type { LoginStatus } from './app';
 import { default as setCookieParser } from 'set-cookie-parser';

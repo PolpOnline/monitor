@@ -5,7 +5,7 @@ import { formSchema as changePasswordFormSchema } from './change_password/schema
 import { formSchema as changeTimezoneFormSchema } from './change_timezone/schema';
 import { formSchema as changeLanguageFormSchema } from './change_language/schema';
 import { zod } from 'sveltekit-superforms/adapters';
-import { API_URL, client } from '$lib/api/api';
+import { API_URL, client } from '$lib/api/api.server';
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	const {

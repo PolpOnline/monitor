@@ -1,4 +1,4 @@
-import { client } from '$lib/api/api';
+import { client } from '$lib/api/api.server';
 import { StatusCodes } from 'http-status-codes';
 import type { PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';

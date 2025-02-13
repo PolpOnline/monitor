@@ -3,7 +3,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { formSchema } from './schema';
 import { zod } from 'sveltekit-superforms/adapters';
-import { API_URL } from '$lib/api/api';
+import { API_URL } from '$lib/api/api.server';
 import { StatusCodes } from 'http-status-codes';
 
 export const load: PageServerLoad = async () => {

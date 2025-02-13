@@ -6,8 +6,8 @@
 	import { Button } from '$components/ui/form';
 	import { presetDialogOpen, targetSystemData } from '$components/stores/popovers.store';
 	import CopyableTextarea from '$components/CopyableTextarea.svelte';
-	import { API_URL } from '$lib/api/api';
 	import { getTranslate, T } from '@tolgee/svelte';
+	import { PUBLIC_API_URL } from '$lib/api/public-api';
 
 	const { t } = getTranslate();
 
@@ -56,7 +56,7 @@
 	const presetMap = $derived.by(() => {
 		return {
 			mikrotik: `/system scheduler add name="ping_status" start-date="${startsAtDate}" start-time="${startsAtTime}" interval="${frequencyHours}:${frequencyMinutes}:00" \
-on-event="/tool fetch url=\\"${API_URL}/ping_status/${$targetSystemData?.id}\\" \
+on-event="/tool fetch url=\\"${PUBLIC_API_URL}/ping_status/${$targetSystemData?.id}\\" \
 mode=https http-method=post output=none"`
 		} as Record<string, string>;
 	});
