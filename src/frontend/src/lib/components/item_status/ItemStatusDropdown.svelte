@@ -11,7 +11,7 @@
 	} from '$lib/components/stores/popovers.store';
 	import LucideClipboardCopy from '~icons/lucide/clipboard-copy';
 	import LucidePencilLine from '~icons/lucide/pencil-line';
-	import { PUBLIC_API_URL } from '$lib/api/public-api';
+	import { API_URL } from '$lib/api/api';
 	import LucideSettings from '~icons/lucide/settings';
 	import LucideEarth from '~icons/lucide/earth';
 	import LucideLock from '~icons/lucide/lock';
@@ -78,7 +78,7 @@
 				onclick={() => {
 					if (!$targetSystemData) return;
 
-					navigator.clipboard.writeText(`${PUBLIC_API_URL}/ping_status/${$targetSystemData.id}`);
+					navigator.clipboard.writeText(`${API_URL}/ping_status/${$targetSystemData.id}`);
 
 					toast.success($t('copied_endpoint_url'));
 				}}

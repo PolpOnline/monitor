@@ -1,5 +1,4 @@
-import { client } from '$lib/api/api.server';
-import { LIST_SIZE } from '$lib/api/public-api';
+import { client, LIST_SIZE } from '$lib/api/api';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import type { PageServerLoad } from './$types';
 import { error, redirect } from '@sveltejs/kit';

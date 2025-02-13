@@ -1,4 +1,4 @@
-import { client } from '$lib/api/api.server';
+import { client } from '$lib/api/api';
 import type { components } from '$lib/api/schema';
 
 export type DeleteSystemRequest = components['schemas']['DeleteSystemRequest'];

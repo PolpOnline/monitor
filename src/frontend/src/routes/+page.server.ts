@@ -1,5 +1,4 @@
-import { client } from '$lib/api/api.server';
-import { LIST_SIZE } from '$lib/api/public-api';
+import { client, LIST_SIZE } from '$lib/api/api';
 import { formSchema } from '$lib/components/add_system/schema';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import type { Actions, PageServerLoad } from './$types.js';
