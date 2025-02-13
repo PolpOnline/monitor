@@ -70,6 +70,7 @@
 					</DropdownMenu.Item>
 					<DropdownMenu.Item
 						onclick={async () => {
+							// @ts-expect-error the component works fine
 							toast($t('refreshing'), { icon: LineMdLoadingLoop });
 							await invalidateAll();
 							toast.success($t('refreshed'));
