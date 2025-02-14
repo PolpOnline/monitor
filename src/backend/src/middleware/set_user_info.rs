@@ -4,7 +4,7 @@ use tower_sessions::cookie::CookieBuilder;
 
 use crate::users::AuthSession;
 
-const USER_EMAIL_COOKIE: &str = "user_email";
+const USER_EMAIL_COOKIE: &str = "monitor_user_email";
 
 pub async fn set_user_info(request: Request, next: Next) -> Response {
     let mut user_email: Option<String> = None;

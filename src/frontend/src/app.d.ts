@@ -11,7 +11,6 @@ declare global {
 			loginStatus: LoginStatus;
 			email?: string;
 		}
-
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
