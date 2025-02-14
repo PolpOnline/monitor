@@ -25,6 +25,8 @@
 	import type { Snippet } from 'svelte';
 	import { ProgressBar } from '@prgm/sveltekit-progress-bar';
 
+	import { UmamiAnalytics } from '@lukulent/svelte-umami';
+
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
 	// Page transition
@@ -52,7 +54,14 @@
 		});
 </script>
 
+<UmamiAnalytics
+	srcURL="https://umami.polp.online/script.js"
+	websiteID="a10d240e-f598-4735-a4c6-3b1cb2231814"
+/>
+
 <svelte:head>
+	<!-- preconnect the Umami instance -->
+	<link href="https://umami.polp.online" rel="preconnect" />
 	<link href={favicon} rel="icon" type="image/svg+xml" />
 	<title>{$title}</title>
 </svelte:head>
