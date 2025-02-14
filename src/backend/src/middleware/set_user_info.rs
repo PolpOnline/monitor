@@ -7,15 +7,13 @@ use crate::users::AuthSession;
 const USER_EMAIL_COOKIE: &str = "monitor_user_email";
 
 pub async fn set_user_info(request: Request, next: Next) -> Response {
-    let mut user_email: Option<String> = None;
-
     let session = request.extensions().get::<AuthSession>();
 
-    if let Some(auth_session) = session {
-        if let Some(user) = &auth_session.user {
-            user_email = Some(user.email.clone());
-        };
-    }
+    let user_email = if let Some(auth_session) = session {
+        auth_session.user.as_ref().map(|user| user.email.clone())
+    } else {
+        None
+    };
 
     let mut response = next.run(request).await;
 

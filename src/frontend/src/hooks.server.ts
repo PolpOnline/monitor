@@ -73,7 +73,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 		});
 	}
 
-	// Set the login status in the "locals" object, so we can access it in the page component
 	event.locals.email = event.cookies.get('monitor_user_email');
 
 	return resolve(event, resolveOptions);
