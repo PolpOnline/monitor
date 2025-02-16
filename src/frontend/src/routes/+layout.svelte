@@ -18,6 +18,7 @@
 
 	import { fly } from 'svelte/transition';
 	import { cubicIn, cubicOut } from 'svelte/easing';
+	import { onMount } from 'svelte';
 
 	import { title } from '$components/stores/title.store';
 	import enLang from '$lib/i18n/en.json';
@@ -52,11 +53,19 @@
 			apiUrl: import.meta.env.VITE_TOLGEE_API_URL,
 			apiKey: import.meta.env.VITE_TOLGEE_API_KEY
 		});
+
+	onMount(() => {
+		// @ts-expect-error - window.umami is defined by the Umami script
+		window.umami.identify({ email: data.loggedInEmail });
+	});
 </script>
 
 <UmamiAnalytics
 	srcURL="https://umami.polp.online/script.js"
 	websiteID="a10d240e-f598-4735-a4c6-3b1cb2231814"
+	configuration={{
+		'data-domains': 'monitor.polp.online'
+	}}
 />
 
 <svelte:head>
