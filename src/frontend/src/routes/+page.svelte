@@ -46,10 +46,4 @@
 	</div>
 
 	<AddSystem data={form} />
-
-	<DeleteSystemDialog />
-
-	<EditSystemNameDialog />
-
-	<PresetDialog />
 </main>

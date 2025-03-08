@@ -2,20 +2,33 @@
 	// noinspection ES6UnusedImports
 	import * as Dialog from '$components/ui/dialog';
 	import { Button } from '$components/ui/form';
-	import { editSystemNameDialogOpen, targetSystemData } from '$lib/stores/popovers.store';
 	import { invalidateAll } from '$app/navigation';
 	import { Input } from '$components/ui/input';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import { toast } from 'svelte-sonner';
 	import { getTranslate, T } from '@tolgee/svelte';
+	import type { Snippet } from 'svelte';
+	import type { components } from '$lib/api/schema';
+
+	let {
+		children,
+		targetSystemData
+	}: {
+		children: Snippet;
+		targetSystemData: components['schemas']['SystemData'];
+	} = $props();
 
 	const { t } = getTranslate();
 
 	let newSystemName = $state('');
+	let open = $state(false);
 
 	async function editSystemName() {
+		if (!targetSystemData) {
+			return;
+		}
+
 		isLoading = true;
-		const id = $targetSystemData?.id;
 
 		newSystemName = newSystemName.trim();
 
@@ -24,7 +37,7 @@
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ id, name: newSystemName })
+			body: JSON.stringify({ id: targetSystemData.id, name: newSystemName })
 		});
 
 		if (res.ok) {
@@ -36,17 +49,20 @@
 		invalidateAll();
 
 		isLoading = false;
-		editSystemNameDialogOpen.set(false);
+		open = false;
 	}
 
 	let isLoading = $state(false);
 </script>
 
-<Dialog.Root bind:open={$editSystemNameDialogOpen}>
+<Dialog.Root bind:open>
+	<Dialog.Trigger class="contents">
+		{@render children()}
+	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>
-				<T keyName="edit_system_name_dialog.title" params={{ name: $targetSystemData?.name }} />
+				<T keyName="edit_system_name_dialog.title" params={{ name: targetSystemData?.name }} />
 			</Dialog.Title>
 
 			<Input
@@ -56,7 +72,10 @@
 			/>
 
 			<Dialog.Footer>
-				<Button onclick={() => editSystemName()}>
+				<Button class="mt-3 sm:mt-0" onclick={() => (open = false)} variant="secondary">
+					<T keyName="cancel" />
+				</Button>
+				<Button class="mt-5 sm:mt-0" onclick={() => editSystemName()}>
 					{#if !isLoading}
 						<T keyName="save" />
 					{:else}

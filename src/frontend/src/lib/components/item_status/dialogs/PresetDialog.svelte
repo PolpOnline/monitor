@@ -4,10 +4,21 @@
 	// noinspection ES6UnusedImports
 	import * as Select from '$components/ui/select';
 	import { Button } from '$components/ui/form';
-	import { presetDialogOpen, targetSystemData } from '$lib/stores/popovers.store';
 	import CopyableTextarea from '$components/CopyableTextarea.svelte';
 	import { API_URL } from '$lib/api/api';
 	import { getTranslate, T } from '@tolgee/svelte';
+	import type { components } from '$lib/api/schema';
+	import type { Snippet } from 'svelte';
+
+	let {
+		children,
+		targetSystemData
+	}: {
+		children: Snippet;
+		targetSystemData: components['schemas']['SystemData'];
+	} = $props();
+
+	let open = $state(false);
 
 	const { t } = getTranslate();
 
@@ -19,7 +30,7 @@
 	];
 
 	const startsAtDateTime = $derived(
-		$targetSystemData ? new Date($targetSystemData.starts_at) : undefined
+		targetSystemData ? new Date(targetSystemData.starts_at) : undefined
 	);
 
 	const startsAtDate = $derived.by(() => {
@@ -47,16 +58,14 @@
 	}); // Format: 00:00:00
 
 	const frequencyHours = $derived(
-		$targetSystemData ? Math.floor($targetSystemData.frequency / 60) : undefined
+		targetSystemData ? Math.floor(targetSystemData.frequency / 60) : undefined
 	);
-	const frequencyMinutes = $derived(
-		$targetSystemData ? $targetSystemData.frequency % 60 : undefined
-	);
+	const frequencyMinutes = $derived(targetSystemData ? targetSystemData.frequency % 60 : undefined);
 
 	const presetMap = $derived.by(() => {
 		return {
 			mikrotik: `/system scheduler add name="ping_status" start-date="${startsAtDate}" start-time="${startsAtTime}" interval="${frequencyHours}:${frequencyMinutes}:00" \
-on-event="/tool fetch url=\\"${API_URL}/ping_status/${$targetSystemData?.id}\\" \
+on-event="/tool fetch url=\\"${API_URL}/ping_status/${targetSystemData?.id}\\" \
 mode=https http-method=post output=none"`
 		} as Record<string, string>;
 	});
@@ -70,7 +79,10 @@ mode=https http-method=post output=none"`
 	);
 </script>
 
-<Dialog.Root bind:open={$presetDialogOpen}>
+<Dialog.Root bind:open>
+	<Dialog.Trigger class="contents">
+		{@render children()}
+	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
 			<Dialog.Title>
@@ -99,7 +111,7 @@ mode=https http-method=post output=none"`
 			{/if}
 
 			<Dialog.Footer>
-				<Button onclick={() => ($presetDialogOpen = false)} class="w-full">
+				<Button onclick={() => (open = false)} class="w-full">
 					<T keyName="close" />
 				</Button>
 			</Dialog.Footer>

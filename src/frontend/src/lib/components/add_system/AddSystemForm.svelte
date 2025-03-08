@@ -10,7 +10,6 @@
 	import { formSchema, type FormSchema } from './schema';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { addSystemSheetOpen } from '$lib/stores/popovers.store';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import LucidePencil from '~icons/lucide/pencil';
 	import LucideClock from '~icons/lucide/clock';
@@ -30,11 +29,13 @@
 	let {
 		data,
 		class: className = '',
-		typeOfWrapper = 'sheet'
+		typeOfWrapper = 'sheet',
+		open = $bindable(false)
 	}: {
 		data: SuperValidated<Infer<FormSchema>>;
 		class?: string;
 		typeOfWrapper: 'sheet' | 'drawer';
+		open?: boolean;
 	} = $props();
 
 	// noinspection JSUnusedGlobalSymbols
@@ -43,7 +44,7 @@
 		dataType: 'json',
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {
-				$addSystemSheetOpen = false;
+				open = false;
 				toast.success($t('add_system.system_added_successfully'));
 			}
 		},

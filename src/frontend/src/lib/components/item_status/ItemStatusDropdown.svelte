@@ -3,12 +3,6 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import LucideEllipsis from '~icons/lucide/ellipsis';
 	import LucideTrash2 from '~icons/lucide/trash-2';
-	import {
-		deleteSystemDialogOpen,
-		editSystemNameDialogOpen,
-		presetDialogOpen,
-		targetSystemData
-	} from '$lib/stores/popovers.store';
 	import LucideClipboardCopy from '~icons/lucide/clipboard-copy';
 	import LucidePencilLine from '~icons/lucide/pencil-line';
 	import { API_URL } from '$lib/api/api';
@@ -22,6 +16,9 @@
 	import { toast } from 'svelte-sonner';
 	import { getTranslate, T } from '@tolgee/svelte';
 	import type { components } from '$lib/api/schema';
+	import PresetDialog from '$components/item_status/dialogs/PresetDialog.svelte';
+	import EditSystemNameDialog from '$components/item_status/dialogs/EditSystemNameDialog.svelte';
+	import DeleteSystemDialog from '$components/item_status/dialogs/DeleteSystemDialog.svelte';
 
 	const { t } = getTranslate();
 
@@ -32,9 +29,7 @@
 
 	const { data }: { data: components['schemas']['SystemData'] } = $props();
 
-	const isPublic = $derived(
-		$targetSystemData ? $targetSystemData.visibility === 'public' : undefined
-	);
+	const isPublic = $derived(data ? data.visibility === 'public' : undefined);
 
 	let isVisibilityChanging = $state(false);
 
@@ -65,7 +60,7 @@
 	}
 </script>
 
-<DropdownMenu.Root onOpenChange={() => targetSystemData.set(data)}>
+<DropdownMenu.Root>
 	<DropdownMenu.Trigger
 		class={className}
 		aria-label={$t('item_status.options_for', { name: data.name })}
@@ -76,9 +71,9 @@
 		<DropdownMenu.Group>
 			<DropdownMenu.Item
 				onclick={() => {
-					if (!$targetSystemData) return;
+					if (!data) return;
 
-					navigator.clipboard.writeText(`${API_URL}/ping_status/${$targetSystemData.id}`);
+					navigator.clipboard.writeText(`${API_URL}/ping_status/${data.id}`);
 
 					toast.success($t('copied_endpoint_url'));
 				}}
@@ -88,13 +83,13 @@
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
 				onclick={async () => {
-					if (!$targetSystemData) return;
+					if (!data) return;
 
 					const newVisibility = isPublic ? 'private' : 'public';
 
-					$targetSystemData.visibility = newVisibility;
+					data.visibility = newVisibility;
 
-					await changeVisibility(newVisibility, $targetSystemData.id);
+					await changeVisibility(newVisibility, data.id);
 				}}
 			>
 				{#if isVisibilityChanging}
@@ -111,41 +106,33 @@
 			{#if isPublic}
 				<DropdownMenu.Item
 					onclick={() => {
-						if (!$targetSystemData) return;
+						if (!data) return;
 
-						navigator.clipboard.writeText(`${page.url.origin}/public/${$targetSystemData.id}`);
+						navigator.clipboard.writeText(`${page.url.origin}/public/${data.id}`);
 					}}
 				>
 					<LucideLink class="mr-2 h-4 w-4" />
 					<T keyName="copy_public_link" />
 				</DropdownMenu.Item>
 			{/if}
-			<DropdownMenu.Item
-				onclick={() => {
-					$presetDialogOpen = true;
-				}}
-			>
-				<LucideSettings class="mr-2 h-4 w-4" />
-				<T keyName="configuration_presets" />
-			</DropdownMenu.Item>
-			<DropdownMenu.Item
-				onclick={() => {
-					$editSystemNameDialogOpen = true;
-				}}
-			>
-				<LucidePencilLine class="mr-2 h-4 w-4" />
-				<T keyName="edit_name" />
-			</DropdownMenu.Item>
-			<DropdownMenu.Item
-				class="text-red-600"
-				data-sveltekit-preload-data="off"
-				onclick={() => {
-					$deleteSystemDialogOpen = true;
-				}}
-			>
-				<LucideTrash2 class="mr-2 h-4 w-4" />
-				<T keyName="delete" />
-			</DropdownMenu.Item>
+			<PresetDialog targetSystemData={data}>
+				<DropdownMenu.Item closeOnSelect={false}>
+					<LucideSettings class="mr-2 h-4 w-4" />
+					<T keyName="configuration_presets" />
+				</DropdownMenu.Item>
+			</PresetDialog>
+			<EditSystemNameDialog targetSystemData={data}>
+				<DropdownMenu.Item closeOnSelect={false}>
+					<LucidePencilLine class="mr-2 h-4 w-4" />
+					<T keyName="edit_name" />
+				</DropdownMenu.Item>
+			</EditSystemNameDialog>
+			<DeleteSystemDialog targetSystemData={data}>
+				<DropdownMenu.Item class="text-red-600" closeOnSelect={false}>
+					<LucideTrash2 class="mr-2 h-4 w-4" />
+					<T keyName="delete" />
+				</DropdownMenu.Item>
+			</DeleteSystemDialog>
 		</DropdownMenu.Group>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

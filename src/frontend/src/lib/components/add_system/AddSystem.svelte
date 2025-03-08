@@ -5,7 +5,6 @@
 	import HeroiconsPlus20Solid from '~icons/heroicons/plus-20-solid';
 	import { type FormSchema } from './schema';
 	import { type Infer, type SuperValidated } from 'sveltekit-superforms';
-	import { addSystemSheetOpen } from '$lib/stores/popovers.store';
 	import AddSystemForm from '$components/add_system/AddSystemForm.svelte';
 	import Device from 'svelte-device-info';
 	// noinspection ES6UnusedImports
@@ -14,6 +13,7 @@
 	import { getTranslate } from '@tolgee/svelte';
 	import { cn } from '$lib/utils';
 
+	let open = $state(false);
 	const { t } = getTranslate();
 
 	const {
@@ -33,7 +33,7 @@
 </script>
 
 {#if !isMobile}
-	<Sheet.Root bind:open={$addSystemSheetOpen}>
+	<Sheet.Root bind:open>
 		<Sheet.Trigger
 			class={cn(buttonVariants({ variant: 'default' }), 'fixed right-5 bottom-5 h-12 w-12')}
 			aria-label="Add device"
@@ -48,11 +48,11 @@
 				</Sheet.Description>
 			</Sheet.Header>
 
-			<AddSystemForm {data} typeOfWrapper="sheet" />
+			<AddSystemForm {data} typeOfWrapper="sheet" bind:open />
 		</Sheet.Content>
 	</Sheet.Root>
 {:else}
-	<Drawer.Root bind:open={$addSystemSheetOpen}>
+	<Drawer.Root bind:open>
 		<Drawer.Trigger
 			class={cn(buttonVariants({ variant: 'default' }), 'fixed right-5 bottom-5 h-12 w-12')}
 		>
@@ -66,7 +66,7 @@
 				</Drawer.Description>
 			</Drawer.Header>
 
-			<AddSystemForm {data} class="mx-5" typeOfWrapper="drawer" />
+			<AddSystemForm {data} class="mx-5" typeOfWrapper="drawer" bind:open />
 		</Drawer.Content>
 	</Drawer.Root>
 {/if}
