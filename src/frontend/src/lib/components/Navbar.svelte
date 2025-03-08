@@ -19,6 +19,7 @@
 	import { getTranslate, T } from '@tolgee/svelte';
 	import DropdownMenuLinkItem from '$components/DropdownMenuLinkItem.svelte';
 	import { buttonVariants } from '$lib/components/ui/button/index.js';
+	import { onMount } from 'svelte';
 
 	const { t } = getTranslate();
 
@@ -30,6 +31,26 @@
 	const loggedIn = $derived(loginStatus === 'logged_in');
 
 	const isPublicPage = $derived(page.url.pathname.startsWith('/public'));
+
+	onMount(() => {
+		addEventListener('keydown', keyHandler);
+		return () => {
+			removeEventListener('keydown', keyHandler);
+		};
+	});
+
+	async function refresh() {
+		// @ts-expect-error the component works fine
+		toast($t('refreshing'), { icon: LineMdLoadingLoop });
+		await invalidateAll();
+		toast.success($t('refreshed'));
+	}
+
+	function keyHandler(event: KeyboardEvent) {
+		if (event.key.toLowerCase() === 'r') {
+			refresh();
+		}
+	}
 </script>
 
 <nav class="grid h-20 grid-cols-3">
@@ -68,16 +89,10 @@
 							<T keyName="toggle_theme" />
 						</span>
 					</DropdownMenu.Item>
-					<DropdownMenu.Item
-						onclick={async () => {
-							// @ts-expect-error the component works fine
-							toast($t('refreshing'), { icon: LineMdLoadingLoop });
-							await invalidateAll();
-							toast.success($t('refreshed'));
-						}}
-					>
+					<DropdownMenu.Item onclick={refresh}>
 						<LucideRefreshCw class="mr-2 h-4 w-4" />
 						<T keyName="refresh" />
+						<DropdownMenu.Shortcut>R</DropdownMenu.Shortcut>
 					</DropdownMenu.Item>
 					{#if loggedIn}
 						<DropdownMenuLinkItem href="/account_settings">

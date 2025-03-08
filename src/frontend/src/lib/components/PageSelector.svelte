@@ -32,9 +32,6 @@
 			toast.info('Reset to live view');
 			goto(`?`);
 		}
-		if (event.key === 'R') {
-			invalidateAll();
-		}
 	}
 
 	const { class: className }: { class?: ClassValue } = $props();
