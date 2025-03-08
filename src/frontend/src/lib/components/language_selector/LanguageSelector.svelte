@@ -61,7 +61,7 @@
 					<T keyName="language_selector.no_language_found" />
 				</Command.Empty>
 				<Command.Group>
-					{#each languages as language}
+					{#each languages as language (language.value)}
 						<Command.Item
 							value={language.value}
 							onSelect={() => {

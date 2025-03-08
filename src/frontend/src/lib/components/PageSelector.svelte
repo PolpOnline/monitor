@@ -3,7 +3,7 @@
 	import { page } from '$app/state';
 	import LucideChevronLeft from '~icons/lucide/chevron-left';
 	import LucideChevronRight from '~icons/lucide/chevron-right';
-	import { goto, invalidateAll } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { cn } from '$lib/utils';
 	import { type ClassValue } from 'clsx';

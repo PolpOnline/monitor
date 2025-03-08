@@ -97,45 +97,39 @@
 
 		<Form.Field {form} name="frequency">
 			<Form.Control>
-				{#snippet children()}
-					<Form.Label>
-						<LucideClock class="inline h-4 w-4" />
-						<T keyName="add_system.check_frequency" />
-					</Form.Label>
-					<DurationPicker
-						bind:this={durationPickerFrequency}
-						defaultValue={{ hours: 4, minutes: 0 }}
-					/>
-				{/snippet}
+				<Form.Label>
+					<LucideClock class="inline h-4 w-4" />
+					<T keyName="add_system.check_frequency" />
+				</Form.Label>
+				<DurationPicker
+					bind:this={durationPickerFrequency}
+					defaultValue={{ hours: 4, minutes: 0 }}
+				/>
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="starts_at">
 			<Form.Control>
-				{#snippet children()}
-					<Form.Label>
-						<LucidePlay class="inline h-4 w-4" />
-						<T keyName="add_system.starting_date_and_time" />
-					</Form.Label>
-					<DateTimePicker bind:this={dateTimePicker} />
-				{/snippet}
+				<Form.Label>
+					<LucidePlay class="inline h-4 w-4" />
+					<T keyName="add_system.starting_date_and_time" />
+				</Form.Label>
+				<DateTimePicker bind:this={dateTimePicker} />
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>
 
 		<Form.Field {form} name="down_after">
 			<Form.Control>
-				{#snippet children()}
-					<Form.Label>
-						<LucideMail class="inline h-4 w-4" />
-						<T keyName="add_system.send_email_after" />
-					</Form.Label>
-					<DurationPicker
-						bind:this={durationPickerDownAfter}
-						defaultValue={{ hours: 4, minutes: 0 }}
-					/>
-				{/snippet}
+				<Form.Label>
+					<LucideMail class="inline h-4 w-4" />
+					<T keyName="add_system.send_email_after" />
+				</Form.Label>
+				<DurationPicker
+					bind:this={durationPickerDownAfter}
+					defaultValue={{ hours: 4, minutes: 0 }}
+				/>
 			</Form.Control>
 			<Form.FieldErrors />
 		</Form.Field>

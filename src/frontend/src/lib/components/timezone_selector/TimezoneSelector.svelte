@@ -61,7 +61,7 @@
 					<T keyName="timezone_selector.no_timezone_found" />
 				</Command.Empty>
 				<Command.Group>
-					{#each timezones as timezone}
+					{#each timezones as timezone (timezone.value)}
 						<Command.Item
 							value={timezone.value}
 							onSelect={() => {
