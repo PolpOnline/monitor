@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types.js';
 	import ChangePasswordForm from './change_password/ChangePasswordForm.svelte';
-	import { title } from '$components/stores/title.store';
+	import { title } from '$lib/stores/title.store';
 	import ChangeTimezoneForm from './change_timezone/ChangeTimezoneForm.svelte';
 	import ChangeLanguageForm from './change_language/ChangeLanguageForm.svelte';
 	// noinspection ES6UnusedImports

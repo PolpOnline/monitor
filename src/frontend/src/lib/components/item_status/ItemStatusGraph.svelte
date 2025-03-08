@@ -7,7 +7,7 @@
 	import { DateTime } from 'luxon';
 	import { colorMap, colorMapBorder, colorMapText } from './index';
 	import { T } from '@tolgee/svelte';
-	import { language } from '$lib/components/stores/language.store';
+	import { language } from '$lib/stores/language.store';
 	import type { components } from '$lib/api/schema';
 
 	let {

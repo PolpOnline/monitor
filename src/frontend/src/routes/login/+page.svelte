@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types.js';
 	import LoginForm from './LoginForm.svelte';
-	import { title } from '$components/stores/title.store';
+	import { title } from '$lib/stores/title.store';
 	import { getTranslate, T } from '@tolgee/svelte';
 
 	const { t } = getTranslate();

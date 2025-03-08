@@ -5,7 +5,7 @@
 	import HeroiconsPlus20Solid from '~icons/heroicons/plus-20-solid';
 	import { type FormSchema } from './schema';
 	import { type Infer, type SuperValidated } from 'sveltekit-superforms';
-	import { addSystemSheetOpen } from '$lib/components/stores/popovers.store';
+	import { addSystemSheetOpen } from '$lib/stores/popovers.store';
 	import AddSystemForm from '$components/add_system/AddSystemForm.svelte';
 	import Device from 'svelte-device-info';
 	// noinspection ES6UnusedImports

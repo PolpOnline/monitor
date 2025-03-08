@@ -21,7 +21,7 @@
 	import type { Snippet } from 'svelte';
 	import { onMount } from 'svelte';
 
-	import { title } from '$components/stores/title.store';
+	import { title } from '$lib/stores/title.store';
 	import enLang from '$lib/i18n/en.json';
 	import itLang from '$lib/i18n/it.json';
 	import { ProgressBar } from '@prgm/sveltekit-progress-bar';

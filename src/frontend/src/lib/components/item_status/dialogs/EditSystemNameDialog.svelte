@@ -2,7 +2,7 @@
 	// noinspection ES6UnusedImports
 	import * as Dialog from '$components/ui/dialog';
 	import { Button } from '$components/ui/form';
-	import { editSystemNameDialogOpen, targetSystemData } from '$components/stores/popovers.store';
+	import { editSystemNameDialogOpen, targetSystemData } from '$lib/stores/popovers.store';
 	import { invalidateAll } from '$app/navigation';
 	import { Input } from '$components/ui/input';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';

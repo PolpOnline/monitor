@@ -10,7 +10,7 @@
 	import { formSchema, type FormSchema } from './schema';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { addSystemSheetOpen } from '$lib/components/stores/popovers.store';
+	import { addSystemSheetOpen } from '$lib/stores/popovers.store';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import LucidePencil from '~icons/lucide/pencil';
 	import LucideClock from '~icons/lucide/clock';

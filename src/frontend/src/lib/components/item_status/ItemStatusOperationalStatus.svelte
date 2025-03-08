@@ -5,7 +5,7 @@
 	import { T } from '@tolgee/svelte';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import humanizeDuration from 'humanize-duration';
-	import { language } from '$lib/components/stores/language.store';
+	import { language } from '$lib/stores/language.store';
 	import { DateTime } from 'luxon';
 	import { colorMapText } from './index';
 	import type { components } from '$lib/api/schema';

@@ -2,7 +2,7 @@
 	import ItemStatus from '$components/item_status/ItemStatus.svelte';
 	import type { PageData } from './$types';
 	import AddSystem from '$components/add_system/AddSystem.svelte';
-	import { title } from '$components/stores/title.store';
+	import { title } from '$lib/stores/title.store';
 	import DeleteSystemDialog from '$components/item_status/dialogs/DeleteSystemDialog.svelte';
 	import EditSystemNameDialog from '$components/item_status/dialogs/EditSystemNameDialog.svelte';
 	import PresetDialog from '$components/item_status/dialogs/PresetDialog.svelte';

@@ -4,7 +4,7 @@
 	// noinspection ES6UnusedImports
 	import * as Select from '$components/ui/select';
 	import { Button } from '$components/ui/form';
-	import { presetDialogOpen, targetSystemData } from '$components/stores/popovers.store';
+	import { presetDialogOpen, targetSystemData } from '$lib/stores/popovers.store';
 	import CopyableTextarea from '$components/CopyableTextarea.svelte';
 	import { API_URL } from '$lib/api/api';
 	import { getTranslate, T } from '@tolgee/svelte';

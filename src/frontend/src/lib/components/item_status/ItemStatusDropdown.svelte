@@ -8,7 +8,7 @@
 		editSystemNameDialogOpen,
 		presetDialogOpen,
 		targetSystemData
-	} from '$lib/components/stores/popovers.store';
+	} from '$lib/stores/popovers.store';
 	import LucideClipboardCopy from '~icons/lucide/clipboard-copy';
 	import LucidePencilLine from '~icons/lucide/pencil-line';
 	import { API_URL } from '$lib/api/api';
