@@ -37,8 +37,7 @@
 					in:fly={inParams}
 					out:fly={outParams}
 					animate:flip={animateParams}
-					class:custom-col-width={systems.length % 2 === 1}
-					class="h-full"
+					class="h-full last:odd:lg:col-span-2"
 				>
 					<ItemStatus data={system} />
 				</div>
@@ -54,9 +53,3 @@
 
 	<PresetDialog />
 </main>
-
-<style lang="postcss">
-	.custom-col-width:last-of-type {
-		@apply lg:col-span-2;
-	}
-</style>
