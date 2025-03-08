@@ -70,6 +70,7 @@
 		"@sveltejs/adapter-node": "^5.2.12",
 		"@tolgee/svelte": "^6.2.2",
 		"@vvo/tzdb": "^6.161.0",
+		"dedent": "^1.5.3",
 		"http-status-codes": "^2.3.0",
 		"humanize-duration": "^3.32.1",
 		"luxon": "^3.5.0",

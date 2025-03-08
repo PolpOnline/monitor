@@ -5,10 +5,10 @@
 	import * as Select from '$components/ui/select';
 	import { Button } from '$components/ui/form';
 	import CopyableTextarea from '$components/CopyableTextarea.svelte';
-	import { API_URL } from '$lib/api/api';
 	import { getTranslate, T } from '@tolgee/svelte';
 	import type { components } from '$lib/api/schema';
 	import type { Snippet } from 'svelte';
+	import { getPresets, presets } from './preset_gen/presetGen';
 
 	let {
 		children,
@@ -22,55 +22,7 @@
 
 	const { t } = getTranslate();
 
-	const presets = [
-		{
-			value: 'mikrotik',
-			label: 'Mikrotik RouterOS'
-		}
-	];
-
-	const startsAtDateTime = $derived(
-		targetSystemData ? new Date(targetSystemData.starts_at) : undefined
-	);
-
-	const startsAtDate = $derived.by(() => {
-		const startsAtDateTimeCalled = startsAtDateTime;
-
-		if (!startsAtDateTimeCalled) {
-			return undefined;
-		}
-
-		return startsAtDateTimeCalled
-			.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' })
-			.replace(',', '')
-			.replaceAll(' ', '/')
-			.toLowerCase();
-	}); // Format: mmm/dd/yyyy (e.g. jan/01/2022)
-
-	const startsAtTime = $derived.by(() => {
-		const startsAtDateTimeCalled = startsAtDateTime;
-
-		if (!startsAtDateTimeCalled) {
-			return undefined;
-		}
-
-		return startsAtDateTimeCalled.toLocaleTimeString('en-GB', { hour12: false });
-	}); // Format: 00:00:00
-
-	const frequencyHours = $derived(
-		targetSystemData ? Math.floor(targetSystemData.frequency / 60) : undefined
-	);
-	const frequencyMinutes = $derived(targetSystemData ? targetSystemData.frequency % 60 : undefined);
-
-	const presetMap = $derived.by(() => {
-		return {
-			mikrotik: `/system scheduler add name="ping_status" start-date="${startsAtDate}" start-time="${startsAtTime}" interval="${frequencyHours}:${frequencyMinutes}:00" \
-on-event="/tool fetch url=\\"${API_URL}/ping_status/${targetSystemData?.id}\\" \
-mode=https http-method=post output=none"`
-		} as Record<string, string>;
-	});
-
-	// let chosenPreset: (typeof presets)[0] | undefined = undefined;
+	const presetMap = getPresets(targetSystemData);
 
 	let value = $state('');
 
