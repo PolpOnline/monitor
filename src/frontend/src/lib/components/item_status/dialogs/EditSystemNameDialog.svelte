@@ -51,7 +51,7 @@
 
 			<Input
 				bind:value={newSystemName}
-				class="!my-3"
+				class="my-3!"
 				placeholder={$t('edit_system_name_dialog.new_system_name')}
 			/>
 

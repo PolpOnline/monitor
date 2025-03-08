@@ -77,7 +77,7 @@ mode=https http-method=post output=none"`
 				<T keyName="preset_dialog.title" />
 			</Dialog.Title>
 
-			<div class="!mt-4">
+			<div class="mt-4!">
 				<Select.Root bind:value type="single">
 					<Select.Trigger class="w-full">
 						{triggerContent}
