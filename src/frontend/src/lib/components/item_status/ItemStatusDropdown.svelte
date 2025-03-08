@@ -70,7 +70,7 @@
 		class={className}
 		aria-label={$t('item_status.options_for', { name: data.name })}
 	>
-		<LucideEllipsis class="h-6 w-6" />
+		<LucideEllipsis class="h-6 w-6 cursor-pointer" />
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
