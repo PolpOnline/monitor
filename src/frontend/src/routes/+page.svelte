@@ -3,18 +3,14 @@
 	import type { PageData } from './$types';
 	import AddSystem from '$components/add_system/AddSystem.svelte';
 	import { title } from '$lib/stores/title.store';
-	import { fly, type FlyParams } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
-	import { type AnimationConfig, flip } from 'svelte/animate';
+	import { flip } from 'svelte/animate';
 	import PageSelector from '$components/PageSelector.svelte';
 
 	title.set('Monitor');
 
 	let { data }: { data: PageData } = $props();
-
-	const inParams: FlyParams = { y: '100%', duration: 300, easing: cubicOut };
-	const outParams: FlyParams = { x: '100%', duration: 700, easing: cubicOut };
-	const animateParams: AnimationConfig = { delay: 0, duration: 300, easing: cubicOut };
 
 	const systems = $derived(data.systems!);
 	const form = $derived(data.form!);
@@ -31,9 +27,9 @@
 		<div class="grid grid-cols-1 gap-3 pb-20 lg:grid-cols-2">
 			{#each systems as system (system.id)}
 				<div
-					in:fly={inParams}
-					out:fly={outParams}
-					animate:flip={animateParams}
+					in:fly={{ y: '100%', duration: 300, easing: cubicOut }}
+					out:fly={{ x: '100%', duration: 700, easing: cubicOut }}
+					animate:flip={{ delay: 0, duration: 300, easing: cubicOut }}
 					class="h-full last:odd:lg:col-span-2"
 				>
 					<ItemStatus data={system} />
