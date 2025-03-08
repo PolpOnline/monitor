@@ -18,12 +18,12 @@
 
 	import { fly } from 'svelte/transition';
 	import { cubicIn, cubicOut } from 'svelte/easing';
+	import type { Snippet } from 'svelte';
 	import { onMount } from 'svelte';
 
 	import { title } from '$components/stores/title.store';
 	import enLang from '$lib/i18n/en.json';
 	import itLang from '$lib/i18n/it.json';
-	import type { Snippet } from 'svelte';
 	import { ProgressBar } from '@prgm/sveltekit-progress-bar';
 
 	import { UmamiAnalytics } from '@lukulent/svelte-umami';
@@ -84,7 +84,7 @@
 
 			<Navbar loginStatus={data.loginStatus} loggedInEmail={data.loggedInEmail} />
 
-			<ModeWatcher defaultMode={'dark'} />
+			<ModeWatcher defaultMode="dark" />
 
 			{#key data.pathname}
 				<div in:fly={transitionIn} out:fly={transitionOut}>
