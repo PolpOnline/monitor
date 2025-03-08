@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../app.pcss';
+	import '../app.css';
 	import 'unfonts.css';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import favicon from '$lib/images/favicon.svg';
