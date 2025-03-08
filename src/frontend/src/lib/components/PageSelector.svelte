@@ -3,10 +3,11 @@
 	import { page } from '$app/state';
 	import LucideChevronLeft from '~icons/lucide/chevron-left';
 	import LucideChevronRight from '~icons/lucide/chevron-right';
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { cn } from '$lib/utils';
 	import { type ClassValue } from 'clsx';
+	import { toast } from 'svelte-sonner';
 
 	const currentPage = $derived(Number(page.url.searchParams.get('page')) || 0);
 
@@ -26,6 +27,13 @@
 		}
 		if (event.key === 'ArrowLeft') {
 			goto(nextPageHref);
+		}
+		if (event.key === 'Escape') {
+			toast.info('Reset to live view');
+			goto(`?`);
+		}
+		if (event.key === 'R') {
+			invalidateAll();
 		}
 	}
 
