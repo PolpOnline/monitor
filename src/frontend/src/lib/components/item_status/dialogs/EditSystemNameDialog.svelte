@@ -61,7 +61,7 @@
 	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
-			<Dialog.Title>
+			<Dialog.Title class="leading-6">
 				<T keyName="edit_system_name_dialog.title" params={{ name: targetSystemData?.name }} />
 			</Dialog.Title>
 
