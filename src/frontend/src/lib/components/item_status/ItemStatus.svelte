@@ -74,7 +74,7 @@
 
 <div class="relative h-full rounded-lg border p-3">
 	{#if showDropdown}
-		<div class="absolute right-3 top-3 mr-2 mt-2">
+		<div class="absolute top-3 right-3 mt-2 mr-2">
 			<ItemStatusDropdown {data} />
 		</div>
 	{/if}

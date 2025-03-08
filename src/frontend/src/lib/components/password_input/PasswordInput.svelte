@@ -18,7 +18,7 @@
 	<Input class={className} bind:value {...restProps} type={showPassword ? 'text' : 'password'} />
 	<button
 		type="button"
-		class="absolute right-2 cursor-pointer text-foreground hover:text-foreground/65"
+		class="text-foreground hover:text-foreground/65 absolute right-2 cursor-pointer"
 		onclick={() => (showPassword = !showPassword)}
 		tabindex="-1"
 	>

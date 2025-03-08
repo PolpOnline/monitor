@@ -21,7 +21,7 @@
 </script>
 
 <div class="mx-3 mb-16">
-	<div class="mb-5 mt-3 grid grid-cols-6">
+	<div class="mt-3 mb-5 grid grid-cols-6">
 		<div class="flex items-center">
 			<Button href="/" variant="outline" size="icon">
 				<LucideChevronLeft class="h-6 w-6" />

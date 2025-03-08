@@ -42,7 +42,7 @@
 
 <div class="relative my-3">
 	<Textarea bind:value class={className} readonly onclick={copyValue} />
-	<Button class="absolute bottom-2 right-2" onclick={copyValue} variant="secondary" size="icon">
+	<Button class="absolute right-2 bottom-2" onclick={copyValue} variant="secondary" size="icon">
 		{#if !displayCheckMark}
 			<div in:fly={flyInOptions}>
 				<LucideClipboardCopy class="h-full w-full" />

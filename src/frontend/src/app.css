@@ -11,13 +11,13 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
-  }
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentColor);
+	}
 }
 
 @layer base {
@@ -90,7 +90,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-	@apply rounded-full bg-border;
+	@apply bg-border rounded-full;
 }
 
 ::-webkit-scrollbar-track {
