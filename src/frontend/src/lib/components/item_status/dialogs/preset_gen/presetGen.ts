@@ -5,7 +5,7 @@ import dedent from 'dedent';
 export const presets = [
 	{
 		value: 'mikrotik',
-		label: 'Mikrotik RouterOS'
+		label: 'MikroTik RouterOS'
 	}
 ];
 
