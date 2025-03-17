@@ -27,6 +27,9 @@
 	import { ProgressBar } from '@prgm/sveltekit-progress-bar';
 
 	import { UmamiAnalytics } from '@lukulent/svelte-umami';
+	import Lenis from 'lenis';
+
+	import 'lenis/dist/lenis.css';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 
@@ -57,6 +60,10 @@
 	onMount(() => {
 		// @ts-expect-error - window.umami is defined by the Umami script
 		window.umami.identify({ email: data.loggedInEmail });
+
+		new Lenis({
+			autoRaf: true
+		});
 	});
 </script>
 
