@@ -33,9 +33,9 @@
 	const isPublicPage = $derived(page.url.pathname.startsWith('/public'));
 
 	onMount(() => {
-		addEventListener('keydown', keyHandler);
+		addEventListener('keyup', keyHandler);
 		return () => {
-			removeEventListener('keydown', keyHandler);
+			removeEventListener('keyup', keyHandler);
 		};
 	});
 
