@@ -32,24 +32,35 @@
 
 	const isPublicPage = $derived(page.url.pathname.startsWith('/public'));
 
+	let rKeyPressed = false;
+
 	onMount(() => {
-		addEventListener('keyup', keyHandler);
+		addEventListener('keydown', keyDownHandler);
+		addEventListener('keyup', keyUpHandler);
 		return () => {
-			removeEventListener('keyup', keyHandler);
+			removeEventListener('keydown', keyDownHandler);
+			removeEventListener('keyup', keyUpHandler);
 		};
 	});
+
+	async function keyDownHandler(event: KeyboardEvent) {
+		if (event.key.toLowerCase() === 'r' && !rKeyPressed) {
+			rKeyPressed = true;
+			await refresh();
+		}
+	}
+
+	async function keyUpHandler(event: KeyboardEvent) {
+		if (event.key.toLowerCase() === 'r') {
+			rKeyPressed = false;
+		}
+	}
 
 	async function refresh() {
 		// @ts-expect-error the component works fine
 		toast($t('refreshing'), { icon: LineMdLoadingLoop });
 		await invalidateAll();
 		toast.success($t('refreshed'));
-	}
-
-	function keyHandler(event: KeyboardEvent) {
-		if (event.key.toLowerCase() === 'r') {
-			refresh();
-		}
 	}
 </script>
 
