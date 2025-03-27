@@ -27,6 +27,10 @@ export const load: PageServerLoad = async ({ fetch, params, url }) => {
 		redirect(StatusCodes.MOVED_TEMPORARILY, '/login');
 	}
 
+	if (response.status === StatusCodes.NOT_FOUND) {
+		error(StatusCodes.NOT_FOUND, getReasonPhrase(StatusCodes.NOT_FOUND));
+	}
+
 	if (errorMessage) {
 		error(StatusCodes.INTERNAL_SERVER_ERROR, getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
 	}
