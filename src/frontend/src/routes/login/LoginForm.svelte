@@ -9,6 +9,7 @@
 	import PasswordInput from '$components/password_input/PasswordInput.svelte';
 	import { toast } from 'svelte-sonner';
 	import { getTranslate, T } from '@tolgee/svelte';
+	import { goto } from '$app/navigation';
 
 	const { t } = getTranslate();
 
@@ -23,6 +24,8 @@
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {
 				toast.success($t('login.login_successful'));
+
+				goto('/');
 			}
 		}
 	});
