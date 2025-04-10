@@ -44,14 +44,22 @@
 	});
 
 	async function keyDownHandler(event: KeyboardEvent) {
-		if (event.key.toLowerCase() === 'r' && !rKeyPressed) {
+		if (event.isComposing) {
+			return;
+		}
+
+		if (event.altKey && event.key.toLowerCase() === 'r' && !rKeyPressed) {
 			rKeyPressed = true;
 			await refresh();
 		}
 	}
 
 	async function keyUpHandler(event: KeyboardEvent) {
-		if (event.key.toLowerCase() === 'r') {
+		if (event.isComposing) {
+			return;
+		}
+
+		if (event.altKey && event.key.toLowerCase() === 'r') {
 			rKeyPressed = false;
 		}
 	}
@@ -103,7 +111,7 @@
 					<DropdownMenu.Item onclick={refresh}>
 						<LucideRefreshCw class="mr-2 h-4 w-4" />
 						<T keyName="refresh" />
-						<DropdownMenu.Shortcut>R</DropdownMenu.Shortcut>
+						<DropdownMenu.Shortcut>Alt+R</DropdownMenu.Shortcut>
 					</DropdownMenu.Item>
 					{#if loggedIn}
 						<DropdownMenuLinkItem href="/account_settings">
