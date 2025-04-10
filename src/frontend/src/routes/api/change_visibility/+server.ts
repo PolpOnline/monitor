@@ -1,4 +1,4 @@
-import { client } from '$lib/api/api';
+import { client } from '$lib/api/api.server';
 import type { components } from '$lib/api/schema';
 
 export type ChangeVisibilityRequest = components['schemas']['ChangeVisibilityRequest'];

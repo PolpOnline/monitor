@@ -5,7 +5,7 @@
 	import LucideTrash2 from '~icons/lucide/trash-2';
 	import LucideClipboardCopy from '~icons/lucide/clipboard-copy';
 	import LucidePencilLine from '~icons/lucide/pencil-line';
-	import { API_URL } from '$lib/api/api';
+	import { PUBLIC_API_URL } from '$lib/api/public-api';
 	import LucideSettings from '~icons/lucide/settings';
 	import LucideEarth from '~icons/lucide/earth';
 	import LucideLock from '~icons/lucide/lock';
@@ -73,7 +73,7 @@
 				onclick={() => {
 					if (!data) return;
 
-					navigator.clipboard.writeText(`${API_URL}/ping_status/${data.id}`);
+					navigator.clipboard.writeText(`${PUBLIC_API_URL}/ping_status/${data.id}`);
 
 					toast.success($t('copied_endpoint_url'));
 				}}
