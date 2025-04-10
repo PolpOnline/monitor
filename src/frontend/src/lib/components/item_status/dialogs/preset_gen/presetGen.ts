@@ -1,4 +1,4 @@
-import { API_URL } from '$lib/api/api';
+import { PUBLIC_API_URL } from '$lib/api/public-api';
 import type { components } from '$lib/api/schema';
 import dedent from 'dedent';
 
@@ -39,6 +39,6 @@ function getMikrotikPreset(targetSystemData: components['schemas']['SystemData']
 	const frequencyMinutes = targetSystemData.frequency % 60;
 
 	return dedent`/system scheduler add name="ping_status" start-date="${startsAtDate}" start-time="${startsAtTime}" interval="${frequencyHours}:${frequencyMinutes}:00"
-					on-event="/tool fetch url=\"${API_URL}/ping_status/${targetSystemData?.id}\"
+					on-event="/tool fetch url=\"${PUBLIC_API_URL}/ping_status/${targetSystemData?.id}\"
 					mode=https http-method=post output=none"`;
 }
