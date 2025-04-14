@@ -74,7 +74,7 @@ docker build -t monitor-backend .
 Then run the following command to start the containers:
 ```bash
 docker run -d -p 5173:5173 --env-file .env monitor-frontend
-docker run -d -p 3000:300 --env-file .env monitor-backend
+docker run -d -p 3000:3000 --env-file .env monitor-backend
 ```
 Remember to set the environment variables
 while deploying to prod as `.env` won't be copied over to the Docker container.
