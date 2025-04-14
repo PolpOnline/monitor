@@ -37,7 +37,7 @@ ahash = "0.8"
 utoipa = { version = "5.2", features = ["uuid", "chrono", "axum_extras", "auto_into_responses"] }
 utoipa-axum = { version = "0.2.0" }
 utoipa-scalar = { version = "0.3.0", features = ["axum"] }
-serde_json = "1.0"
+sonic-rs = "0.5"
 rustls = { version = "0.23.19", features = ["aws-lc-rs"] }
 
 [profile.dev.package.backtrace]
