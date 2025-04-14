@@ -39,6 +39,7 @@ utoipa-axum = { version = "0.2.0" }
 utoipa-scalar = { version = "0.3.0", features = ["axum"] }
 sonic-rs = "0.5"
 rustls = { version = "0.23.19", features = ["aws-lc-rs"] }
+axum-serde = { version = "0.8" , features = ["sonic"]}
 
 [profile.dev.package.backtrace]
 opt-level = 3

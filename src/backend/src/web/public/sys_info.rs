@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use serde::Serialize;
 use sysinfo::System;
 use tokio::time::sleep;
@@ -71,7 +72,7 @@ pub async fn sys_info() -> impl IntoResponse {
         basic: get_basic_info(),
     };
 
-    Json(res)
+    Sonic(res)
 }
 
 fn get_cpu_info(s: &System) -> CpuInfo {

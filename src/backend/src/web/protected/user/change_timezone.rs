@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use axum_thiserror::ErrorStatus;
 use http::StatusCode;
 use serde::Deserialize;
@@ -46,7 +47,7 @@ pub enum ChangeTimezoneError {
 )]
 pub async fn change_timezone(
     auth_session: AuthSession,
-    Json(request): Json<ChangeTimezoneRequest>,
+    Sonic(request): Sonic<ChangeTimezoneRequest>,
 ) -> impl IntoResponse {
     let current_user = match auth_session.user {
         Some(ref user) => user,

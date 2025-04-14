@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use chrono::{DateTime, Duration, Utc};
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
@@ -48,7 +49,7 @@ pub struct AddSystemResponse {
 )]
 pub async fn add_system(
     auth_session: AuthSession,
-    Json(request): Json<AddSystemRequest>,
+    Sonic(request): Sonic<AddSystemRequest>,
 ) -> impl IntoResponse {
     let user = match auth_session.user {
         Some(user) => user,
@@ -89,5 +90,5 @@ pub async fn add_system(
         Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
     };
 
-    (StatusCode::CREATED, Json(AddSystemResponse { id })).into_response()
+    (StatusCode::CREATED, Sonic(AddSystemResponse { id })).into_response()
 }

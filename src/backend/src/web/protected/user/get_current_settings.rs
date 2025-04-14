@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use http::StatusCode;
 use serde::Serialize;
 use utoipa::ToSchema;
@@ -51,5 +52,5 @@ pub async fn get_current_settings(auth_session: AuthSession) -> impl IntoRespons
         language: current_settings.language,
     };
 
-    Json(response).into_response()
+    Sonic(response).into_response()
 }

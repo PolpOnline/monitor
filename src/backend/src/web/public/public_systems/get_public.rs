@@ -1,8 +1,8 @@
 use axum::{
     extract::{Path, Query},
     response::IntoResponse,
-    Json,
 };
+use axum_serde::Sonic;
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -83,7 +83,7 @@ pub async fn get_public(
         Err(s) => return s.into_response(),
     };
 
-    Json(GetPublicResponse {
+    Sonic(GetPublicResponse {
         system: system_data,
     })
     .into_response()

@@ -2,8 +2,8 @@ use ahash::AHashMap;
 use axum::{
     extract::Query,
     response::{IntoResponse, Response},
-    Json,
 };
+use axum_serde::Sonic;
 use chrono::{DateTime, Duration, NaiveDateTime, Utc};
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
@@ -176,7 +176,7 @@ pub async fn list_systems(
         Err(err) => return err.into_response(),
     };
 
-    Json(ListSystemsResponse { systems }).into_response()
+    Sonic(ListSystemsResponse { systems }).into_response()
 }
 
 impl SystemData {

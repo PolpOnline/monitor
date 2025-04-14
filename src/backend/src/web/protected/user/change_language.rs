@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use axum_thiserror::ErrorStatus;
 use http::StatusCode;
 use rust_i18n::available_locales;
@@ -45,7 +46,7 @@ pub enum ChangeLanguageError {
 )]
 pub async fn change_language(
     auth_session: AuthSession,
-    Json(request): Json<ChangeLanguageRequest>,
+    Sonic(request): Sonic<ChangeLanguageRequest>,
 ) -> impl IntoResponse {
     let current_user = match auth_session.user {
         Some(ref user) => user,

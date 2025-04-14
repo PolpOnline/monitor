@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use axum_thiserror::ErrorStatus;
 use chrono_tz::Tz;
 use http::StatusCode;
@@ -54,7 +55,7 @@ pub enum AuthError {
 )]
 pub async fn login(
     mut auth_session: AuthSession,
-    Json(req): Json<Credentials>,
+    Sonic(req): Sonic<Credentials>,
 ) -> impl IntoResponse {
     let mut status_code = StatusCode::OK;
 
@@ -92,12 +93,12 @@ pub async fn login(
     match status_code {
         StatusCode::CREATED => (
             StatusCode::CREATED,
-            Json(LoginResponse {
+            Sonic(LoginResponse {
                 status: "User was created".to_string(),
             }),
         )
             .into_response(),
-        StatusCode::OK => Json(LoginResponse {
+        StatusCode::OK => Sonic(LoginResponse {
             status: "User was logged in".to_string(),
         })
         .into_response(),

@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use axum_thiserror::ErrorStatus;
 use http::StatusCode;
 use password_auth::generate_hash;
@@ -54,7 +55,7 @@ pub enum ChangePasswordError {
 )]
 pub async fn change_password(
     auth_session: AuthSession,
-    Json(request): Json<ChangePasswordRequest>,
+    Sonic(request): Sonic<ChangePasswordRequest>,
 ) -> impl IntoResponse {
     let current_user = match auth_session.user {
         Some(ref user) => user,

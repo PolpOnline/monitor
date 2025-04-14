@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use http::StatusCode;
 use serde::Deserialize;
 use utoipa::ToSchema;
@@ -34,7 +35,7 @@ pub struct ChangeVisibilityRequest {
 )]
 pub async fn change_visibility(
     auth_session: AuthSession,
-    Json(request): Json<ChangeVisibilityRequest>,
+    Sonic(request): Sonic<ChangeVisibilityRequest>,
 ) -> impl IntoResponse {
     if auth_session.user.is_none() {
         return StatusCode::UNAUTHORIZED.into_response();

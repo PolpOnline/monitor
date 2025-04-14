@@ -1,4 +1,5 @@
-use axum::{response::IntoResponse, Json};
+use axum::response::IntoResponse;
+use axum_serde::Sonic;
 use http::StatusCode;
 use serde::Deserialize;
 use utoipa::ToSchema;
@@ -29,7 +30,7 @@ pub struct DeleteSystemRequest {
 )]
 pub async fn delete_system(
     auth_session: AuthSession,
-    Json(request): Json<DeleteSystemRequest>,
+    Sonic(request): Sonic<DeleteSystemRequest>,
 ) -> impl IntoResponse {
     if auth_session.user.is_none() {
         return StatusCode::UNAUTHORIZED.into_response();
