@@ -46,7 +46,7 @@
 			toast.error($t('edit_system_name_dialog.fail', { error: await res.text() }));
 		}
 
-		invalidateAll();
+		await invalidateAll();
 
 		isLoading = false;
 		open = false;

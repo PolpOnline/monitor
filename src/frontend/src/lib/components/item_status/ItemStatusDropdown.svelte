@@ -54,7 +54,7 @@
 			toast.error($t('change_visibility.failed', { error: await res.text() }));
 		}
 
-		invalidateAll();
+		await invalidateAll();
 
 		isVisibilityChanging = false;
 	}

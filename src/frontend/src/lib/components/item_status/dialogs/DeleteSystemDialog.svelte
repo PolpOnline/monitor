@@ -39,7 +39,7 @@
 			toast.error($t('delete_system_dialog.fail', { error: await res.text() }));
 		}
 
-		invalidateAll();
+		await invalidateAll();
 
 		isLoading = false;
 		open = false;
