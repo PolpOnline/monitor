@@ -99,7 +99,7 @@
 						</DropdownMenuLinkItem>
 					{/if}
 					<DropdownMenu.Item onclick={toggleMode}>
-						{#if $mode === 'dark'}
+						{#if mode.current === 'dark'}
 							<LucideSun class="mr-2 h-4 w-4" />
 						{:else}
 							<LucideMoon class="mr-2 h-4 w-4" />

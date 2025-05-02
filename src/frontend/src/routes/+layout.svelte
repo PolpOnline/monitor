@@ -85,7 +85,7 @@
 <TolgeeProvider {tolgee}>
 	<TooltipProvider>
 		<div>
-			<Toaster richColors theme={$mode} />
+			<Toaster richColors theme={mode.current} />
 
 			<ProgressBar class="text-white" zIndex={100} />
 
