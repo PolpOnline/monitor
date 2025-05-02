@@ -20,18 +20,24 @@ export const load: PageServerLoad = async ({ fetch }) => {
 		return new Response(`Failed to fetch: ${error}`, { status: response.status });
 	}
 
-	return {
-		passwordForm: await superValidate(zod(changePasswordFormSchema)),
-		timezoneForm: await superValidate(zod(changeTimezoneFormSchema), {
+	const [passwordForm, timezoneForm, languageForm] = await Promise.all([
+		superValidate(zod(changePasswordFormSchema)),
+		superValidate(zod(changeTimezoneFormSchema), {
 			defaults: {
 				timezone: currentSettings!.timezone
 			}
 		}),
-		languageForm: await superValidate(zod(changeLanguageFormSchema), {
+		superValidate(zod(changeLanguageFormSchema), {
 			defaults: {
 				language: currentSettings!.language
 			}
 		})
+	]);
+
+	return {
+		passwordForm,
+		timezoneForm,
+		languageForm
 	};
 };
 
