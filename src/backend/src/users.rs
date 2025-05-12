@@ -36,9 +36,9 @@ impl AuthUser for User {
 
     fn session_auth_hash(&self) -> &[u8] {
         self.password.as_bytes() // We use the password hash as the auth
-                                 // hash--what this means
-                                 // is when the user changes their password the
-                                 // auth session becomes invalid.
+        // hash--what this means
+        // is when the user changes their password the
+        // auth session becomes invalid.
     }
 }
 

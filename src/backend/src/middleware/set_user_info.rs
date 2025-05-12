@@ -1,5 +1,5 @@
 use axum::{extract::Request, middleware::Next, response::Response};
-use http::{header, HeaderValue};
+use http::{HeaderValue, header};
 use tower_sessions::cookie::CookieBuilder;
 
 use crate::users::AuthSession;

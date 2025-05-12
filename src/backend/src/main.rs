@@ -10,7 +10,7 @@ use once_cell::sync::Lazy;
 use rust_i18n::i18n;
 use rustls::crypto::aws_lc_rs;
 use tracing::info;
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
+use tracing_subscriber::{EnvFilter, layer::SubscriberExt, util::SubscriberInitExt};
 use web::App;
 
 pub mod app;

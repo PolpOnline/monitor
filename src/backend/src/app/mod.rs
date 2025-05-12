@@ -7,8 +7,8 @@ use std::str::FromStr;
 
 use axum::{middleware, routing::get};
 use axum_login::{
-    tower_sessions::{Expiry, SessionManagerLayer},
     AuthManagerLayerBuilder,
+    tower_sessions::{Expiry, SessionManagerLayer},
 };
 use http::StatusCode;
 use sqlx::PgPool;
@@ -19,7 +19,7 @@ use tower_http::{
     trace::TraceLayer,
 };
 use tower_sessions::cookie::Key;
-use tower_sessions_redis_store::{fred::prelude::Pool as FredPool, RedisStore};
+use tower_sessions_redis_store::{RedisStore, fred::prelude::Pool as FredPool};
 use tracing::info;
 use utoipa::OpenApi;
 use utoipa_axum::router::OpenApiRouter;
@@ -31,7 +31,7 @@ use crate::{
     middleware::{set_cache_control::set_cache_control, set_user_info::set_user_info},
     users::LoginBackend,
     web::{auth, protected, public},
-    workers::email_worker::{init_smtp_client, SmtpClient},
+    workers::email_worker::{SmtpClient, init_smtp_client},
 };
 
 pub struct App {

@@ -11,7 +11,7 @@ use uuid::Uuid;
 use crate::{
     app::openapi::PUBLIC_SYSTEM_TAG,
     users::AuthSession,
-    web::protected::list_systems::{SystemData, SystemRecord, Visibility, LIMIT_SYSTEM_REQUEST},
+    web::protected::list_systems::{LIMIT_SYSTEM_REQUEST, SystemData, SystemRecord, Visibility},
 };
 
 #[derive(Debug, Deserialize, Clone, IntoParams)]

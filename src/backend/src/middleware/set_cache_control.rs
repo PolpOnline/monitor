@@ -1,5 +1,5 @@
 use axum::{extract::Request, middleware::Next, response::Response};
-use http::{header, HeaderValue};
+use http::{HeaderValue, header};
 
 pub async fn set_cache_control(request: Request, next: Next) -> Response {
     let mut response = next.run(request).await;

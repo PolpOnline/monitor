@@ -7,7 +7,7 @@ use axum_serde::Sonic;
 use chrono::{DateTime, Duration, NaiveDateTime, Utc};
 use http::StatusCode;
 use serde::{Deserialize, Serialize};
-use sqlx::{postgres::types::PgInterval, PgPool};
+use sqlx::{PgPool, postgres::types::PgInterval};
 use utoipa::{IntoParams, ToSchema};
 use uuid::Uuid;
 

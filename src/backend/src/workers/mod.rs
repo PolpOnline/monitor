@@ -1,11 +1,11 @@
 use color_eyre::Result;
-use sidekiq::{periodic, Processor};
+use sidekiq::{Processor, periodic};
 use sqlx::PgPool;
 use tracing::info;
 
 use crate::{
-    workers::email_worker::{EmailWorker, SmtpClient},
     PRODUCTION,
+    workers::email_worker::{EmailWorker, SmtpClient},
 };
 
 pub(crate) mod email_worker;

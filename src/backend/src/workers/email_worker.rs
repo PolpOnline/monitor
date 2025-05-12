@@ -4,10 +4,10 @@ use async_trait::async_trait;
 use chrono::{DateTime, Duration, Utc};
 use chrono_tz::Tz;
 use color_eyre::Result;
-use humanize_duration::{prelude::*, Truncate};
+use humanize_duration::{Truncate, prelude::*};
 use lettre::{
-    message::header::ContentType, transport::smtp::authentication::Credentials, AsyncSmtpTransport,
-    AsyncTransport, Message, Tokio1Executor,
+    AsyncSmtpTransport, AsyncTransport, Message, Tokio1Executor, message::header::ContentType,
+    transport::smtp::authentication::Credentials,
 };
 use rust_i18n::t;
 use sidekiq::Worker;
@@ -16,8 +16,8 @@ use tracing::{error, info};
 use uuid::Uuid;
 
 use crate::{
-    web::utils::{time::approx_expected_timestamp, time_conversions::pg_interval_to_duration},
     SITE_URL,
+    web::utils::{time::approx_expected_timestamp, time_conversions::pg_interval_to_duration},
 };
 
 pub type SmtpClient = AsyncSmtpTransport<Tokio1Executor>;

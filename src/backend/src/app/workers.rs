@@ -1,11 +1,11 @@
-use sidekiq::{periodic, Processor};
+use sidekiq::{Processor, periodic};
 use sqlx::PgPool;
 use tracing::info;
 
 use crate::{
-    app::{redis::RedisLibPool, App},
-    workers::{email_worker::SmtpClient, register_workers},
     PRODUCTION,
+    app::{App, redis::RedisLibPool},
+    workers::{email_worker::SmtpClient, register_workers},
 };
 
 impl App {
