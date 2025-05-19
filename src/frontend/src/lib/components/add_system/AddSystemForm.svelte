@@ -81,7 +81,7 @@
 </script>
 
 <form action="?/add_system" class={className} method="POST" use:enhance>
-	<div class="space-y-9 p-4">
+	<div class="space-y-9 {typeOfWrapper === 'sheet' ? 'px-4' : 'px-2'}">
 		<Form.Field {form} name="name">
 			<Form.Control>
 				{#snippet children({ props })}

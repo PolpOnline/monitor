@@ -22,7 +22,7 @@
 		data: SuperValidated<Infer<FormSchema>>;
 	} = $props();
 
-	let isMobile = $state(false);
+	let isMobile = $state(true);
 
 	if (browser) {
 		isMobile = Device.isMobile;
@@ -41,7 +41,7 @@
 			<HeroiconsPlus20Solid class="size-6" />
 		</Sheet.Trigger>
 		<Sheet.Content side="right">
-			<Sheet.Header class="mb-3">
+			<Sheet.Header>
 				<Sheet.Title>{title}</Sheet.Title>
 				<Sheet.Description>
 					{description}
