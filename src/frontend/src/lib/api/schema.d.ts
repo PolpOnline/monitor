@@ -4,6 +4,26 @@
  */
 
 export interface paths {
+	'/login': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Login
+		 * @description Login or sign up a user if it does not exist
+		 */
+		post: operations['login'];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	'/add_system': {
 		parameters: {
 			query?: never;
@@ -15,6 +35,60 @@ export interface paths {
 		put?: never;
 		/** Add System */
 		post: operations['add_system'];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	'/delete_system': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		/** Delete System */
+		delete: operations['delete_system'];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	'/get_public/{id}': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Retrieve Info
+		 * @description Retrieve info about a public system
+		 */
+		get: operations['get_public'];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	'/user/get_current_settings': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/** Retrieve Settings */
+		get: operations['get_current_settings'];
+		put?: never;
+		post?: never;
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -41,23 +115,6 @@ export interface paths {
 		patch: operations['change_visibility'];
 		trace?: never;
 	};
-	'/delete_system': {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		/** Delete System */
-		delete: operations['delete_system'];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
 	'/edit_system_name': {
 		parameters: {
 			query?: never;
@@ -75,7 +132,7 @@ export interface paths {
 		patch: operations['edit_system_name'];
 		trace?: never;
 	};
-	'/get_public/{id}': {
+	'/sys_info': {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -83,10 +140,10 @@ export interface paths {
 			cookie?: never;
 		};
 		/**
-		 * Retrieve Info
-		 * @description Retrieve info about a public system
+		 * System information
+		 * @description Get system information
 		 */
-		get: operations['get_public'];
+		get: operations['sys_info'];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -95,24 +152,21 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	'/healthcheck': {
+	'/user/change_password': {
 		parameters: {
 			query?: never;
 			header?: never;
 			path?: never;
 			cookie?: never;
 		};
-		/**
-		 * Healthcheck
-		 * @description Check if the server is running
-		 */
-		get: operations['healthcheck'];
+		get?: never;
 		put?: never;
 		post?: never;
 		delete?: never;
 		options?: never;
 		head?: never;
-		patch?: never;
+		/** Change Password */
+		patch: operations['change_password'];
 		trace?: never;
 	};
 	'/list_systems': {
@@ -132,7 +186,7 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	'/login': {
+	'/user/change_timezone': {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -141,18 +195,32 @@ export interface paths {
 		};
 		get?: never;
 		put?: never;
-		/**
-		 * Login
-		 * @description Login or sign up a user if it does not exist
-		 */
-		post: operations['login'];
+		post?: never;
 		delete?: never;
 		options?: never;
 		head?: never;
-		patch?: never;
+		/** Change Timezone */
+		patch: operations['change_timezone'];
 		trace?: never;
 	};
-	'/logout': {
+	'/user/change_language': {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		/** Change Language */
+		patch: operations['change_language'];
+		trace?: never;
+	};
+	'/healthcheck': {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -160,10 +228,10 @@ export interface paths {
 			cookie?: never;
 		};
 		/**
-		 * Logout
-		 * @description Logout the current user
+		 * Healthcheck
+		 * @description Check if the server is running
 		 */
-		get: operations['logout'];
+		get: operations['healthcheck'];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -192,7 +260,7 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	'/sys_info': {
+	'/logout': {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -200,78 +268,10 @@ export interface paths {
 			cookie?: never;
 		};
 		/**
-		 * System information
-		 * @description Get system information
+		 * Logout
+		 * @description Logout the current user
 		 */
-		get: operations['sys_info'];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	'/user/change_language': {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		/** Change Language */
-		patch: operations['change_language'];
-		trace?: never;
-	};
-	'/user/change_password': {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		/** Change Password */
-		patch: operations['change_password'];
-		trace?: never;
-	};
-	'/user/change_timezone': {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		/** Change Timezone */
-		patch: operations['change_timezone'];
-		trace?: never;
-	};
-	'/user/get_current_settings': {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		/** Retrieve Settings */
-		get: operations['get_current_settings'];
+		get: operations['logout'];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -281,10 +281,68 @@ export interface paths {
 		trace?: never;
 	};
 }
+
 export type webhooks = Record<string, never>;
+
 export interface components {
 	schemas: {
+		GetPublicResponse: {
+			/** @description The requested system's data */
+			system: components['schemas']['SystemData'];
+		};
+		DeleteSystemRequest: {
+			/**
+			 * Format: uuid
+			 * @description The ID of the system to delete
+			 */
+			id: string;
+		};
+		GetCurrentSettingsResponse: {
+			/** @description The current timezone of the user, as defined by the IANA Time Zone
+			 *     Database */
+			timezone: string;
+			/** @description The current language of the user, as defined by the IETF language tag */
+			language: string;
+		};
+		SwapInfo: {
+			used: string;
+			free: string;
+			total: string;
+		};
+		BasicSystemInfo: {
+			system_host_name: string;
+			system_kernel_version: string;
+			system_name: string;
+			system_os_version: string;
+		};
+		MemInfo: {
+			total: string;
+			used: string;
+			free: string;
+		};
+		ChangePasswordRequest: {
+			/** @description The old password */
+			old_password: string;
+			/** @description The new password */
+			new_password: string;
+		};
+		ChangeVisibilityRequest: {
+			/** @description The new visibility of the system */
+			visibility: components['schemas']['Visibility'];
+			/**
+			 * Format: uuid
+			 * @description The ID of the system
+			 */
+			id: string;
+		};
 		AddSystemRequest: {
+			/**
+			 * Format: date-time
+			 * @description The time at which the system starts pinging
+			 */
+			starts_at: string;
+			/** @description The visibility of the system */
+			visibility: components['schemas']['Visibility'];
 			/**
 			 * Format: int64
 			 * @description Time in minutes after which the user will get emailed
@@ -297,49 +355,6 @@ export interface components {
 			frequency: number;
 			/** @description The name of the system */
 			name: string;
-			/**
-			 * Format: date-time
-			 * @description The time at which the system starts pinging
-			 */
-			starts_at: string;
-			/** @description The visibility of the system */
-			visibility: components['schemas']['Visibility'];
-		};
-		AddSystemResponse: {
-			/**
-			 * Format: uuid
-			 * @description The ID of the system that was created
-			 */
-			id: string;
-		};
-		BasicSystemInfo: {
-			system_host_name: string;
-			system_kernel_version: string;
-			system_name: string;
-			system_os_version: string;
-		};
-		ChangeLanguageRequest: {
-			/** @description The new language, as defined by the IETF language tag */
-			language: string;
-		};
-		ChangePasswordRequest: {
-			/** @description The new password */
-			new_password: string;
-			/** @description The old password */
-			old_password: string;
-		};
-		ChangeTimezoneRequest: {
-			/** @description The new timezone, as defined by the IANA Time Zone Database */
-			timezone: string;
-		};
-		ChangeVisibilityRequest: {
-			/**
-			 * Format: uuid
-			 * @description The ID of the system
-			 */
-			id: string;
-			/** @description The new visibility of the system */
-			visibility: components['schemas']['Visibility'];
 		};
 		CpuInfo: {
 			brand: string;
@@ -349,18 +364,15 @@ export interface components {
 			usage: number;
 			vendor_id: string;
 		};
-		Credentials: {
-			/** @description The email of the user */
-			email: string;
-			/** @description The password of the user */
-			password: string;
+		/** @enum {string} */
+		Status: 'up' | 'down' | 'untracked';
+		ListSystemsResponse: {
+			/** @description The list of systems that the user has */
+			systems: components['schemas']['SystemData'][];
 		};
-		DeleteSystemRequest: {
-			/**
-			 * Format: uuid
-			 * @description The ID of the system to delete
-			 */
-			id: string;
+		ChangeTimezoneRequest: {
+			/** @description The new timezone, as defined by the IANA Time Zone Database */
+			timezone: string;
 		};
 		EditSystemNameRequest: {
 			/**
@@ -371,64 +383,21 @@ export interface components {
 			/** @description The new name of the system */
 			name: string;
 		};
-		GetCurrentSettingsResponse: {
-			/** @description The current language of the user, as defined by the IETF language tag */
-			language: string;
-			/** @description The current timezone of the user, as defined by the IANA Time Zone
-			 *     Database */
-			timezone: string;
-		};
-		GetPublicResponse: {
-			/** @description The requested system's data */
-			system: components['schemas']['SystemData'];
-		};
-		Instant: {
-			/**
-			 * Format: date-time
-			 * @description The expected timestamp of the ping (calculated from the frequency and
-			 *     the start time)
-			 */
-			expected_timestamp: string;
-			/** @description The status of the system at this instant */
-			status: components['schemas']['Status'];
-			/**
-			 * Format: date-time
-			 * @description The actual timestamp of the ping
-			 */
-			timestamp?: string | null;
-		};
-		ListSystemsResponse: {
-			/** @description The list of systems that the user has */
-			systems: components['schemas']['SystemData'][];
-		};
-		MemInfo: {
-			free: string;
-			total: string;
-			used: string;
-		};
-		/** @enum {string} */
-		Status: 'up' | 'down' | 'untracked';
-		SwapInfo: {
-			free: string;
-			total: string;
-			used: string;
-		};
-		SystemData: {
-			/**
-			 * Format: int32
-			 * @description Frequency in minutes
-			 */
-			frequency: number;
+		AddSystemResponse: {
 			/**
 			 * Format: uuid
-			 * @description The ID of the system
+			 * @description The ID of the system that was created
 			 */
 			id: string;
+		};
+		ChangeLanguageRequest: {
+			/** @description The new language, as defined by the IETF language tag */
+			language: string;
+		};
+		SystemData: {
 			/** @description The list of instants (containing states for each expected ping) for the
 			 *     system */
 			instants: components['schemas']['Instant'][];
-			/** @description The name of the system */
-			name: string;
 			/**
 			 * Format: date-time
 			 * @description The time at which the system starts pinging
@@ -436,6 +405,33 @@ export interface components {
 			starts_at: string;
 			/** @description The visibility of the system */
 			visibility: components['schemas']['Visibility'];
+			/** @description The name of the system */
+			name: string;
+			/**
+			 * Format: uuid
+			 * @description The ID of the system
+			 */
+			id: string;
+			/**
+			 * Format: int32
+			 * @description Frequency in minutes
+			 */
+			frequency: number;
+		};
+		Instant: {
+			/**
+			 * Format: date-time
+			 * @description The actual timestamp of the ping
+			 */
+			timestamp?: string | null;
+			/** @description The status of the system at this instant */
+			status: components['schemas']['Status'];
+			/**
+			 * Format: date-time
+			 * @description The expected timestamp of the ping (calculated from the frequency and
+			 *     the start time)
+			 */
+			expected_timestamp: string;
 		};
 		SystemInfoResponse: {
 			basic: components['schemas']['BasicSystemInfo'];
@@ -452,8 +448,51 @@ export interface components {
 	headers: never;
 	pathItems: never;
 }
+
 export type $defs = Record<string, never>;
+
 export interface operations {
+	login: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description User was logged in */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description User was created */
+			201: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Wrong password */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'text/plain': string;
+				};
+			};
+		};
+	};
 	add_system: {
 		parameters: {
 			query?: never;
@@ -499,42 +538,6 @@ export interface operations {
 			};
 		};
 	};
-	change_visibility: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				'application/json': components['schemas']['ChangeVisibilityRequest'];
-			};
-		};
-		responses: {
-			/** @description Visibility was changed successfully */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-			/** @description User is not logged in */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-			/** @description Internal server error */
-			500: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
 	delete_system: {
 		parameters: {
 			query?: never;
@@ -549,42 +552,6 @@ export interface operations {
 		};
 		responses: {
 			/** @description System was deleted successfully */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-			/** @description User is not logged in */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-			/** @description Internal server error */
-			500: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	edit_system_name: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				'application/json': components['schemas']['EditSystemNameRequest'];
-			};
-		};
-		responses: {
-			/** @description System name was edited successfully */
 			200: {
 				headers: {
 					[name: string]: unknown;
@@ -655,7 +622,7 @@ export interface operations {
 			};
 		};
 	};
-	healthcheck: {
+	get_current_settings: {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -664,12 +631,171 @@ export interface operations {
 		};
 		requestBody?: never;
 		responses: {
-			/** @description Healthcheck was successful */
+			/** @description Current settings were retrieved successfully */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['GetCurrentSettingsResponse'];
+				};
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	change_visibility: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['ChangeVisibilityRequest'];
+			};
+		};
+		responses: {
+			/** @description Visibility was changed successfully */
 			200: {
 				headers: {
 					[name: string]: unknown;
 				};
 				content?: never;
+			};
+			/** @description User is not logged in */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	edit_system_name: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['EditSystemNameRequest'];
+			};
+		};
+		responses: {
+			/** @description System name was edited successfully */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description User is not logged in */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	sys_info: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description System information was retrieved successfully */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'application/json': components['schemas']['SystemInfoResponse'];
+				};
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	change_password: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['ChangePasswordRequest'];
+			};
+		};
+		responses: {
+			/** @description Password was changed successfully */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description User is not logged in */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					/** @example User is not logged in */
+					'text/plain': string;
+				};
+			};
+			/** @description Old password is wrong */
+			403: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					/** @example Old password is wrong */
+					'text/plain': string;
+				};
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					'text/plain': string;
+				};
 			};
 		};
 	};
@@ -719,7 +845,7 @@ export interface operations {
 			};
 		};
 	};
-	login: {
+	change_timezone: {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -728,30 +854,36 @@ export interface operations {
 		};
 		requestBody: {
 			content: {
-				'application/json': components['schemas']['Credentials'];
+				'application/json': components['schemas']['ChangeTimezoneRequest'];
 			};
 		};
 		responses: {
-			/** @description User was logged in */
+			/** @description Timezone was changed successfully */
 			200: {
 				headers: {
 					[name: string]: unknown;
 				};
 				content?: never;
 			};
-			/** @description User was created */
-			201: {
+			/** @description Timezone is not valid */
+			400: {
 				headers: {
 					[name: string]: unknown;
 				};
-				content?: never;
+				content: {
+					/** @example Timezone not valid */
+					'text/plain': string;
+				};
 			};
-			/** @description Wrong password */
+			/** @description User is not logged in */
 			401: {
 				headers: {
 					[name: string]: unknown;
 				};
-				content?: never;
+				content: {
+					/** @example User is not logged in */
+					'text/plain': string;
+				};
 			};
 			/** @description Internal server error */
 			500: {
@@ -759,12 +891,65 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
+					/** @example Failed to update timezone */
 					'text/plain': string;
 				};
 			};
 		};
 	};
-	logout: {
+	change_language: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				'application/json': components['schemas']['ChangeLanguageRequest'];
+			};
+		};
+		responses: {
+			/** @description Language was changed successfully */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+			/** @description Language is not valid */
+			400: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					/** @example Language is not valid */
+					'text/plain': string;
+				};
+			};
+			/** @description User is not logged in */
+			401: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					/** @example User is not logged in */
+					'text/plain': string;
+				};
+			};
+			/** @description Internal server error */
+			500: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					/** @example Failed to update language */
+					'text/plain': string;
+				};
+			};
+		};
+	};
+	healthcheck: {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -773,15 +958,8 @@ export interface operations {
 		};
 		requestBody?: never;
 		responses: {
-			/** @description User was logged out */
+			/** @description Healthcheck was successful */
 			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-			/** @description Internal server error */
-			500: {
 				headers: {
 					[name: string]: unknown;
 				};
@@ -816,7 +994,7 @@ export interface operations {
 			};
 		};
 	};
-	sys_info: {
+	logout: {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -825,188 +1003,12 @@ export interface operations {
 		};
 		requestBody?: never;
 		responses: {
-			/** @description System information was retrieved successfully */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'application/json': components['schemas']['SystemInfoResponse'];
-				};
-			};
-			/** @description Internal server error */
-			500: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	change_language: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				'application/json': components['schemas']['ChangeLanguageRequest'];
-			};
-		};
-		responses: {
-			/** @description Language was changed successfully */
+			/** @description User was logged out */
 			200: {
 				headers: {
 					[name: string]: unknown;
 				};
 				content?: never;
-			};
-			/** @description Language is not valid */
-			400: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'text/plain': string;
-				};
-			};
-			/** @description User is not logged in */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'text/plain': string;
-				};
-			};
-			/** @description Internal server error */
-			500: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'text/plain': string;
-				};
-			};
-		};
-	};
-	change_password: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				'application/json': components['schemas']['ChangePasswordRequest'];
-			};
-		};
-		responses: {
-			/** @description Password was changed successfully */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-			/** @description User is not logged in */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'text/plain': string;
-				};
-			};
-			/** @description Old password is wrong */
-			403: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'text/plain': string;
-				};
-			};
-			/** @description Internal server error */
-			500: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'text/plain': string;
-				};
-			};
-		};
-	};
-	change_timezone: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				'application/json': components['schemas']['ChangeTimezoneRequest'];
-			};
-		};
-		responses: {
-			/** @description Timezone was changed successfully */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-			/** @description Timezone is not valid */
-			400: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'text/plain': string;
-				};
-			};
-			/** @description User is not logged in */
-			401: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'text/plain': string;
-				};
-			};
-			/** @description Internal server error */
-			500: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'text/plain': string;
-				};
-			};
-		};
-	};
-	get_current_settings: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description Current settings were retrieved successfully */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					'application/json': components['schemas']['GetCurrentSettingsResponse'];
-				};
 			};
 			/** @description Internal server error */
 			500: {

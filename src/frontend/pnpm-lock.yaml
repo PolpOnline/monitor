@@ -58,8 +58,8 @@ importers:
         specifier: ^1.2.2
         version: 1.2.2
       '@internationalized/date':
-        specifier: ^3.8.0
-        version: 3.8.0
+        specifier: ^3.8.1
+        version: 3.8.1
       '@lucide/svelte':
         specifier: ^0.511.0
         version: 0.511.0(svelte@5.31.0)
@@ -124,8 +124,8 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(svelte@5.31.0)
       openapi-fetch:
-        specifier: ^0.13.8
-        version: 0.13.8
+        specifier: ^0.14.0
+        version: 0.14.0
       openapi-typescript:
         specifier: ^7.8.0
         version: 7.8.0(typescript@5.8.3)
@@ -477,8 +477,8 @@ packages:
   '@iconify/utils@2.3.0':
     resolution: {integrity: sha512-GmQ78prtwYW6EtzXRU1rY+KwOKfz32PD7iJh6Iyqw68GiKuoZ2A6pRtzWONz5VQJbp50mEjXh/7NkumtrAgRKA==}
 
-  '@internationalized/date@3.8.0':
-    resolution: {integrity: sha512-J51AJ0fEL68hE4CwGPa6E0PO6JDaVLd8aln48xFCSy7CZkZc96dGEGmLs2OEEbBxcsVZtfrqkXJwI2/MSG8yKw==}
+  '@internationalized/date@3.8.1':
+    resolution: {integrity: sha512-PgVE6B6eIZtzf9Gu5HvJxRK3ufUFz9DhspELuhW/N0GuMGMTLvPQNRkHP2hTuP9lblOk+f+1xi96sPiPXANXAA==}
 
   '@isaacs/fs-minipass@4.0.1':
     resolution: {integrity: sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w==}
@@ -1592,8 +1592,8 @@ packages:
     resolution: {integrity: sha512-IO9QvjUMWxPQQhs60oOu10CRkWCiZzSUkzbXGGV9pviYl1fXYcvkzQ5jV9z8Y6un8ARoVRl4EtC6v6jNqbaJ/w==}
     engines: {node: '>=14.16'}
 
-  openapi-fetch@0.13.8:
-    resolution: {integrity: sha512-yJ4QKRyNxE44baQ9mY5+r/kAzZ8yXMemtNAOFwOzRXJscdjSxxzWSNlyBAr+o5JjkUw9Lc3W7OIoca0cY3PYnQ==}
+  openapi-fetch@0.14.0:
+    resolution: {integrity: sha512-PshIdm1NgdLvb05zp8LqRQMNSKzIlPkyMxYFxwyHR+UlKD4t2nUjkDhNxeRbhRSEd3x5EUNh2w5sJYwkhOH4fg==}
 
   openapi-typescript-helpers@0.0.15:
     resolution: {integrity: sha512-opyTPaunsklCBpTK8JGef6mfPhLSnyy5a0IN9vKtx3+4aExf+KxEqYwIy3hqkedXIB97u357uLMJsOnm3GVjsw==}
@@ -2433,7 +2433,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@internationalized/date@3.8.0':
+  '@internationalized/date@3.8.1':
     dependencies:
       '@swc/helpers': 0.5.17
 
@@ -2946,7 +2946,7 @@ snapshots:
     dependencies:
       '@floating-ui/core': 1.7.0
       '@floating-ui/dom': 1.7.0
-      '@internationalized/date': 3.8.0
+      '@internationalized/date': 3.8.1
       esm-env: 1.2.2
       runed: 0.23.4(svelte@5.31.0)
       svelte: 5.31.0
@@ -3508,7 +3508,7 @@ snapshots:
   normalize-url@8.0.1:
     optional: true
 
-  openapi-fetch@0.13.8:
+  openapi-fetch@0.14.0:
     dependencies:
       openapi-typescript-helpers: 0.0.15
 
