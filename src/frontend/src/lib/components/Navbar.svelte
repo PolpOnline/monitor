@@ -119,7 +119,7 @@
 							<T keyName="account_settings" />
 						</DropdownMenuLinkItem>
 						<div data-sveltekit-preload-data="off">
-							<DropdownMenuLinkItem class="text-red-600" href="/logout">
+							<DropdownMenuLinkItem href="/logout" variant="destructive">
 								<LucideLogOut class="mr-2 size-4" />
 								<T keyName="logout" />
 							</DropdownMenuLinkItem>
