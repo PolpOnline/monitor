@@ -23,7 +23,7 @@
 
 <div class="mt-2 flex w-full content-center items-center gap-2">
 	<div class="w-1/2">
-		<Label for="hours">
+		<Label for="hours" class="mb-1">
 			<T keyName="duration_picker.hours" />
 		</Label>
 		<div class="flex w-full items-center gap-2">
@@ -31,7 +31,7 @@
 		</div>
 	</div>
 	<div class="w-1/2">
-		<Label for="minutes">
+		<Label for="minutes" class="mb-1">
 			<T keyName="duration_picker.minutes" />
 		</Label>
 		<div class="flex w-full items-center gap-2">

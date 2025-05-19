@@ -35,7 +35,7 @@
 	{#if date}
 		<div class="mt-2 flex w-full content-center items-center gap-2">
 			<div class="w-1/3">
-				<Label for="hours">
+				<Label for="hours" class="mb-1">
 					<T keyName="date_time_picker.hours" />
 				</Label>
 				<div class="flex w-full items-center gap-2">
@@ -43,7 +43,7 @@
 				</div>
 			</div>
 			<div class="w-1/3">
-				<Label for="minutes">
+				<Label for="minutes" class="mb-1">
 					<T keyName="date_time_picker.minutes" />
 				</Label>
 				<div class="flex w-full items-center gap-2">
@@ -51,7 +51,7 @@
 				</div>
 			</div>
 			<div class="w-1/3">
-				<Label for="seconds">
+				<Label for="seconds" class="mb-1">
 					<T keyName="date_time_picker.seconds" />
 				</Label>
 				<Input bind:value={seconds} type="number" placeholder="SS" min="0" max="59" />

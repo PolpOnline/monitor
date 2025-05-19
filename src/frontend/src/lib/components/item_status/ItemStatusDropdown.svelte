@@ -65,7 +65,7 @@
 		class={className}
 		aria-label={$t('item_status.options_for', { name: data.name })}
 	>
-		<LucideEllipsis class="h-6 w-6 cursor-pointer" />
+		<LucideEllipsis class="size-6 cursor-pointer" />
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
@@ -78,7 +78,7 @@
 					toast.success($t('copied_endpoint_url'));
 				}}
 			>
-				<LucideClipboardCopy class="mr-2 h-4 w-4" />
+				<LucideClipboardCopy class="mr-2 size-4" />
 				<T keyName="copy_endpoint_url" />
 			</DropdownMenu.Item>
 			<DropdownMenu.Item
@@ -93,13 +93,13 @@
 				}}
 			>
 				{#if isVisibilityChanging}
-					<LineMdLoadingLoop class="mr-2 h-4 w-4" />
+					<LineMdLoadingLoop class="mr-2 size-4" />
 					<T keyName="change_visibility.changing" />
 				{:else if isPublic}
-					<LucideLock class="mr-2 h-4 w-4" />
+					<LucideLock class="mr-2 size-4" />
 					<T keyName="change_visibility.make_private" />
 				{:else}
-					<LucideEarth class="mr-2 h-4 w-4" />
+					<LucideEarth class="mr-2 size-4" />
 					<T keyName="change_visibility.make_public" />
 				{/if}
 			</DropdownMenu.Item>
@@ -111,25 +111,25 @@
 						navigator.clipboard.writeText(`${page.url.origin}/public/${data.id}`);
 					}}
 				>
-					<LucideLink class="mr-2 h-4 w-4" />
+					<LucideLink class="mr-2 size-4" />
 					<T keyName="copy_public_link" />
 				</DropdownMenu.Item>
 			{/if}
 			<PresetDialog targetSystemData={data}>
 				<DropdownMenu.Item closeOnSelect={false}>
-					<LucideSettings class="mr-2 h-4 w-4" />
+					<LucideSettings class="mr-2 size-4" />
 					<T keyName="configuration_presets" />
 				</DropdownMenu.Item>
 			</PresetDialog>
 			<EditSystemNameDialog targetSystemData={data}>
 				<DropdownMenu.Item closeOnSelect={false}>
-					<LucidePencilLine class="mr-2 h-4 w-4" />
+					<LucidePencilLine class="mr-2 size-4" />
 					<T keyName="edit_name" />
 				</DropdownMenu.Item>
 			</EditSystemNameDialog>
 			<DeleteSystemDialog targetSystemData={data}>
 				<DropdownMenu.Item class="text-red-600" closeOnSelect={false}>
-					<LucideTrash2 class="mr-2 h-4 w-4" />
+					<LucideTrash2 class="mr-2 size-4" />
 					<T keyName="delete" />
 				</DropdownMenu.Item>
 			</DeleteSystemDialog>

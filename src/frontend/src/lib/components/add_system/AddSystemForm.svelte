@@ -81,12 +81,12 @@
 </script>
 
 <form action="?/add_system" class={className} method="POST" use:enhance>
-	<div class="space-y-9 p-4">
+	<div class="space-y-9 {typeOfWrapper === 'sheet' ? 'px-4' : 'px-2'}">
 		<Form.Field {form} name="name">
 			<Form.Control>
 				{#snippet children({ props })}
 					<Form.Label class="font-bold">
-						<LucidePencil class="inline h-4 w-4" />
+						<LucidePencil class="inline size-4" />
 						<T keyName="add_system.name" />
 					</Form.Label>
 					<Input {...props} bind:value={$formData.name} />
@@ -98,7 +98,7 @@
 		<Form.Field {form} name="frequency">
 			<Form.Control>
 				<Form.Label>
-					<LucideClock class="inline h-4 w-4" />
+					<LucideClock class="inline size-4" />
 					<T keyName="add_system.check_frequency" />
 				</Form.Label>
 				<DurationPicker
@@ -112,7 +112,7 @@
 		<Form.Field {form} name="starts_at">
 			<Form.Control>
 				<Form.Label>
-					<LucidePlay class="inline h-4 w-4" />
+					<LucidePlay class="inline size-4" />
 					<T keyName="add_system.starting_date_and_time" />
 				</Form.Label>
 				<DateTimePicker bind:this={dateTimePicker} />
@@ -123,7 +123,7 @@
 		<Form.Field {form} name="down_after">
 			<Form.Control>
 				<Form.Label>
-					<LucideMail class="inline h-4 w-4" />
+					<LucideMail class="inline size-4" />
 					<T keyName="add_system.send_email_after" />
 				</Form.Label>
 				<DurationPicker
@@ -138,7 +138,7 @@
 			<Form.Control>
 				{#snippet children({ props })}
 					<Form.Label>
-						<LucideEye class="inline h-4 w-4" />
+						<LucideEye class="inline size-4" />
 						<T keyName="add_system.visibility" />
 					</Form.Label>
 
@@ -173,7 +173,7 @@
 				{#if !$delayed}
 					<T keyName="add_system.add_system_submit" />
 				{:else}
-					<LineMdLoadingLoop class="h-6 w-6" />
+					<LineMdLoadingLoop class="size-6" />
 				{/if}
 			</Form.Button>
 		</Sheet.Footer>
@@ -183,7 +183,7 @@
 				{#if !$delayed}
 					<T keyName="add_system.add_system_submit" />
 				{:else}
-					<LineMdLoadingLoop class="h-6 w-6" />
+					<LineMdLoadingLoop class="size-6" />
 				{/if}
 			</Form.Button>
 		</Drawer.Footer>

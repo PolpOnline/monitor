@@ -94,33 +94,33 @@
 				<DropdownMenu.Group>
 					{#if isPublicPage && !loggedIn}
 						<DropdownMenuLinkItem href="/login">
-							<LucideLogIn class="mr-2 h-4 w-4" />
+							<LucideLogIn class="mr-2 size-4" />
 							<T keyName="login" />
 						</DropdownMenuLinkItem>
 					{/if}
 					<DropdownMenu.Item onclick={toggleMode}>
 						{#if mode.current === 'dark'}
-							<LucideSun class="mr-2 h-4 w-4" />
+							<LucideSun class="mr-2 size-4" />
 						{:else}
-							<LucideMoon class="mr-2 h-4 w-4" />
+							<LucideMoon class="mr-2 size-4" />
 						{/if}
 						<span>
 							<T keyName="toggle_theme" />
 						</span>
 					</DropdownMenu.Item>
 					<DropdownMenu.Item onclick={refresh}>
-						<LucideRefreshCw class="mr-2 h-4 w-4" />
+						<LucideRefreshCw class="mr-2 size-4" />
 						<T keyName="refresh" />
 						<DropdownMenu.Shortcut>Alt+R</DropdownMenu.Shortcut>
 					</DropdownMenu.Item>
 					{#if loggedIn}
 						<DropdownMenuLinkItem href="/account_settings">
-							<LucideSettings class="mr-2 h-4 w-4" />
+							<LucideSettings class="mr-2 size-4" />
 							<T keyName="account_settings" />
 						</DropdownMenuLinkItem>
 						<div data-sveltekit-preload-data="off">
-							<DropdownMenuLinkItem class="text-red-600" href="/logout">
-								<LucideLogOut class="mr-2 h-4 w-4" />
+							<DropdownMenuLinkItem href="/logout" variant="destructive">
+								<LucideLogOut class="mr-2 size-4" />
 								<T keyName="logout" />
 							</DropdownMenuLinkItem>
 						</div>
@@ -128,7 +128,7 @@
 				</DropdownMenu.Group>
 				<DropdownMenu.Separator />
 				<DropdownMenuLinkItem href="https://github.com/PolpOnline/monitor" target="_blank">
-					<LucideGithub class="mr-2 h-4 w-4" />
+					<LucideGithub class="mr-2 size-4" />
 					<T keyName="view_on_github" />
 				</DropdownMenuLinkItem>
 			</DropdownMenu.Content>

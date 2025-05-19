@@ -8,5 +8,5 @@
 </script>
 
 <div class="flex justify-center" in:slide={transitionIn} out:slide={transitionOut}>
-	<LineMdLoadingLoop class="h-10 w-10" />
+	<LineMdLoadingLoop class="size-10" />
 </div>

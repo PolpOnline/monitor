@@ -24,7 +24,7 @@
 	<div class="mt-3 mb-5 grid grid-cols-6">
 		<div class="flex items-center">
 			<Button href="/" variant="outline" size="icon">
-				<LucideChevronLeft class="h-6 w-6" />
+				<LucideChevronLeft class="size-6" />
 			</Button>
 		</div>
 		<h1 class="col-span-4 text-center text-3xl font-bold">
@@ -38,7 +38,7 @@
 		<Card.Root>
 			<Card.Header>
 				<Card.Title>
-					<LucideLanguages class="mb-5 h-10 w-10" />
+					<LucideLanguages class="mb-5 size-10" />
 					<T keyName="account_settings.change_language" />
 				</Card.Title>
 				<Card.Description>
@@ -54,7 +54,7 @@
 		<Card.Root>
 			<Card.Header>
 				<Card.Title>
-					<LucideGlobe class="mb-5 h-10 w-10" />
+					<LucideGlobe class="mb-5 size-10" />
 					<T keyName="account_settings.change_timezone" />
 				</Card.Title>
 				<Card.Description>
@@ -71,7 +71,7 @@
 			<Card.Root class="w-full md:w-1/2">
 				<Card.Header>
 					<Card.Title>
-						<LucideRectangleEllipsis class="mb-5 h-10 w-10" />
+						<LucideRectangleEllipsis class="mb-5 size-10" />
 						<T keyName="account_settings.change_password" />
 					</Card.Title>
 				</Card.Header>
