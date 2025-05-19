@@ -5,7 +5,7 @@
 	import HeroiconsXMark20Solid from '~icons/heroicons/x-mark-20-solid';
 	import HeroiconsCheck20Solid from '~icons/heroicons/check-20-solid';
 	import { DateTime } from 'luxon';
-	import { colorMap, colorMapBorder, colorMapText } from './index';
+	import { colorMap, colorMapBorder } from './index';
 	import { T } from '@tolgee/svelte';
 	import { language } from '$lib/stores/language.store';
 	import type { components } from '$lib/api/schema';
@@ -61,18 +61,18 @@
 
 <div class="flex h-[50px] justify-between">
 	{#each data.instants as instant, i (instant.expected_timestamp)}
+		{@const bgColor = colorMap[instant.status]}
+		{@const borderColor = colorMapBorder[instant.status]}
 		<Tooltip.Root
 			delayDuration={0}
 			bind:open={tooltipOpens[i]}
-			controlledOpen
 			onOpenChange={() => {
 				if (tooltipOpens[i]) clearTooltipsExcept(i);
 			}}
+			disableCloseOnTriggerClick
 		>
 			<div
-				class="mx-0.25 h-full rounded {colorMap[
-					instant.status
-				]} custom-transition-transform max-w-3 cursor-default"
+				class="mx-0.25 h-full rounded {bgColor} custom-transition-transform max-w-3 cursor-default"
 				class:custom-scale={tooltipOpens[i]}
 				style="width: calc((100% / {data.instants.length}) - 2px)"
 				onmouseenter={() => {
@@ -89,8 +89,7 @@
 					aria-labelledby={data.id + 'instant' + i}
 				/>
 			</div>
-			<Tooltip.Content class="{colorMap[instant.status]} {colorMapBorder[instant.status]}">
-				<Tooltip.Arrow class="{colorMapText[instant.status]} rounded-[2px]" />
+			<Tooltip.Content class="{bgColor} {borderColor}" arrowClasses="{bgColor} {borderColor}">
 				<div class="flex items-center" id={data.id + 'instant' + i}>
 					{#if instant.status !== 'untracked'}
 						{#if instant.status === 'up'}
