@@ -128,7 +128,7 @@
 				</DropdownMenu.Item>
 			</EditSystemNameDialog>
 			<DeleteSystemDialog targetSystemData={data}>
-				<DropdownMenu.Item class="text-red-600" closeOnSelect={false}>
+				<DropdownMenu.Item closeOnSelect={false} variant="destructive">
 					<LucideTrash2 class="mr-2 size-4" />
 					<T keyName="delete" />
 				</DropdownMenu.Item>
