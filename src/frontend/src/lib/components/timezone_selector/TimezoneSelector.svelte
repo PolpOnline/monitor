@@ -49,7 +49,7 @@
 				class={cn(className, 'justify-between')}
 			>
 				{selectedValue || $t('timezone_selector.select_a_timezone')}
-				<ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+				<ChevronsUpDown class="ml-2 size-4 shrink-0 opacity-50" />
 			</Button>
 		{/snippet}
 	</Popover.Trigger>
@@ -69,7 +69,7 @@
 								closeAndFocusTrigger();
 							}}
 						>
-							<Check class={cn('mr-2 h-4 w-4', value !== timezone.value && 'text-transparent')} />
+							<Check class={cn('mr-2 size-4', value !== timezone.value && 'text-transparent')} />
 							{timezone.label}
 						</Command.Item>
 					{/each}

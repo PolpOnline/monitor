@@ -79,7 +79,7 @@
 					{#if !isLoading}
 						<T keyName="save" />
 					{:else}
-						<LineMdLoadingLoop class="h-6 w-6" />
+						<LineMdLoadingLoop class="size-6" />
 					{/if}
 				</Button>
 			</Dialog.Footer>

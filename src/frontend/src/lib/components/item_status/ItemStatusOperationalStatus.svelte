@@ -51,10 +51,10 @@
 <div in:slide={transitionIn} out:slide={transitionOut}>
 	<h2 class="text-lg {colorMapText[lastInstant.status]} my-1 flex items-center">
 		{#if lastInstant.status === 'up'}
-			<HeroiconsCheck20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
+			<HeroiconsCheck20Solid class="mr-2 inline-block size-6 min-w-6" />
 			<T keyName="operational" />
 		{:else if lastInstant.status === 'down'}
-			<HeroiconsXMark20Solid class="mr-2 inline-block h-6 w-6 min-w-6" />
+			<HeroiconsXMark20Solid class="mr-2 inline-block size-6 min-w-6" />
 
 			<T keyName="down" />
 

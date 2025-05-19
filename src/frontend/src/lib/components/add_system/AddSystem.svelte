@@ -35,10 +35,10 @@
 {#if !isMobile}
 	<Sheet.Root bind:open>
 		<Sheet.Trigger
-			class={cn(buttonVariants({ variant: 'default' }), 'fixed right-5 bottom-5 h-12 w-12')}
+			class={cn(buttonVariants({ variant: 'default' }), 'fixed right-5 bottom-5 size-12')}
 			aria-label="Add device"
 		>
-			<HeroiconsPlus20Solid class="h-6 w-6" />
+			<HeroiconsPlus20Solid class="size-6" />
 		</Sheet.Trigger>
 		<Sheet.Content side="right">
 			<Sheet.Header class="mb-3">
@@ -54,9 +54,9 @@
 {:else}
 	<Drawer.Root bind:open>
 		<Drawer.Trigger
-			class={cn(buttonVariants({ variant: 'default' }), 'fixed right-5 bottom-5 h-12 w-12')}
+			class={cn(buttonVariants({ variant: 'default' }), 'fixed right-5 bottom-5 size-12')}
 		>
-			<HeroiconsPlus20Solid class="h-6 w-6" />
+			<HeroiconsPlus20Solid class="size-6" />
 		</Drawer.Trigger>
 		<Drawer.Content>
 			<Drawer.Header>

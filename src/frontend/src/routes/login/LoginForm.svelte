@@ -63,7 +63,7 @@
 		{#if !$delayed}
 			<T keyName="login.login" />
 		{:else}
-			<LineMdLoadingLoop class="h-6 w-6" />
+			<LineMdLoadingLoop class="size-6" />
 		{/if}
 	</Form.Button>
 </form>
