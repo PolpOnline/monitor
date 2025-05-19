@@ -197,6 +197,8 @@
 }
 
 @theme {
-	--font-jb-mono: 'JetBrains Mono', monospace;
-	--font-display: var(--font-jb-mono);
+	--font-jb-mono: 'JetBrains Mono Variable', monospace;
+	--font-sans: var(--font-jb-mono);
+	--font-serif: var(--font-jb-mono);
+	--font-mono: var(--font-jb-mono);
 }
