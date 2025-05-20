@@ -33,7 +33,6 @@
 		"@types/humanize-duration": "^3.27.4",
 		"@types/luxon": "^3.6.2",
 		"@types/set-cookie-parser": "^2.4.10",
-		"@vite-pwa/sveltekit": "^1.0.0",
 		"bits-ui": "^1.5.3",
 		"clsx": "^2.1.1",
 		"eslint": "^9.27.0",
