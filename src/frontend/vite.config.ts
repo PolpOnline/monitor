@@ -4,11 +4,13 @@ import Unfonts from 'unplugin-fonts/vite';
 import Icons from 'unplugin-icons/vite';
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
+import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 
 export default defineConfig({
 	plugins: [
 		tailwindcss(),
 		sveltekit(),
+		SvelteKitPWA(),
 
 		Icons({
 			compiler: 'svelte',

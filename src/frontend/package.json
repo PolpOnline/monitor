@@ -32,11 +32,12 @@
 		"@types/humanize-duration": "^3.27.4",
 		"@types/luxon": "^3.6.2",
 		"@types/set-cookie-parser": "^2.4.10",
-		"bits-ui": "^1.5.2",
+		"@vite-pwa/sveltekit": "^1.0.0",
+		"bits-ui": "^1.5.3",
 		"clsx": "^2.1.1",
 		"eslint": "^9.27.0",
 		"eslint-config-prettier": "^10.1.5",
-		"eslint-plugin-svelte": "^3.8.1",
+		"eslint-plugin-svelte": "^3.8.2",
 		"formsnap": "2.0.1",
 		"globals": "^16.1.0",
 		"lucide-svelte": "^0.511.0",
@@ -48,7 +49,7 @@
 		"prettier-plugin-svelte": "^3.4.0",
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"set-cookie-parser": "^2.7.1",
-		"svelte": "^5.31.0",
+		"svelte": "^5.31.1",
 		"svelte-check": "^4.2.1",
 		"svelte-sonner": "^1.0.1",
 		"sveltekit-superforms": "^2.25.0",
@@ -63,7 +64,7 @@
 		"unplugin-icons": "^22.1.0",
 		"vaul-svelte": "1.0.0-next.7",
 		"vite": "^6.3.5",
-		"zod": "^3.25.3"
+		"zod": "^3.25.7"
 	},
 	"type": "module",
 	"dependencies": {
