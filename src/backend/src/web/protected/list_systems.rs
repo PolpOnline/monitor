@@ -123,16 +123,15 @@ pub async fn list_systems(
     auth_session: AuthSession,
     Query(query): Query<ListSystemsQuery>,
 ) -> impl IntoResponse {
-    let user = match auth_session.user {
-        Some(user) => user,
-        None => return StatusCode::UNAUTHORIZED.into_response(),
+    let Some(user) = auth_session.user else {
+        return StatusCode::UNAUTHORIZED.into_response();
     };
 
     if query.list_size > LIMIT_SYSTEM_REQUEST {
         return (StatusCode::BAD_REQUEST, "Limit of list_size exceeded").into_response();
     }
 
-    let db_systems = match sqlx::query_as!(
+    let Ok(db_systems) = sqlx::query_as!(
         SystemRecord,
         r#"
         SELECT id,
@@ -153,9 +152,8 @@ pub async fn list_systems(
     )
     .fetch_all(&auth_session.backend.db)
     .await
-    {
-        Ok(r) => r,
-        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+    else {
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     };
 
     let systems_fut: Vec<_> = db_systems
@@ -171,9 +169,8 @@ pub async fn list_systems(
         })
         .collect();
 
-    let systems = match futures::future::try_join_all(systems_fut).await {
-        Ok(systems) => systems,
-        Err(err) => return err.into_response(),
+    let Ok(systems) = futures::future::try_join_all(systems_fut).await else {
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     };
 
     Sonic(ListSystemsResponse { systems }).into_response()
@@ -197,7 +194,7 @@ impl SystemData {
         let nearest_datetime_max_expected = nearest_datetime + frequency;
         let furthest_datetime_min_expected = furthest_datetime + frequency;
 
-        let db_instants = match sqlx::query_as!(
+        let Ok(db_instants) = sqlx::query_as!(
             PingRecord,
             r#"
             SELECT * FROM ping WHERE system_id = $1
@@ -211,9 +208,8 @@ impl SystemData {
         )
         .fetch_all(pg_pool)
         .await
-        {
-            Ok(r) => r,
-            Err(_) => return Err(StatusCode::INTERNAL_SERVER_ERROR.into_response()),
+        else {
+            return Err(StatusCode::INTERNAL_SERVER_ERROR.into_response());
         };
 
         let instants = Self::from_ping_records_to_instants(

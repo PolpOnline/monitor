@@ -18,8 +18,9 @@ use crate::{app::openapi::AUTH_TAG, users::AuthSession};
     tag = AUTH_TAG
 )]
 pub async fn logout(mut auth_session: AuthSession) -> impl IntoResponse {
-    match auth_session.logout().await {
-        Ok(_) => StatusCode::OK.into_response(),
-        Err(_) => StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+    if auth_session.logout().await.is_err() {
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     }
+
+    StatusCode::OK.into_response()
 }

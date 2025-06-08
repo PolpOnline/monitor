@@ -136,6 +136,9 @@ pub async fn get_user_existence(email: String, auth_session: AuthSession) -> boo
     user.is_some()
 }
 
+const DEFAULT_TIMEZONE: Tz = Tz::UTC;
+const DEFAULT_LANGUAGE: &str = "en";
+
 pub async fn sign_up(
     credentials: Credentials,
     auth_session: AuthSession,
@@ -146,10 +149,6 @@ pub async fn sign_up(
         .await
         .map_err(|_| AuthError::FailedToGenerateHash)?;
 
-    let utc = Tz::UTC;
-
-    let language = "en";
-
     let user = sqlx::query_as!(
         User,
         r#"
@@ -159,8 +158,8 @@ pub async fn sign_up(
         "#,
         credentials.email,
         encrypted_password,
-        utc.to_string(),
-        language
+        DEFAULT_TIMEZONE.to_string(),
+        DEFAULT_LANGUAGE
     )
     .fetch_one(&auth_session.backend.db)
     .await?;

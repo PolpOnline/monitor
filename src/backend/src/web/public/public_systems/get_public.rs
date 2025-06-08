@@ -71,16 +71,15 @@ pub async fn get_public(
         }
     };
 
-    let system_data = match SystemData::fetch_from_db(
+    let Ok(system_data) = SystemData::fetch_from_db(
         &auth_session.backend.db,
         query.list_size,
         query.page,
         db_system,
     )
     .await
-    {
-        Ok(r) => r,
-        Err(s) => return s.into_response(),
+    else {
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     };
 
     Sonic(GetPublicResponse {

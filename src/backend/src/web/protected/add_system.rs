@@ -51,14 +51,13 @@ pub async fn add_system(
     auth_session: AuthSession,
     Sonic(request): Sonic<AddSystemRequest>,
 ) -> impl IntoResponse {
-    let user = match auth_session.user {
-        Some(user) => user,
-        None => return StatusCode::UNAUTHORIZED.into_response(),
+    let Some(user) = auth_session.user else {
+        return StatusCode::UNAUTHORIZED.into_response();
     };
 
     let frequency: PgInterval = match Duration::minutes(request.frequency).try_into() {
         Ok(interval) => interval,
-        Err(_) => return StatusCode::BAD_REQUEST.into_response(),
+        _ => return StatusCode::BAD_REQUEST.into_response(),
     };
 
     let starts_at = request.starts_at.naive_utc();
@@ -67,10 +66,10 @@ pub async fn add_system(
 
     let down_after: PgInterval = match Duration::minutes(request.down_after).try_into() {
         Ok(interval) => interval,
-        Err(_) => return StatusCode::BAD_REQUEST.into_response(),
+        _ => return StatusCode::BAD_REQUEST.into_response(),
     };
 
-    match sqlx::query!(
+    if sqlx::query!(
         r#"
         INSERT INTO system (id, name, user_id, frequency, starts_at, down_after, visibility)
         VALUES ($1, $2, $3, $4, $5, $6, $7)
@@ -85,9 +84,9 @@ pub async fn add_system(
     )
     .execute(&auth_session.backend.db)
     .await
+    .is_err()
     {
-        Ok(_) => {}
-        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     };
 
     (StatusCode::CREATED, Sonic(AddSystemResponse { id })).into_response()

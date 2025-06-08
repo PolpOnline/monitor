@@ -36,7 +36,7 @@ pub async fn delete_system(
         return StatusCode::UNAUTHORIZED.into_response();
     }
 
-    match sqlx::query!(
+    if sqlx::query!(
         r#"
         UPDATE system SET deleted = true WHERE id = $1  
         "#,
@@ -44,9 +44,9 @@ pub async fn delete_system(
     )
     .execute(&auth_session.backend.db)
     .await
+    .is_err()
     {
-        Ok(_) => {}
-        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     };
 
     StatusCode::OK.into_response()

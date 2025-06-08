@@ -38,7 +38,7 @@ pub async fn edit_system_name(
         return StatusCode::UNAUTHORIZED.into_response();
     }
 
-    match sqlx::query!(
+    if sqlx::query!(
         r#"
         UPDATE system SET name = ($1) WHERE id = $2  
         "#,
@@ -47,9 +47,9 @@ pub async fn edit_system_name(
     )
     .execute(&auth_session.backend.db)
     .await
+    .is_err()
     {
-        Ok(_) => {}
-        Err(_) => return StatusCode::INTERNAL_SERVER_ERROR.into_response(),
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
     };
 
     StatusCode::OK.into_response()
