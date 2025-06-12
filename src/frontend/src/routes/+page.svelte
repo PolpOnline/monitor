@@ -10,7 +10,7 @@
 
 	title.set('Monitor');
 
-	let { data }: { data: PageData } = $props();
+	const { data }: { data: PageData } = $props();
 
 	const systems = $derived(data.systems!);
 	const form = $derived(data.form!);
