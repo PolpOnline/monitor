@@ -2,19 +2,19 @@ import type { Actions, PageServerLoad } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { formSchema } from './schema';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 import { API_URL } from '$lib/api/api.server';
 import { StatusCodes } from 'http-status-codes';
 
 export const load: PageServerLoad = async () => {
 	return {
-		form: await superValidate(zod(formSchema))
+		form: await superValidate(zod4(formSchema))
 	};
 };
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event, zod(formSchema));
+		const form = await superValidate(event, zod4(formSchema));
 
 		// If the form is not valid, return a 400 error
 		if (!form.valid) {

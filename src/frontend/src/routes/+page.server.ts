@@ -5,7 +5,7 @@ import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import type { Actions, PageServerLoad } from './$types.js';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 
 export const load: PageServerLoad = async ({ fetch, url }) => {
 	const page = Number(url.searchParams.get('page')) || 0;
@@ -33,14 +33,14 @@ export const load: PageServerLoad = async ({ fetch, url }) => {
 
 	return {
 		systems: data!.systems,
-		form: await superValidate(zod(formSchema))
+		form: await superValidate(zod4(formSchema))
 	};
 };
 
 // noinspection JSUnusedGlobalSymbols
 export const actions: Actions = {
 	add_system: async (event) => {
-		const form = await superValidate(event, zod(formSchema));
+		const form = await superValidate(event, zod4(formSchema));
 
 		if (!form.valid) {
 			return fail(StatusCodes.BAD_REQUEST, {

@@ -1,4 +1,3 @@
-use async_trait::async_trait;
 use axum_login::{AuthUser, AuthnBackend, UserId};
 use password_auth::verify_password;
 use serde::{Deserialize, Serialize};
@@ -72,7 +71,6 @@ pub enum Error {
     TaskJoin(#[from] task::JoinError),
 }
 
-#[async_trait]
 impl AuthnBackend for LoginBackend {
     type User = User;
     type Credentials = Credentials;

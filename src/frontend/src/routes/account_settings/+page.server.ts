@@ -4,7 +4,7 @@ import { message, superValidate } from 'sveltekit-superforms';
 import { formSchema as changePasswordFormSchema } from './change_password/schema';
 import { formSchema as changeTimezoneFormSchema } from './change_timezone/schema';
 import { formSchema as changeLanguageFormSchema } from './change_language/schema';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 import { API_URL, client } from '$lib/api/api.server';
 
 export const load: PageServerLoad = async ({ fetch }) => {
@@ -21,13 +21,13 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	}
 
 	const [passwordForm, timezoneForm, languageForm] = await Promise.all([
-		superValidate(zod(changePasswordFormSchema)),
-		superValidate(zod(changeTimezoneFormSchema), {
+		superValidate(zod4(changePasswordFormSchema)),
+		superValidate(zod4(changeTimezoneFormSchema), {
 			defaults: {
 				timezone: currentSettings!.timezone
 			}
 		}),
-		superValidate(zod(changeLanguageFormSchema), {
+		superValidate(zod4(changeLanguageFormSchema), {
 			defaults: {
 				language: currentSettings!.language
 			}
@@ -44,7 +44,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
 // noinspection JSUnusedGlobalSymbols
 export const actions: Actions = {
 	change_password: async (event) => {
-		const form = await superValidate(event, zod(changePasswordFormSchema));
+		const form = await superValidate(event, zod4(changePasswordFormSchema));
 
 		// If the form is not valid, return a 400 error
 		if (!form.valid) {
@@ -82,7 +82,7 @@ export const actions: Actions = {
 	},
 
 	change_timezone: async (event) => {
-		const form = await superValidate(event, zod(changeTimezoneFormSchema));
+		const form = await superValidate(event, zod4(changeTimezoneFormSchema));
 
 		// If the form is not valid, return a 400 error
 		if (!form.valid) {
@@ -113,7 +113,7 @@ export const actions: Actions = {
 	},
 
 	change_language: async (event) => {
-		const form = await superValidate(event, zod(changeLanguageFormSchema));
+		const form = await superValidate(event, zod4(changeLanguageFormSchema));
 
 		// If the form is not valid, return a 400 error
 		if (!form.valid) {
