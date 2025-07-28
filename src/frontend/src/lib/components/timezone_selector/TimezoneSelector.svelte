@@ -53,7 +53,7 @@
 			</Button>
 		{/snippet}
 	</Popover.Trigger>
-	<Popover.Content class="w-[95vw] p-0 md:w-[50vw]">
+	<Popover.Content class="w-(--bits-popover-anchor-width) min-w-(--bits-popover-anchor-width) p-0">
 		<Command.Root filter={searchTimezoneFn} class="w-full">
 			<Command.Input placeholder={$t('timezone_selector.search_timezone')} />
 			<Command.List>

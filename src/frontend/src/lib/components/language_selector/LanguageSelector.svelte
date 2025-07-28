@@ -53,7 +53,7 @@
 			</Button>
 		{/snippet}
 	</Popover.Trigger>
-	<Popover.Content class="w-[95vw] p-0 md:w-[50vw]">
+	<Popover.Content class="w-(--bits-popover-anchor-width) min-w-(--bits-popover-anchor-width) p-0">
 		<Command.Root filter={searchLanguageFn}>
 			<Command.Input placeholder={$t('language_selector.search_language')} />
 			<Command.List>
