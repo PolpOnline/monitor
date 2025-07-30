@@ -149,7 +149,9 @@
 									? $t('add_system.public')
 									: $t('add_system.private')}
 							</DropdownMenu.Trigger>
-							<DropdownMenu.Content class="w-[95%]">
+							<DropdownMenu.Content
+								class="w-(--bits-dropdown-menu-anchor-width) min-w-(--bits-dropdown-menu-anchor-width)"
+							>
 								<DropdownMenu.RadioGroup bind:value={$formData.visibility}>
 									<DropdownMenu.RadioItem value="public">
 										<T keyName="add_system.public" />
