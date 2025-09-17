@@ -1,3 +1,4 @@
+import devtoolsJson from 'vite-plugin-devtools-json';
 import { sveltekit } from '@sveltejs/kit/vite';
 import type { FontsourceFontFamily } from 'unplugin-fonts/types';
 import Unfonts from 'unplugin-fonts/vite';
@@ -9,12 +10,7 @@ export default defineConfig({
 	plugins: [
 		tailwindcss(),
 		sveltekit(),
-
-		Icons({
-			compiler: 'svelte',
-			autoInstall: true
-		}),
-
+		Icons({ compiler: 'svelte', autoInstall: true }),
 		Unfonts({
 			// Fontsource API
 			fontsource: {
@@ -28,6 +24,7 @@ export default defineConfig({
 					} as FontsourceFontFamily
 				]
 			}
-		})
+		}),
+		devtoolsJson()
 	]
 });
