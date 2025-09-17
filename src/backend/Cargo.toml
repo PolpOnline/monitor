@@ -31,7 +31,7 @@ once_cell = "1.21"
 tower-sessions-redis-store = { version = "0.16.0", features = ["enable-rustls"] }
 chrono-tz = "0.10"
 humanize-duration = { version = "0.0", features = ["chrono"] }
-sysinfo = { version = "0.36", features = ["serde", "system"] }
+sysinfo = { version = "0.37", features = ["serde", "system"] }
 rust-i18n = "3.1"
 ahash = "0.8"
 utoipa = { version = "5.4", features = ["uuid", "chrono", "axum_extras", "auto_into_responses"] }
