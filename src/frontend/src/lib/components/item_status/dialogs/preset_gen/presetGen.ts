@@ -38,7 +38,7 @@ function getMikrotikPreset(targetSystemData: components['schemas']['SystemData']
 	const frequencyHours = Math.floor(targetSystemData.frequency / 60);
 	const frequencyMinutes = targetSystemData.frequency % 60;
 
-	return dedent`/system scheduler add name="ping_status" start-date="${startsAtDate}" start-time="${startsAtTime}" interval="${frequencyHours}:${frequencyMinutes}:00"
-					on-event="/tool fetch url=\"${PUBLIC_API_URL}/ping_status/${targetSystemData?.id}\"
+	return dedent`/system scheduler add name="ping_status" start-date="${startsAtDate}" start-time="${startsAtTime}" interval="${frequencyHours}:${frequencyMinutes}:00" \
+					on-event="/tool fetch url=\"${PUBLIC_API_URL}/ping_status/${targetSystemData?.id}\" \
 					mode=https http-method=post output=none"`;
 }
