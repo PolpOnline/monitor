@@ -21,15 +21,14 @@ FROM base AS prerelease
 COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
 
-# [optional] tests & build
+# build the project
 ENV NODE_ENV=production
 RUN bun run build
 
 # copy production dependencies and source code into final image
 FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app/index.ts .
-COPY --from=prerelease /usr/src/app/package.json .
+COPY --from=prerelease /usr/src/app/ .
 
 # # Install curl for healthcheck
 RUN apk add --no-cache curl
