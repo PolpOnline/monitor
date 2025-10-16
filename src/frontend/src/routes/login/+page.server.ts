@@ -3,7 +3,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { formSchema } from './schema';
 import { zod4 } from 'sveltekit-superforms/adapters';
-import { API_URL } from '$lib/api/api.server';
+import { client } from '$lib/api/api.server';
 import { StatusCodes } from 'http-status-codes';
 
 export const load: PageServerLoad = async () => {
@@ -23,18 +23,15 @@ export const actions: Actions = {
 			});
 		}
 
-		const res = await event.fetch(`${API_URL}/login`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(form.data)
+		const res = await client.POST(`/login`, {
+			content: form.data,
+			fetch: event.fetch
 		});
 
-		const messageToSend = await res.text();
-
 		// If the request was not successful, return the status code and the form
-		if (!res.ok) {
+		if (!res.response.ok) {
+			const messageToSend = res.response.statusText;
+
 			return message(form, messageToSend, {
 				// @ts-expect-error - assume res has a valid status code
 				status: res.status

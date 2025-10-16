@@ -4,7 +4,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { formSchema, type FormSchema } from './schema';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import PasswordInput from '$components/password_input/PasswordInput.svelte';
 	import { toast } from 'svelte-sonner';
@@ -20,11 +20,12 @@
 	} = $props();
 
 	const form = superForm(data, {
-		validators: zodClient(formSchema),
+		validators: zod4Client(formSchema),
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {
 				toast.success($t('login.login_successful'));
 
+				// eslint-disable-next-line svelte/no-navigation-without-resolve
 				goto('/');
 			}
 		}
