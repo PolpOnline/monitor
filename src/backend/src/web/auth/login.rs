@@ -45,9 +45,10 @@ pub enum AuthError {
     path = "/login",
     summary = "Login",
     description = "Login or sign up a user if it does not exist",
+    request_body = Credentials,
     responses(
-        (status = CREATED, description = "User was created"),
-        (status = OK, description = "User was logged in"),
+        (status = CREATED, description = "User was created", body = LoginResponse),
+        (status = OK, description = "User was logged in", body = LoginResponse),
         (status = INTERNAL_SERVER_ERROR, description = "Internal server error", body = str, content_type = "text/plain"),
         (status = UNAUTHORIZED, description = "Wrong password")
     ),

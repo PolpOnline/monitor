@@ -24,7 +24,7 @@ export const actions: Actions = {
 		}
 
 		const res = await client.POST(`/login`, {
-			content: form.data,
+			body: form.data,
 			fetch: event.fetch
 		});
 

@@ -20,7 +20,7 @@ The frontend optionally requires the following environment variables to be set:
 These two are only required if you want to do development.
 
 ### Backend
-The backend requires the following environment variables to be set: 
+The backend requires the following environment variables to be set:
 - `DATABASE_URL` - a Postgres database URL
 - `REDIS_URL` - a Redis database URL
 - `EMAIL_*` - SMTP server configuration to send email notifications when a system is down
@@ -85,8 +85,8 @@ To run the frontend and backend in development mode, you can use the following c
 
 ```bash
 cd src/frontend
-pnpm install
-pnpm dev
+bun install
+bun dev
 ```
 
 ```bash
