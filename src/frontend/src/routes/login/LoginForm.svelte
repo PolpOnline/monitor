@@ -25,7 +25,6 @@
 			if (f.valid) {
 				toast.success($t('login.login_successful'));
 
-				// eslint-disable-next-line svelte/no-navigation-without-resolve
 				goto('/');
 			}
 		}

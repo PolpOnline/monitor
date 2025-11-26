@@ -23,16 +23,13 @@
 
 	function keyHandler(event: KeyboardEvent) {
 		if (event.key === 'ArrowRight' && currentPage > 0) {
-			// eslint-disable-next-line svelte/no-navigation-without-resolve
 			goto(prevPageHref);
 		}
 		if (event.key === 'ArrowLeft') {
-			// eslint-disable-next-line svelte/no-navigation-without-resolve
 			goto(nextPageHref);
 		}
 		if (event.key === 'Escape') {
 			toast.info('Reset to live view');
-			// eslint-disable-next-line svelte/no-navigation-without-resolve
 			goto('?');
 		}
 	}
