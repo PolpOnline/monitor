@@ -21,7 +21,7 @@ COPY . .
 RUN cargo build --release --bin monitor
 
 # Use a minimal base image for the final stage
-FROM debian:bookworm-slim AS runtime
+FROM debian:trixie-slim AS runtime
 
 # Install curl
 RUN apt-get update && apt-get install -y curl
