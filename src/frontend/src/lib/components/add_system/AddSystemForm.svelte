@@ -9,7 +9,7 @@
 	import * as Drawer from '$lib/components/ui/drawer';
 	import { formSchema, type FormSchema } from './schema';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import LucidePencil from '~icons/lucide/pencil';
 	import LucideClock from '~icons/lucide/clock';
@@ -29,22 +29,19 @@
 	let {
 		data,
 		class: className = '',
-		typeOfWrapper = 'sheet',
-		open = $bindable(false)
+		typeOfWrapper = 'sheet'
 	}: {
 		data: SuperValidated<Infer<FormSchema>>;
 		class?: string;
 		typeOfWrapper: 'sheet' | 'drawer';
-		open?: boolean;
 	} = $props();
 
 	// noinspection JSUnusedGlobalSymbols
 	const form = superForm(data, {
-		validators: zodClient(formSchema),
+		validators: zod4Client(formSchema),
 		dataType: 'json',
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {
-				open = false;
 				toast.success($t('add_system.system_added_successfully'));
 			}
 		},

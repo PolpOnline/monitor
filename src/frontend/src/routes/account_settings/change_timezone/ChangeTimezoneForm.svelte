@@ -3,7 +3,7 @@
 	import * as Form from '$components/ui/form';
 	import { formSchema as changeTimezoneFormSchema, type FormSchema } from './schema';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import TimezoneSelector from '$components/timezone_selector/TimezoneSelector.svelte';
 	import { toast } from 'svelte-sonner';
@@ -20,7 +20,7 @@
 
 	const form = superForm(data, {
 		dataType: 'json',
-		validators: zodClient(changeTimezoneFormSchema),
+		validators: zod4Client(changeTimezoneFormSchema),
 		resetForm: false,
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {

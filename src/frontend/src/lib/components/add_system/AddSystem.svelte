@@ -48,7 +48,7 @@
 				</Sheet.Description>
 			</Sheet.Header>
 
-			<AddSystemForm {data} typeOfWrapper="sheet" bind:open />
+			<AddSystemForm {data} typeOfWrapper="sheet" />
 		</Sheet.Content>
 	</Sheet.Root>
 {:else}
@@ -66,7 +66,7 @@
 				</Drawer.Description>
 			</Drawer.Header>
 
-			<AddSystemForm {data} class="mx-5" typeOfWrapper="drawer" bind:open />
+			<AddSystemForm {data} class="mx-5" typeOfWrapper="drawer" />
 		</Drawer.Content>
 	</Drawer.Root>
 {/if}

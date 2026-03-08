@@ -3,7 +3,7 @@
 	import * as Form from '$components/ui/form';
 	import { formSchema as changePasswordFormSchema, type FormSchema } from './schema';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import PasswordInput from '$components/password_input/PasswordInput.svelte';
 	import { toast } from 'svelte-sonner';
@@ -18,7 +18,7 @@
 	} = $props();
 
 	const form = superForm(data, {
-		validators: zodClient(changePasswordFormSchema),
+		validators: zod4Client(changePasswordFormSchema),
 		onUpdated: ({ form: f }) => {
 			if (!f.valid) {
 				toast.error($t('account_settings.fix_errors'));

@@ -3,7 +3,7 @@
 	import * as Form from '$components/ui/form';
 	import { formSchema as changeLanguageFormSchema, type FormSchema } from './schema';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import LineMdLoadingLoop from '~icons/line-md/loading-loop';
 	import LanguageSelector from '$components/language_selector/LanguageSelector.svelte';
 	import { toast } from 'svelte-sonner';
@@ -24,7 +24,7 @@
 
 	const form = superForm(data, {
 		dataType: 'json',
-		validators: zodClient(changeLanguageFormSchema),
+		validators: zod4Client(changeLanguageFormSchema),
 		resetForm: false,
 		onUpdated: ({ form: f }) => {
 			if (f.valid) {
