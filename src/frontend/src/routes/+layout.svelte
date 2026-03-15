@@ -26,7 +26,6 @@
 	import itLang from '$lib/i18n/it.json';
 	import { ProgressBar } from '@prgm/sveltekit-progress-bar';
 
-	import { UmamiAnalytics } from '@lukulent/svelte-umami';
 	import Lenis from 'lenis';
 
 	import 'lenis/dist/lenis.css';
@@ -67,13 +66,6 @@
 	});
 </script>
 
-<UmamiAnalytics
-	srcURL="https://umami.polp.online/script.js"
-	websiteID="a10d240e-f598-4735-a4c6-3b1cb2231814"
-	configuration={{
-		'data-domains': 'monitor.polp.online'
-	}}
-/>
 
 <svelte:head>
 	<!-- preconnect the Umami instance -->

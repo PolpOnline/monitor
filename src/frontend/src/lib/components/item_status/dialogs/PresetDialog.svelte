@@ -4,7 +4,7 @@
 	// noinspection ES6UnusedImports
 	import * as Select from '$components/ui/select';
 	import { Button } from '$components/ui/form';
-	import CopyableTextarea from '$components/CopyableTextarea.svelte';
+	import CopyableCodeTextArea from '$components/copyable_code_text_area/CopyableCodeTextArea.svelte';
 	import { getTranslate, T } from '@tolgee/svelte';
 	import type { components } from '$lib/api/schema';
 	import type { Snippet } from 'svelte';
@@ -59,7 +59,7 @@
 			</div>
 
 			{#if value}
-				<CopyableTextarea value={presetMap[value]} class="h-[320px]" />
+				<CopyableCodeTextArea value={presetMap[value]} language={value} class="h-80" />
 			{/if}
 
 			<Dialog.Footer>
