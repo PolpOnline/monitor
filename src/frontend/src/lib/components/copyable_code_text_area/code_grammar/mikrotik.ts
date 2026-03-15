@@ -1,12 +1,21 @@
 // File copied from
 // https://github.com/PrismJS/prism/issues/3587#issuecomment-3627074102
 // https://codepen.io/dmitrysharabin/full/OPNBEpo
-
 // eslint-disable @typescript-eslint/no-explicit-any
-// @SuppressWarnings("SpellCheckingInspection")
 
-import Prism from 'prismjs';
-import 'prismjs/components/prism-regex';
+import PrismImport from 'prismjs';
+
+// Ensure the global Prism reference exists before loading plugins (prod bundles may reorder imports)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Prism = (PrismImport as any).default ?? PrismImport;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+if (typeof globalThis !== 'undefined' && !(globalThis as any).Prism) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	(globalThis as any).Prism = Prism;
+}
+
+// @ts-expect-error No types needed for this one
+await import('prismjs/components/prism-regex');
 
 const mikrotik = {
 	id: 'mikrotik',
@@ -1395,7 +1404,64 @@ const mikrotik = {
 			'lsa-flood-ls-flood-ls-flood-sequence',
 			'lsa-flood-ls-flood-ls-flood-options',
 			'lsa-flood-ls-flood-ls-flood-link-state-id',
-			'lsa-flood-ls-flood-ls-flood-advertising-router'
+			'lsa-flood-ls-flood-ls-flood-advertising-router',
+			'lsa-flood-ls-flood-ls-flood-ls-type',
+			'lsa-flood-ls-flood-ls-flood-ls-id',
+			'lsa-flood-ls-flood-ls-flood-ls-router-id',
+			'lsa-flood-ls-flood-ls-flood-ls-sequence-number',
+			'lsa-flood-ls-flood-ls-flood-ls-age',
+			'lsa-flood-ls-flood-ls-flood-ls-checksum',
+			'lsa-flood-ls-flood-ls-flood-ls-options',
+			'lsa-flood-ls-flood-ls-flood-ls-link-id',
+			'lsa-flood-ls-flood-ls-flood-ls-link-data',
+			'lsa-flood-ls-flood-ls-flood-ls-link-type',
+			'lsa-flood-ls-flood-ls-flood-ls-metric',
+			'lsa-flood-ls-flood-ls-flood-ls-tos',
+			'lsa-flood-ls-flood-ls-flood-ls-tos-metric',
+			'lsa-flood-ls-flood-ls-flood-ls-number-links',
+			'lsa-flood-ls-flood-ls-flood-ls-router-links',
+			'lsa-flood-ls-flood-ls-flood-ls-network-links',
+			'lsa-flood-ls-flood-ls-flood-ls-summary-links',
+			'lsa-flood-ls-flood-ls-flood-ls-as-external-links',
+			'lsa-flood-ls-flood-ls-flood-ls-nssa-external-links',
+			'lsa-flood-ls-flood-ls-flood-ls-opaque-link',
+			'lsa-flood-ls-flood-ls-flood-ls-opaque-area',
+			'lsa-flood-ls-flood-ls-flood-ls-opaque-as',
+			'lsa-flood-ls-flood-ls-flood-ls-grace-period',
+			'lsa-flood-ls-flood-ls-flood-ls-max-age',
+			'lsa-flood-ls-flood-ls-flood-ls-max-sequence-number',
+			'lsa-flood-ls-flood-ls-flood-ls-refresh-time',
+			'lsa-flood-ls-flood-ls-flood-ls-retransmission-interval',
+			'lsa-flood-ls-flood-ls-flood-ls-rxmt-interval',
+			'lsa-flood-ls-flood-ls-flood-ls-rxmt-count',
+			'lsa-flood-ls-flood-ls-flood-ls-rxmt-timeout',
+			'lsa-flood-ls-flood-ls-flood-ls-rxmt-list',
+			'lsa-flood-ls-flood-ls-flood-ls-request-list',
+			'lsa-flood-ls-flood-ls-flood-ls-database-summary',
+			'lsa-flood-ls-flood-ls-flood-ls-database-request',
+			'lsa-flood-ls-flood-ls-flood-ls-database-description',
+			'lsa-flood-ls-flood-ls-flood-ls-database-exchange',
+			'lsa-flood-ls-flood-ls-flood-ls-database-loading',
+			'lsa-flood-ls-flood-ls-flood-ls-database-full',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-period',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-interval',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-list',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-timeout',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-count',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-pending',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-queued',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-sent',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-received',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-discarded',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-duplicate',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-older',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-newer',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-max-age',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-checksum',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-sequence',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-options',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-link-state-id',
+			'lsa-flood-ls-flood-ls-flood-ls-flood-advertising-router'
 		];
 
 		// BGP-related parameters
@@ -1890,7 +1956,7 @@ const mikrotik = {
 						alias: 'char'
 					}
 				}
-			},
+						},
 
 			keyword: [
 				// https://help.mikrotik.com/docs/spaces/ROS/pages/47579229/Scripting#Scripting-Whitespacebetweentokens
@@ -2083,7 +2149,6 @@ const registerMikrotikLanguage = (prismInstance = Prism) => {
 	if (!prismInstance.languages.mikrotik) {
 		// Ensure regex support exists before wiring the MikroTik grammar
 		prismInstance.languages.regex ??= {};
-		// @ts-expect-error fine
 		prismInstance.languages.mikrotik = mikrotik.grammar();
 	}
 };

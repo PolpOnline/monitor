@@ -57,9 +57,6 @@
 		});
 
 	onMount(() => {
-		// @ts-expect-error - window.umami is defined by the Umami script
-		window.umami.identify({ email: data.loggedInEmail });
-
 		new Lenis({
 			autoRaf: true
 		});
