@@ -99,6 +99,7 @@
   "login.login_or_signup": "Login or Sign Up",
   "login.login_successful": "Logged in successfully",
   "login.password": "Password",
+  "login.wrong_password": "Wrong email or password",
   "logout": "Logout",
   "operational": "Operational",
   "preset_dialog": {

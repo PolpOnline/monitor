@@ -99,6 +99,7 @@
   "login.login_or_signup": "Accedi o registrati",
   "login.login_successful": "Login eseguito con successo",
   "login.password": "Password",
+  "login.wrong_password": "Wrong email or password",
   "logout": "Logout",
   "operational": "Funziona correttamente",
   "preset_dialog": {

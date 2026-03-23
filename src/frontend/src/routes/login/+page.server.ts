@@ -30,11 +30,14 @@ export const actions: Actions = {
 
 		// If the request was not successful, return the status code and the form
 		if (!res.response.ok) {
-			const messageToSend = res.response.statusText;
+			let messageToSend = res.response.statusText;
+			if (res.response.status === 401) {
+				messageToSend = 'login.wrong_password';
+			}
 
 			return message(form, messageToSend, {
-				// @ts-expect-error - assume res has a valid status code
-				status: res.status
+				// @ts-expect-error Status is surely an error status
+				status: res.data.status
 			});
 		}
 

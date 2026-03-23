@@ -22,10 +22,12 @@
 	const form = superForm(data, {
 		validators: zod4Client(formSchema),
 		onUpdated: ({ form: f }) => {
-			if (f.valid) {
+			if (f.valid && !f.message) {
 				toast.success($t('login.login_successful'));
 
 				goto('/');
+			} else if (f.message) {
+				toast.error(f.message === 'login.wrong_password' ? $t('login.wrong_password') : f.message);
 			}
 		}
 	});
@@ -57,7 +59,13 @@
 		<Form.FieldErrors />
 	</Form.Field>
 	{#if $message}
-		<div class="text-destructive">{$message}</div>
+		<div class="text-destructive">
+			{#if $message === 'login.wrong_password'}
+				<T keyName="login.wrong_password" />
+			{:else}
+				{$message}
+			{/if}
+		</div>
 	{/if}
 	<Form.Button class="mt-8 w-full">
 		{#if !$delayed}
