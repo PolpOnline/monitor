@@ -37,7 +37,7 @@ export const actions: Actions = {
 
 			return message(form, messageToSend, {
 				// @ts-expect-error Status is surely an error status
-				status: res.data.status
+				status: res.status
 			});
 		}
 
