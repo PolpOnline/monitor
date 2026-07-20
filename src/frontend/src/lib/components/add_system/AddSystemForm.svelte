@@ -26,12 +26,10 @@
 
 	let {
 		data,
-		class: className = '',
-		typeOfWrapper = 'sheet'
+		class: className = ''
 	}: {
 		data: SuperValidated<Infer<FormSchema>>;
 		class?: string;
-		typeOfWrapper: 'sheet' | 'drawer';
 	} = $props();
 
 	// noinspection JSUnusedGlobalSymbols
@@ -76,7 +74,7 @@
 </script>
 
 <form action="?/add_system" class={className} method="POST" use:enhance>
-	<div class="space-y-9 {typeOfWrapper === 'sheet' ? 'px-4' : 'px-2'}">
+	<div class="space-y-9 px-4">
 		<Form.Field {form} name="name">
 			<Form.Control>
 				{#snippet children({ props })}
@@ -145,7 +143,7 @@
 									: $t('add_system.private')}
 							</DropdownMenu.Trigger>
 							<DropdownMenu.Content
-								class="w-[var(--bits-dropdown-menu-anchor-width)] min-w-[var(--bits-dropdown-menu-anchor-width)]"
+								class="w-(--bits-dropdown-menu-anchor-width) min-w-(--bits-dropdown-menu-anchor-width)"
 							>
 								<DropdownMenu.RadioGroup bind:value={$formData.visibility}>
 									<DropdownMenu.RadioItem value="public">
@@ -164,25 +162,13 @@
 		</Form.Field>
 	</div>
 
-	{#if typeOfWrapper === 'sheet'}
-		<Sheet.Footer>
-			<Form.Button>
-				{#if !$delayed}
-					<T keyName="add_system.add_system_submit" />
-				{:else}
-					<LineMdLoadingLoop class="size-6" />
-				{/if}
-			</Form.Button>
-		</Sheet.Footer>
-	{:else}
-		<Drawer.Footer>
-			<Form.Button>
-				{#if !$delayed}
-					<T keyName="add_system.add_system_submit" />
-				{:else}
-					<LineMdLoadingLoop class="size-6" />
-				{/if}
-			</Form.Button>
-		</Drawer.Footer>
-	{/if}
+	<Sheet.Footer>
+		<Form.Button>
+			{#if !$delayed}
+				<T keyName="add_system.add_system_submit" />
+			{:else}
+				<LineMdLoadingLoop class="size-6" />
+			{/if}
+		</Form.Button>
+	</Sheet.Footer>
 </form>

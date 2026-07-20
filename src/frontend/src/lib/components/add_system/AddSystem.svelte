@@ -40,6 +40,6 @@
 			</Sheet.Description>
 		</Sheet.Header>
 
-		<AddSystemForm {data} typeOfWrapper="sheet" />
+		<AddSystemForm {data} />
 	</Sheet.Content>
 </Sheet.Root>
