@@ -5,8 +5,6 @@
 	import DateTimePicker from '$components/date_time_picker/DateTimePicker.svelte';
 	// noinspection ES6UnusedImports
 	import * as Form from '$lib/components/ui/form';
-	// noinspection ES6UnusedImports
-	import * as Drawer from '$lib/components/ui/drawer';
 	import { formSchema, type FormSchema } from './schema';
 	import { type Infer, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zod4Client } from 'sveltekit-superforms/adapters';
