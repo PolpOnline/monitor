@@ -1956,7 +1956,7 @@ const mikrotik = {
 						alias: 'char'
 					}
 				}
-						},
+			},
 
 			keyword: [
 				// https://help.mikrotik.com/docs/spaces/ROS/pages/47579229/Scripting#Scripting-Whitespacebetweentokens

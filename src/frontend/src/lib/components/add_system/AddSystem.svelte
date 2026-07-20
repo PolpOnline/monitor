@@ -6,14 +6,8 @@
 	import { type FormSchema } from './schema';
 	import { type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import AddSystemForm from '$components/add_system/AddSystemForm.svelte';
-	import Device from 'svelte-device-info';
-	// noinspection ES6UnusedImports
-	import * as Drawer from '$lib/components/ui/drawer';
-	import { browser } from '$app/environment';
 	import { getTranslate } from '@tolgee/svelte';
 	import { cn } from '$lib/utils';
-	import { Drawer as DrawerPrimitive } from 'vaul-svelte';
-	import { Dialog as SheetPrimitive } from 'bits-ui';
 
 	let open = $state(false);
 	const { t } = getTranslate();
@@ -24,57 +18,28 @@
 		data: SuperValidated<Infer<FormSchema>>;
 	} = $props();
 
-	let isMobile = $state(true);
-
-	if (browser) {
-		isMobile = Device.isMobile;
-	}
-
 	const title = $t('add_system.add_system');
 	const description = $t('add_system.add_system_description');
-	</script>
+</script>
 
-	{#if !isMobile}
-		<Sheet.Root bind:open>
-			<Sheet.Trigger
-				class={cn(buttonVariants({ variant: 'default' }), 'fixed right-5 bottom-5 z-50 size-12')}
-				aria-label="Add device"
-			>
-				<HeroiconsPlus20Solid class="size-6" />
-			</Sheet.Trigger>
-			<Sheet.Content
-				side="right"
-				class="data-open:animate-in data-open:fade-in-0 data-open:slide-in-from-right-10 data-closed:animate-out data-closed:fade-out-0 data-closed:slide-out-to-right-10"
-			>
-			<Sheet.Header>
-				<Sheet.Title>{title}</Sheet.Title>
-				<Sheet.Description>
-					{description}
-				</Sheet.Description>
-			</Sheet.Header>
+<Sheet.Root bind:open>
+	<Sheet.Trigger
+		class={cn(buttonVariants({ variant: 'default' }), 'fixed right-5 bottom-5 z-50 size-12')}
+		aria-label="Add device"
+	>
+		<HeroiconsPlus20Solid class="size-6" />
+	</Sheet.Trigger>
+	<Sheet.Content
+		side="right"
+		class="data-open:animate-in data-open:fade-in-0 data-open:slide-in-from-right-10 data-closed:animate-out data-closed:fade-out-0 data-closed:slide-out-to-right-10"
+	>
+		<Sheet.Header>
+			<Sheet.Title>{title}</Sheet.Title>
+			<Sheet.Description>
+				{description}
+			</Sheet.Description>
+		</Sheet.Header>
 
-			<AddSystemForm {data} typeOfWrapper="sheet" />
-		</Sheet.Content>
-	</Sheet.Root>
-{:else}
-	<Drawer.Root bind:open shouldScaleBackground>
-		<Drawer.Trigger
-			class={cn(buttonVariants({ variant: 'default' }), 'fixed right-5 bottom-5 z-50 size-12')}
-			aria-label="Add device"
-		>
-			<HeroiconsPlus20Solid class="size-6" />
-		</Drawer.Trigger>
-		<Drawer.Content
-			class="data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0 data-[vaul-drawer-direction=bottom]:data-open:slide-in-from-bottom-10 data-[vaul-drawer-direction=bottom]:data-closed:slide-out-to-bottom-10"
-		>
-			<Drawer.Header>
-				<Drawer.Title>{title}</Drawer.Title>
-				<Drawer.Description>
-					{description}
-				</Drawer.Description>
-			</Drawer.Header>
-
-			<AddSystemForm {data} class="mx-5" typeOfWrapper="drawer" />
-		</Drawer.Content>
-	</Drawer.Root>
-{/if}
+		<AddSystemForm {data} typeOfWrapper="sheet" />
+	</Sheet.Content>
+</Sheet.Root>

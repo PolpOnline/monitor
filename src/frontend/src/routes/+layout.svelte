@@ -63,7 +63,6 @@
 	});
 </script>
 
-
 <svelte:head>
 	<!-- preconnect the Umami instance -->
 	<link href="https://umami.polp.online" rel="preconnect" />

@@ -67,7 +67,7 @@
 	>
 		<LucideEllipsis class="size-6 cursor-pointer" />
 	</DropdownMenu.Trigger>
-	<DropdownMenu.Content class="w-max min-w-56 max-w-[calc(100vw-1rem)]">
+	<DropdownMenu.Content class="w-max max-w-[calc(100vw-1rem)] min-w-56">
 		<DropdownMenu.Group>
 			<DropdownMenu.Item
 				onclick={() => {
