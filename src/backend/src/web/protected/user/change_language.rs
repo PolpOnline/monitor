@@ -3,7 +3,8 @@ use axum_serde::Sonic;
 use axum_thiserror::ErrorStatus;
 use http::StatusCode;
 use rust_i18n::available_locales;
-use serde::Deserialize;
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use utoipa::ToSchema;
 
@@ -15,7 +16,7 @@ pub struct ChangeLanguageRequest {
     language: String,
 }
 
-#[derive(Error, Debug, ErrorStatus)]
+#[derive(Error, Debug, Serialize, JsonSchema, ErrorStatus)]
 pub enum ChangeLanguageError {
     #[error("User is not logged in")]
     #[status(StatusCode::UNAUTHORIZED)]
@@ -55,7 +56,10 @@ pub async fn change_language(
 
     let available_languages = available_locales!();
 
-    if !available_languages.contains(&&*request.language) {
+    if !available_languages
+        .iter()
+        .any(|language| language.as_ref() == request.language)
+    {
         return ChangeLanguageError::LanguageNotValid.into_response();
     }
 

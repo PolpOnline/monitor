@@ -85,7 +85,7 @@
 			<DropdownMenu.Trigger class={buttonVariants({ size: 'icon' })} aria-label="Navbar Menu">
 				<LucideUser />
 			</DropdownMenu.Trigger>
-			<DropdownMenu.Content>
+			<DropdownMenu.Content class="w-max min-w-56 max-w-[calc(100vw-1rem)]">
 				{#if loggedInEmail}
 					<DropdownMenu.Label>{loggedInEmail}</DropdownMenu.Label>
 					<DropdownMenu.Separator />

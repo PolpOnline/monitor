@@ -4,7 +4,8 @@ use axum::response::IntoResponse;
 use axum_serde::Sonic;
 use axum_thiserror::ErrorStatus;
 use http::StatusCode;
-use serde::Deserialize;
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use utoipa::ToSchema;
 
@@ -16,7 +17,7 @@ pub struct ChangeTimezoneRequest {
     timezone: String,
 }
 
-#[derive(Error, Debug, ErrorStatus)]
+#[derive(Error, Debug, Serialize, JsonSchema, ErrorStatus)]
 pub enum ChangeTimezoneError {
     #[error("User is not logged in")]
     #[status(StatusCode::UNAUTHORIZED)]

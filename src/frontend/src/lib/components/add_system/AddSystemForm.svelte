@@ -147,7 +147,7 @@
 									: $t('add_system.private')}
 							</DropdownMenu.Trigger>
 							<DropdownMenu.Content
-								class="w-(--bits-dropdown-menu-anchor-width) min-w-(--bits-dropdown-menu-anchor-width)"
+								class="w-[var(--bits-dropdown-menu-anchor-width)] min-w-[var(--bits-dropdown-menu-anchor-width)]"
 							>
 								<DropdownMenu.RadioGroup bind:value={$formData.visibility}>
 									<DropdownMenu.RadioItem value="public">

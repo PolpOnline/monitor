@@ -8,7 +8,7 @@ use std::str::FromStr;
 use axum::{middleware, routing::get};
 use axum_login::{
     AuthManagerLayerBuilder,
-    tower_sessions::{Expiry, SessionManagerLayer},
+    tower_sessions::{Expiry, SessionManagerLayer, cookie::Key},
 };
 use http::StatusCode;
 use sqlx::PgPool;
@@ -18,7 +18,6 @@ use tower_http::{
     decompression::{DecompressionLayer, RequestDecompressionLayer},
     trace::TraceLayer,
 };
-use tower_sessions::cookie::Key;
 use tower_sessions_redis_store::{RedisStore, fred::prelude::Pool as FredPool};
 use tracing::info;
 use utoipa::OpenApi;
@@ -83,7 +82,7 @@ impl App {
                 .with_name("monitor_id")
                 .with_secure(true)
                 .with_expiry(Expiry::OnInactivity(
-                    tower_sessions::cookie::time::Duration::days(7),
+                    axum_login::tower_sessions::cookie::time::Duration::days(7),
                 ))
                 .with_signed(key)
         };

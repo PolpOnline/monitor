@@ -3,7 +3,8 @@ use axum_serde::Sonic;
 use axum_thiserror::ErrorStatus;
 use http::StatusCode;
 use password_auth::generate_hash;
-use serde::Deserialize;
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use tokio::task;
 use utoipa::ToSchema;
@@ -18,7 +19,7 @@ pub struct ChangePasswordRequest {
     new_password: String,
 }
 
-#[derive(Error, Debug, ErrorStatus)]
+#[derive(Error, Debug, Serialize, JsonSchema, ErrorStatus)]
 pub enum ChangePasswordError {
     #[error("Failed to generate hash")]
     #[status(StatusCode::INTERNAL_SERVER_ERROR)]

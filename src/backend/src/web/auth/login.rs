@@ -4,7 +4,8 @@ use axum_thiserror::ErrorStatus;
 use chrono_tz::Tz;
 use http::StatusCode;
 use password_auth::generate_hash;
-use serde::Serialize;
+use schemars::JsonSchema;
+use serde::{Serialize, Serializer};
 use thiserror::Error;
 use tokio::task;
 use tracing::{debug, info};
@@ -20,7 +21,7 @@ pub struct LoginResponse {
     pub status: String,
 }
 
-#[derive(Error, Debug, ErrorStatus, ToSchema)]
+#[derive(Error, Debug, Serialize, JsonSchema, ErrorStatus, ToSchema)]
 pub enum AuthError {
     #[error("Failed to generate hash")]
     #[status(StatusCode::INTERNAL_SERVER_ERROR)]
@@ -28,7 +29,12 @@ pub enum AuthError {
     #[error("Failed to insert user")]
     #[status(StatusCode::INTERNAL_SERVER_ERROR)]
     #[schema(value_type = String)]
-    FailedToInsertNewUser(#[from] sqlx::Error),
+    FailedToInsertNewUser(
+        #[from]
+        #[serde(serialize_with = "serialize_sqlx_error")]
+        #[schemars(with = "String")]
+        sqlx::Error,
+    ),
     #[error("User doesn't exist after signup")]
     #[status(StatusCode::INTERNAL_SERVER_ERROR)]
     UserNotExistingAfterSignUp,
@@ -139,6 +145,13 @@ pub async fn get_user_existence(email: String, auth_session: AuthSession) -> boo
 
 const DEFAULT_TIMEZONE: Tz = Tz::UTC;
 const DEFAULT_LANGUAGE: &str = "en";
+
+fn serialize_sqlx_error<S>(error: &sqlx::Error, serializer: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    serializer.serialize_str(&error.to_string())
+}
 
 pub async fn sign_up(
     credentials: Credentials,

@@ -12,8 +12,8 @@
 
 <div
 	bind:this={ref}
-	data-slot="card-title"
-	class={cn("text-base leading-snug font-medium group-data-[size=sm]/card:text-sm", className)}
+	data-slot="popover-title"
+	class={cn("font-medium", className)}
 	{...restProps}
 >
 	{@render children?.()}
