@@ -8,8 +8,8 @@ publish = false
 async-trait = "0.1"
 axum = { version = "0.8", features = ["http2"] }
 axum-login = "0.18"
-http = "1.4"
-hyper = "1.10"
+http = "1.5"
+hyper = "1.11"
 password-auth = "1.0"
 serde = "1"
 sqlx = { version = "0.9", features = ["postgres", "runtime-tokio", "uuid", "chrono", "tls-rustls"] }
@@ -22,7 +22,7 @@ dotenvy = "0.15"
 color-eyre = "0.6"
 tracing = "0.1"
 uuid = { version = "1.24", features = ["v4", "serde"] }
-axum_thiserror = "0.2"
+axum_thiserror = "0.3"
 tower-http = { version = "0.7", features = ["trace", "compression-full", "decompression-full"] }
 rusty-sidekiq = { version = "0.14", default-features = false }
 futures = "0.3"

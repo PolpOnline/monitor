@@ -19,7 +19,7 @@ pub struct ChangePasswordRequest {
     new_password: String,
 }
 
-#[derive(Error, Debug, Serialize, JsonSchema, ErrorStatus)]
+#[derive(Error, Debug, Serialize, JsonSchema, ErrorStatus, ToSchema)]
 pub enum ChangePasswordError {
     #[error("Failed to generate hash")]
     #[status(StatusCode::INTERNAL_SERVER_ERROR)]

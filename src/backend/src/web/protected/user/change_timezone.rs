@@ -17,7 +17,7 @@ pub struct ChangeTimezoneRequest {
     timezone: String,
 }
 
-#[derive(Error, Debug, Serialize, JsonSchema, ErrorStatus)]
+#[derive(Error, Debug, Serialize, JsonSchema, ErrorStatus, ToSchema)]
 pub enum ChangeTimezoneError {
     #[error("User is not logged in")]
     #[status(StatusCode::UNAUTHORIZED)]

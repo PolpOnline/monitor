@@ -16,7 +16,7 @@ pub struct ChangeLanguageRequest {
     language: String,
 }
 
-#[derive(Error, Debug, Serialize, JsonSchema, ErrorStatus)]
+#[derive(Error, Debug, Serialize, JsonSchema, ErrorStatus, ToSchema)]
 pub enum ChangeLanguageError {
     #[error("User is not logged in")]
     #[status(StatusCode::UNAUTHORIZED)]
