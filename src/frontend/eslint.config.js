@@ -6,6 +6,9 @@ import globals from 'globals';
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
+	{
+		ignores: ['build/', '.svelte-kit/', 'dist/', 'src/lib/components/ui']
+	},
 	js.configs.recommended,
 	...ts.configs.recommended,
 	...svelte.configs['flat/recommended'],
@@ -28,7 +31,6 @@ export default [
 		}
 	},
 	{
-		ignores: ['build/', '.svelte-kit/', 'dist/', 'src/lib/components/ui'],
 		rules: {
 			'svelte/no-navigation-without-resolve': 'off'
 		}

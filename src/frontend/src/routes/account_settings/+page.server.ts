@@ -1,5 +1,5 @@
 import type { Actions, PageServerLoad } from './$types';
-import { fail, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms';
 import { formSchema as changePasswordFormSchema } from './change_password/schema';
 import { formSchema as changeTimezoneFormSchema } from './change_timezone/schema';
@@ -10,14 +10,14 @@ import { API_URL, client } from '$lib/api/api.server';
 export const load: PageServerLoad = async ({ fetch }) => {
 	const {
 		data: currentSettings,
-		error,
+		error: errorMessage,
 		response
 	} = await client.GET('/user/get_current_settings', {
 		fetch
 	});
 
-	if (error) {
-		return new Response(`Failed to fetch: ${error}`, { status: response.status });
+	if (errorMessage) {
+		error(response.status, `Failed to fetch: ${errorMessage}`);
 	}
 
 	const [passwordForm, timezoneForm, languageForm] = await Promise.all([

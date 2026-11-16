@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Check from 'lucide-svelte/icons/check';
 	import ChevronsUpDown from 'lucide-svelte/icons/chevrons-up-down';
 	import { tick } from 'svelte';
 	// noinspection ES6UnusedImports
@@ -64,12 +63,12 @@
 					{#each timezones as timezone (timezone.value)}
 						<Command.Item
 							value={timezone.value}
+							data-checked={value === timezone.value}
 							onSelect={() => {
 								value = timezone.value;
 								closeAndFocusTrigger();
 							}}
 						>
-							<Check class={cn('mr-2 size-4', value !== timezone.value && 'text-transparent')} />
 							{timezone.label}
 						</Command.Item>
 					{/each}

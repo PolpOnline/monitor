@@ -1,5 +1,6 @@
 import { API_URL } from '$lib/api/api.server';
-import { type Handle, type HandleFetch, redirect, type ResolveOptions } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
+import { type Handle, type HandleFetch, type ResolveOptions } from '@sveltejs/kit/hooks';
 import type { LoginStatus } from './app';
 import { default as setCookieParser } from 'set-cookie-parser';
 import { StatusCodes } from 'http-status-codes';

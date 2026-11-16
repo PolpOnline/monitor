@@ -1,4 +1,4 @@
-import { dev } from '$app/environment';
+import { dev } from '$app/env';
 
 export const PUBLIC_API_URL = dev ? 'http://localhost:3000' : 'https://monitor-api.polp.online';
 

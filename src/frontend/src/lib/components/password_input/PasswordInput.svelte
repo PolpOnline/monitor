@@ -9,7 +9,7 @@
 		value = $bindable(),
 		class: className,
 		...restProps
-	}: WithElementRef<HTMLInputAttributes> = $props();
+	}: WithElementRef<Omit<HTMLInputAttributes, 'type' | 'files'>> = $props();
 
 	let showPassword = $state(false);
 </script>

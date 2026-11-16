@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Check from 'lucide-svelte/icons/check';
 	import ChevronsUpDown from 'lucide-svelte/icons/chevrons-up-down';
 	import { tick } from 'svelte';
 	// noinspection ES6UnusedImports
@@ -64,12 +63,12 @@
 					{#each languages as language (language.value)}
 						<Command.Item
 							value={language.value}
+							data-checked={value === language.value}
 							onSelect={() => {
 								value = language.value;
 								closeAndFocusTrigger();
 							}}
 						>
-							<Check class={cn('mr-2 size-4', value !== language.value && 'text-transparent')} />
 							{language.label}
 						</Command.Item>
 					{/each}

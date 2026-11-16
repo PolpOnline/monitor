@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Command as CommandPrimitive } from "bits-ui";
 	import { cn } from "$lib/utils.js";
-	import * as InputGroup from "$lib/components/ui/input-group/index.js";
 	import SearchIcon from '@lucide/svelte/icons/search';
 
 	let {
@@ -12,23 +11,23 @@
 	}: CommandPrimitive.InputProps = $props();
 </script>
 
-<div data-slot="command-input-wrapper" class="p-1 pb-0">
-	<InputGroup.Root class="bg-input/30 border-input/30 h-8! rounded-lg! shadow-none! *:data-[slot=input-group-addon]:pl-2!">
+<div data-slot="command-input-wrapper" class="border-border border-b px-3 py-2">
+	<div class="relative">
+		<SearchIcon
+			class="text-muted-foreground pointer-events-none absolute top-1/2 left-0 size-4 -translate-y-1/2"
+		/>
 		<CommandPrimitive.Input
 			{value}
 			data-slot="command-input"
 			class={cn(
-				"w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+				"w-full bg-transparent py-1 pr-2 pl-6 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
 				className
 			)}
 			{...restProps}
 		>
 			{#snippet child({ props })}
-				<InputGroup.Input {...props} bind:value bind:ref />
+				<input {...props} bind:value bind:this={ref} />
 			{/snippet}
 		</CommandPrimitive.Input>
-		<InputGroup.Addon>
-			<SearchIcon class="size-4 shrink-0 opacity-50" />
-		</InputGroup.Addon>
-	</InputGroup.Root>
+	</div>
 </div>

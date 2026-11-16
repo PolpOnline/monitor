@@ -58,7 +58,13 @@ pub struct SystemInfoResponse {
     tag = MONITORING_TAG
 )]
 pub async fn sys_info() -> impl IntoResponse {
-    let mut s = System::new_all();
+    let mut s = match System::new_all() {
+        Ok(s) => s,
+        Err(e) => {
+            tracing::error!("Failed to collect system information: {e}");
+            return axum::http::StatusCode::INTERNAL_SERVER_ERROR.into_response();
+        }
+    };
 
     // Wait a bit because CPU usage is based on diff.
     sleep(sysinfo::MINIMUM_CPU_UPDATE_INTERVAL).await;
@@ -72,14 +78,14 @@ pub async fn sys_info() -> impl IntoResponse {
         basic: get_basic_info(),
     };
 
-    Sonic(res)
+    Sonic(res).into_response()
 }
 
 fn get_cpu_info(s: &System) -> CpuInfo {
     let cpu = s.cpus().first().unwrap();
 
     CpuInfo {
-        usage: cpu.cpu_usage(),
+        usage: cpu.usage(),
         name: cpu.name().to_string(),
         vendor_id: cpu.vendor_id().to_string(),
         brand: cpu.brand().to_string(),
