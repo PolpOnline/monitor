@@ -42,6 +42,11 @@ rustls = { version = "0.23", features = ["aws-lc-rs"] }
 axum-serde = { version = "0.10" , features = ["sonic"]}
 schemars = { version = "1.2" }
 
+# cargo-chef's cook layer builds this manifest without source files, which makes
+# Cargo's unused_dependencies lint flag every direct dependency. Real builds are clean.
+[lints.cargo]
+unused_dependencies = "allow"
+
 [profile.dev.package.backtrace]
 opt-level = 3
 
